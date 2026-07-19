@@ -141,15 +141,15 @@ export const avatarImages = {
 // ---------------------------------------------------------------------------
 export const galleryImages = {
     /** Center arch — tallest, most prominent image */
-    center: cloud('vinosphere/gallery/center'),
+    center: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784483677/1a3d5e60-df58-41c8-a1a4-cd9d52f5dbf9_qvyqiy.png",
     /** Far left card */
-    left1: cloud('vinosphere/gallery/left-1'),
+    left1: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784483745/f58b5c96-5c23-4790-a137-a8976ce38001_dznmwz.png",
     /** Inner left card */
-    left2: cloud('vinosphere/gallery/left-2'),
+    left2: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784483831/1382e241-cbcc-450f-9f45-5be9c2fc4d11_ajfk5v.png",
     /** Inner right card */
-    right1: cloud('vinosphere/gallery/right-1'),
+    right1: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784484413/img5_fpcepx.png",
     /** Far right card */
-    right2: cloud('vinosphere/gallery/right-2'),
+    right2: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784484036/2e1bf6f7-4696-49d5-a3d0-e7873c698e02_rhqwee.png",
 }
 
 // ---------------------------------------------------------------------------
