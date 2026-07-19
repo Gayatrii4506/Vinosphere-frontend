@@ -1,21 +1,32 @@
 import { Hero } from '@/components/home/Hero'
 import { FeaturedCategories } from '@/components/home/FeaturedCategories'
+import { VinoExperience } from '@/components/home/VinoExperience'
+import { WineGallery } from '@/components/home/WineGallery'
 import { SectionDivider } from '@/components/shared/SectionDivider'
 
 export default function Home() {
     return (
         <>
-            {/* ── Dark hero ── */}
+            {/* 1 ── Dark hero */}
             <Hero />
 
-            {/* ── Wave transition: dark → cream ── */}
-            <SectionDivider
-                fromFill="fill-vino-dark"
-                toBg="bg-vino-cream"
-            />
+            {/* dark → cream  (dips left, rides right) */}
+            <SectionDivider fromFill="fill-vino-dark" toBg="bg-vino-cream" height={90} />
 
-            {/* ── Light categories section ── */}
+            {/* 2 ── Light featured categories */}
             <FeaturedCategories />
+
+            {/* cream → dark  (rides left, dips right) */}
+            <SectionDivider fromFill="fill-vino-cream" toBg="bg-vino-dark" flip height={90} />
+
+            {/* 3 ── Dark editorial experience */}
+            <VinoExperience />
+
+            {/* dark → gallery-cream  (dips left, rides right) */}
+            <SectionDivider fromFill="fill-vino-dark" toBg="bg-[#F8F5EF]" height={90} />
+
+            {/* 4 ── Cream wine gallery */}
+            <WineGallery />
         </>
     )
 }

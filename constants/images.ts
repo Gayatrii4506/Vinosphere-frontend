@@ -137,6 +137,30 @@ export const avatarImages = {
 }
 
 // ---------------------------------------------------------------------------
+// Wine Gallery  (Moments Worth Savoring section)
+// ---------------------------------------------------------------------------
+export const galleryImages = {
+    /** Center arch — tallest, most prominent image */
+    center: cloud('vinosphere/gallery/center'),
+    /** Far left card */
+    left1: cloud('vinosphere/gallery/left-1'),
+    /** Inner left card */
+    left2: cloud('vinosphere/gallery/left-2'),
+    /** Inner right card */
+    right1: cloud('vinosphere/gallery/right-1'),
+    /** Far right card */
+    right2: cloud('vinosphere/gallery/right-2'),
+}
+
+// ---------------------------------------------------------------------------
+// Experience Section
+// ---------------------------------------------------------------------------
+export const experienceImages = {
+    /** Full-bleed background for the "Discover Wine Like Never Before" section */
+    background: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784479192/sec_2bg_kf4e8v.png',
+}
+
+// ---------------------------------------------------------------------------
 // Brand / Misc
 // ---------------------------------------------------------------------------
 export const brandImages = {
@@ -164,6 +188,8 @@ export const images = {
     blogs: blogImages,
     avatars: avatarImages,
     brand: brandImages,
+    experience: experienceImages,
+    gallery: galleryImages,
 } as const
 
 export type Images = typeof images
