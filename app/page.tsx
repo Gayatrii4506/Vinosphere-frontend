@@ -2,6 +2,7 @@ import { Hero } from '@/components/home/Hero'
 import { FeaturedCategories } from '@/components/home/FeaturedCategories'
 import { VinoExperience } from '@/components/home/VinoExperience'
 import { WineGallery } from '@/components/home/WineGallery'
+import { NewsletterFooter } from '@/components/home/NewsletterFooter'
 import { SectionDivider } from '@/components/shared/SectionDivider'
 
 export default function Home() {
@@ -27,6 +28,9 @@ export default function Home() {
 
             {/* 4 ── Cream wine gallery */}
             <WineGallery />
+
+            {/* 5 ── Newsletter + Footer */}
+            <NewsletterFooter />
         </>
     )
 }

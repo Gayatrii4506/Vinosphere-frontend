@@ -141,7 +141,7 @@ export const avatarImages = {
 // ---------------------------------------------------------------------------
 export const galleryImages = {
     /** Center arch — tallest, most prominent image */
-    center: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784483677/1a3d5e60-df58-41c8-a1a4-cd9d52f5dbf9_qvyqiy.png",
+    center: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784485224/86f83964-a90e-43ad-84f7-bad5cb60e12f_jzc8yi.png",
     /** Far left card */
     left1: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784483745/f58b5c96-5c23-4790-a137-a8976ce38001_dznmwz.png",
     /** Inner left card */

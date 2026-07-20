@@ -15,6 +15,12 @@ interface Category {
     description: string
     href: string
     image: string       // Cloudinary URL from constants/images
+    /**
+     * Optional per-image scale multiplier (default 1.0).
+     * Nudge this between ~0.90–1.10 to visually normalise bottles
+     * whose source dimensions differ, without touching the layout.
+     */
+    imageScale?: number
 }
 
 // ─── Data ───────────────────────────────────────────────────────────────────
@@ -27,6 +33,7 @@ const CATEGORIES: Category[] = [
         description: 'Delicate aromas of citrus and stone fruit with a refreshing finish.',
         href: '/discover/white-wine',
         image: images.categories.card1,
+        imageScale: 1.0,
     },
     {
         id: 'winter-spirit',
@@ -35,6 +42,7 @@ const CATEGORIES: Category[] = [
         description: 'Warm, full-bodied selections perfect for intimate evenings by the fire.',
         href: '/discover/winter-spirit',
         image: images.categories.card2,
+        imageScale: 1.0,
     },
     {
         id: 'tasting-day',
@@ -43,6 +51,7 @@ const CATEGORIES: Category[] = [
         description: 'Curated flights guided by our sommeliers in an exclusive setting.',
         href: '/experiences/tastings',
         image: images.categories.card3,
+        imageScale: 1.0,
     },
 ]
 
@@ -68,39 +77,58 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
     category,
     index,
 }) => {
+    const scale = category.imageScale ?? 1.0
+
     return (
         <motion.article
             variants={cardVariants}
             className="group flex flex-col cursor-pointer"
         >
             {/* ── Image container ── */}
-            {/*
-                Tall portrait frame — matches the screenshot's bottle proportions.
-                - aspect-[3/4] on mobile, forced min-h on desktop so bottles are generous
-                - bg gradient mimics the soft vignette in the reference image
-                - object-contain keeps the full bottle visible (no cropping)
-            */}
             <div
                 className="
-                    relative w-full overflow-hidden rounded-2xl
-                    aspect-[3/4] sm:aspect-[2/3] lg:aspect-[3/5]
+                    group relative w-full overflow-hidden rounded-2xl
+                    aspect-[3/4] sm:aspect-[2/3.5] lg:aspect-[3/5.8]
                     bg-gradient-to-b from-vino-cream-dark via-vino-parchment to-vino-cream-dark
                     shadow-sm group-hover:shadow-lg transition-shadow duration-500
                 "
             >
-                <CloudinaryImage
-                    src={category.image}
-                    alt={category.title}
-                    fill
-                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
-                    quality={90}
+                {/*
+                 * Bottle stage — a flex container that occupies 83 % of the card
+                 * height and is centred both axes. This guarantees every bottle
+                 * renders at the same visual height regardless of source dimensions.
+                 */}
+                <div
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{ padding: '8.5% 12%' }}   /* 8.5 % top/bottom ≈ (100-83)/2 */
+                >
+                    <div
+                        className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                        style={{ transform: `scale(${scale})`, transformOrigin: 'center center' }}
+                    >
+                        <CloudinaryImage
+                            src={category.image}
+                            alt={category.title}
+                            fill
+                            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
+                            quality={90}
+                            className="object-contain object-center"
+                        />
+                    </div>
+                </div>
+
+                {/* Soft radial glow behind bottle */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_65%_at_50%_48%,rgba(255,255,255,0.15),transparent)] pointer-events-none" />
+
+                {/* Inner border — consistent with WineGallery cards */}
+                <div
                     className="
-                        object-contain object-center
-                        px-6 py-8
-                        transition-transform duration-700 ease-out
-                        group-hover:scale-[1.04]
+                        absolute inset-[5px] rounded-[calc(1rem-5px)] pointer-events-none
+                        border border-[rgba(201,170,113,0.22)]
+                        transition-all duration-300
+                        group-hover:border-[rgba(201,170,113,0.42)]
                     "
-                />                
+                />
             </div>
 
             {/* ── Text content ── */}

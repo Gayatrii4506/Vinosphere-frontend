@@ -63,23 +63,35 @@ const SideCard: React.FC<{ image: GalleryImage; priority?: boolean }> = ({
         whileHover={{ y: -6, boxShadow: '0 20px 48px rgba(92,64,51,0.18)' }}
         transition={{ duration: 0.3 }}
         className="
-      relative w-full overflow-hidden rounded-2xl
-      aspect-[3/4]
-      bg-vino-parchment
-      shadow-[0_4px_20px_rgba(92,64,51,0.10)]
-    "
+            group relative w-full overflow-hidden rounded-2xl
+            aspect-[3/4.8]
+            bg-vino-parchment
+            shadow-[0_4px_20px_rgba(92,64,51,0.10)]
+        "
     >
         <CloudinaryImage
             src={image.src}
             alt={image.alt}
-            fill
+            width={420}
+            height={720}
             priority={priority}
             sizes="(max-width: 640px) 45vw, (max-width: 1024px) 22vw, 16vw"
             quality={85}
-            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            className="object-contain object-bottom px-5 py-7 transition-transform duration-700 ease-out group-hover:scale-[1.03]"
         />
+
+        {/* Inner border — same gold treatment as the arch center card */}
+        <div
+            className="
+                absolute inset-[5px] rounded-[calc(1rem-5px)] pointer-events-none
+                border border-[rgba(201,170,113,0.25)]
+                transition-all duration-300
+                group-hover:border-[rgba(201,170,113,0.45)]
+            "
+        />
+
         {/* Subtle bottom scrim */}
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-vino-brown/20 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-vino-brown/15 to-transparent" />
     </motion.div>
 )
 
@@ -95,14 +107,13 @@ const ArchCard: React.FC = () => (
             whileHover={{ scale: 1.025 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="
-        relative w-full overflow-hidden
-        shadow-[0_12px_48px_rgba(92,64,51,0.22)]
-        bg-vino-parchment
-      "
+                group relative w-full overflow-hidden
+                shadow-[0_12px_48px_rgba(92,64,51,0.22)]
+                bg-vino-parchment
+            "
             style={{
-                /* Arch = rectangle + top border-radius that creates the arch top */
                 borderRadius: '50% 50% 12px 12px / 32% 32% 12px 12px',
-                aspectRatio: '3/4.6',
+                aspectRatio: '3/5.2',
             }}
         >
             <CloudinaryImage
@@ -112,15 +123,22 @@ const ArchCard: React.FC = () => (
                 priority
                 sizes="(max-width: 640px) 60vw, (max-width: 1024px) 30vw, 20vw"
                 quality={90}
-                className="object-cover object-center"
+                className="object-contain object-center px-8 pt-8 pb-4"
             />
-            {/* Inner arch border overlay */}
+
+            {/* Inner arch border — brightens on hover */}
             <div
-                className="absolute inset-[6px] border border-vino-gold/30 pointer-events-none"
+                className="
+                    absolute inset-[6px] pointer-events-none
+                    border border-[rgba(201,170,113,0.32)]
+                    transition-all duration-300
+                    group-hover:border-[rgba(201,170,113,0.55)]
+                "
                 style={{ borderRadius: 'inherit' }}
             />
+
             {/* Bottom scrim */}
-            <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-vino-brown/25 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-vino-brown/20 to-transparent" />
         </motion.div>
 
         {/* Arch label */}
