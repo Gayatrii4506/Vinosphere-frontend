@@ -24,7 +24,7 @@ const ALL_WINERIES = [
         rating: 4.5,
         totalRatings: 12416,
         wines: 48,
-        image: images.categories.card1,
+        image: images.wineries.sula,
         badge: 'Award Winning',
         description: `India's most celebrated estate — pioneer of modern Indian viticulture since 1999, crafting world-class wines from Nashik's sun-drenched volcanic terroir.`,
     },
@@ -36,84 +36,71 @@ const ALL_WINERIES = [
         rating: 4.4,
         totalRatings: 7821,
         wines: 32,
-        image: images.categories.card3,
+        image: images.wineries.york,
         badge: 'Premium',
         description: 'Nestled in the Gangapur Hills, York blends European varietals with Indian craftsmanship to produce wines of extraordinary character and finesse.',
     },
     {
-        id: 'grover',
-        name: 'Grover Zampa Vineyards',
+        id: 'soma',
+        name: 'Soma Vine Village',
         verified: true,
         location: 'Nandi Hills, Karnataka',
         rating: 4.3,
         totalRatings: 6234,
         wines: 26,
-        image: images.categories.card2,
+        image: images.wineries.soma,
         badge: 'Organic',
         description: 'A trailblazer in sustainable viticulture, crafting wines that reflect the unique volcanic soil and microclimate of the breathtaking Nandi Hills.',
     },
     {
-        id: 'fratelli',
-        name: 'Fratelli Wines',
+        id: 'vallonne',
+        name: 'Vallonné Vineyards',
         verified: false,
-        location: 'Akluj, Maharashtra',
+        location: 'Dindori, Maharashtra',
         rating: 4.2,
         totalRatings: 4102,
         wines: 22,
-        image: images.gallery.left1,
+        image: images.wineries.vallonne,
         badge: 'Boutique',
         description: 'An Italian-Indian collaboration producing some of India\'s most refined and elegant wines from high-altitude vineyards in Solapur district.',
     },
     {
-        id: 'krsma',
-        name: 'KRSMA Estates',
+        id: 'chandon',
+        name: 'Chandon India Winery',
         verified: true,
-        location: 'Hampi, Karnataka',
+        location: 'Dindori, MAharashtra',
         rating: 4.6,
         totalRatings: 3189,
         wines: 14,
-        image: images.gallery.right1,
+        image: images.wineries.chandon,
         badge: 'Premium',
         description: `Named for its founders Krishna and Shalini, this pioneering estate crafts extraordinary wines from Hampi's dramatic, ancient landscape.`,
     },
     {
-        id: 'chandon',
-        name: 'Chandon India',
+        id: 'grover',
+        name: 'Grover Zampa Vineyards',
         verified: true,
         location: 'Dindori, Nashik',
         rating: 4.4,
         totalRatings: 8907,
         wines: 12,
-        image: images.gallery.right2,
+        image: images.wineries.grover,
         badge: 'Award Winning',
         description: `Moët Hennessy's Indian expression brings decades of Champagne expertise to Nashik's finest Chenin Blanc for world-class sparkling wines.`,
     },
     {
-        id: 'soma',
-        name: 'Soma Vine Village',
+        id: 'charosa',
+        name: 'Charosa Vineyards',
         verified: false,
-        location: 'Dindori, Nashik',
+        location: 'Charose, Nashik',
         rating: 4.1,
         totalRatings: 2455,
         wines: 18,
-        image: images.gallery.left2,
+        image: images.wineries.charosa,
         badge: 'Boutique',
         description: 'A boutique estate offering immersive vineyard experiences alongside beautifully balanced, terroir-expressive wines from the Dindori highlands.',
     },
-    {
-        id: 'vallonne',
-        name: 'Vallonne Vineyards',
-        verified: false,
-        location: 'Igatpuri, Nashik',
-        rating: 4.0,
-        totalRatings: 1876,
-        wines: 16,
-        image: images.gallery.center,
-        badge: 'Organic',
-        description: 'Certified organic estate in the cool Igatpuri highlands producing elegant, mineral-driven white wines with a distinct sense of place.',
-    },
 ]
-
 // ─── Winery card — horizontal ─────────────────────────────────────────────────
 
 function WineryCard({ winery, index }: { winery: typeof ALL_WINERIES[0]; index: number }) {
@@ -216,7 +203,7 @@ export function WineriesClient() {
     const [query, setQuery] = useState('')
     const [activeSort, setActiveSort] = useState('Most Popular')
     const [sortOpen, setSortOpen] = useState(false)
-    const [visible, setVisible] = useState(6)
+    const [visible, setVisible] = useState(3)
 
     const filtered = useMemo(() =>
         ALL_WINERIES.filter(w =>
@@ -354,7 +341,7 @@ export function WineriesClient() {
                                 <motion.button
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.97 }}
-                                    onClick={() => setVisible(v => v + 6)}
+                                    onClick={() => setVisible(v => v + 4)}
                                     className="inline-flex items-center gap-2 px-8 py-3 rounded-full
                                         border-2 border-[#7A1E3A] text-[#7A1E3A] font-semibold text-sm
                                         hover:bg-[#7A1E3A] hover:text-white transition-all duration-200"

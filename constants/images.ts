@@ -52,6 +52,16 @@ export const categoryImages = {
     card3: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784452545/york_qkkn2y.png',
 }
 
+export const wineries = {
+    sula: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784639253/sula_x7fqkh.jpg',
+    york: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784639378/york_sns47h.jpg',
+    soma: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784639611/soma_2_x6h949.jpg',
+    chandon: cloud('vinosphere/wines/bottle-1'),
+    vallonne: cloud('vinosphere/wines/bottle-1'),
+    grover: cloud('vinosphere/wines/bottle-1'),
+    charosa: cloud('vinosphere/wines/bottle-1'),
+    grape:cloud('vinosphere/wines/bottle-1')
+}
 // ---------------------------------------------------------------------------
 // Featured Wine Bottles / Collections
 // ---------------------------------------------------------------------------
@@ -180,6 +190,7 @@ export const brandImages = {
 export const images = {
     hero: heroImages,
     categories: categoryImages,
+    wineries:wineries,
     wines: wineImages,
     regions: regionImages,
     learning: learningImages,
