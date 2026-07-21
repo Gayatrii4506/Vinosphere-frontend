@@ -135,6 +135,7 @@ function WineryCard({ winery, index }: { winery: typeof ALL_WINERIES[0]; index: 
                 hover:bg-[#FAF7F2] hover:shadow-[0_4px_24px_rgba(122,30,58,0.08)]
                 transition-all duration-250 cursor-pointer"
         >
+            
             {/* Image */}
             <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shrink-0
                 border border-[#E8DDD0] shadow-sm">
@@ -208,62 +209,6 @@ function WineryCard({ winery, index }: { winery: typeof ALL_WINERIES[0]; index: 
 
 // ─── Newsletter CTA ───────────────────────────────────────────────────────────
 
-function NewsletterCTA() {
-    const [email, setEmail] = useState('')
-    const [sent, setSent] = useState(false)
-    return (
-        <section className="relative overflow-hidden py-20 bg-[#1A0A10]">
-            <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
-                style={{ backgroundImage: 'radial-gradient(circle, #C89B3C 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
-            <div className="absolute inset-0 pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 100%, rgba(122,30,58,0.35), transparent)' }} />
-
-            <div className="relative z-10 max-w-xl mx-auto px-4 text-center flex flex-col items-center gap-5">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-px bg-[#C89B3C]" />
-                    <span className="text-[10px] tracking-[0.28em] uppercase font-semibold text-[#C89B3C]">VinoSphere Journal</span>
-                    <div className="w-10 h-px bg-[#C89B3C]" />
-                </div>
-                <h2 className="font-serif font-bold text-white text-[1.9rem] sm:text-[2.2rem] leading-tight">
-                    Join the <span className="italic text-[#C89B3C]">VinoSphere Journal</span>
-                </h2>
-                <p className="text-[#B0A090] text-[14px] leading-relaxed">
-                    Receive winery stories, tasting guides, and exclusive recommendations directly to your inbox.
-                </p>
-                <AnimatePresence mode="wait">
-                    {sent ? (
-                        <motion.div key="ok"
-                            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                            className="flex items-center gap-2 px-5 py-3 rounded-full
-                                bg-[#C89B3C]/20 border border-[#C89B3C]/40 text-[#C89B3C] font-semibold text-sm">
-                            <CheckCircle size={15} /> You're on the list!
-                        </motion.div>
-                    ) : (
-                        <motion.form key="form"
-                            onSubmit={e => { e.preventDefault(); if (email) setSent(true) }}
-                            className="flex w-full max-w-sm gap-2">
-                            <div className="relative flex-1">
-                                <Mail size={13} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707070]" />
-                                <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
-                                    placeholder="Your email address"
-                                    className="w-full pl-10 pr-3 py-3 rounded-full bg-white/10 backdrop-blur-sm
-                                        border border-white/15 text-white placeholder-[#707070] text-sm
-                                        focus:outline-none focus:border-[#C89B3C] transition-colors" />
-                            </div>
-                            <motion.button type="submit"
-                                whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                                className="px-5 py-3 rounded-full bg-[#C89B3C] hover:bg-[#D4AB50]
-                                    text-[#0B0B0B] font-bold text-sm transition-colors whitespace-nowrap">
-                                Subscribe
-                            </motion.button>
-                        </motion.form>
-                    )}
-                </AnimatePresence>
-                <p className="text-[11px] text-white/25">No spam. Unsubscribe anytime.</p>
-            </div>
-        </section>
-    )
-}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -284,34 +229,46 @@ export function WineriesClient() {
         <div className="min-h-screen bg-white">
 
             {/* ── Compact editorial header ─────────────────────────────── */}
-            <div className="bg-[#FAF7F3] border-b border-[#EDE5D8] pt-24 pb-6">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* ── Compact editorial header ─────────────────────────────── */}
+<div className="relative overflow-hidden bg-[#FAF7F3] border-b border-[#EDE5D8] pt-24 pb-6">
 
-                    {/* Breadcrumb */}
-                    <nav className="flex items-center gap-1.5 text-[12px] text-[#A08070] mb-3">
-                        <Link href="/" className="hover:text-[#7A1E3A] transition-colors inline-flex items-center gap-1">
-                            <Home size={11} /> Home
-                        </Link>
-                        <ChevronRight size={10} className="text-[#C89B3C]/50" />
-                        <span className="text-[#7A1E3A] font-semibold">Wineries</span>
-                    </nav>
+    {/* Background Image */}
+    <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+            backgroundImage:
+                "url('https://res.cloudinary.com/xfklkvdc/image/upload/v1784636572/wineries_siqmmn.webp')",
+        }}
+    />
 
-                    
+    {/* Overlay */}
+    <div
+        className="absolute inset-0"
+        style={{
+            background:
+                "linear-gradient(90deg, rgba(250,247,243,0.98) 0%, rgba(250,247,243,0.80) 45%, rgba(250,247,243,0.35) 75%, rgba(250,247,243,0.35) 100%)",
+        }}
+    />
 
-                    {/* Heading */}
-                    <h1 className="font-serif font-bold text-[#1A0A10] leading-[1.1]
-                        text-4xl lg:text-5xl mb-4">
-                        Discover Exceptional{' '}
-                        <span className="italic text-[#7A1E3A]">Wineries</span>
-                    </h1>
+    {/* Content */}
+    <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                    <p className="text-base text-[#8B6E5A] max-w-xl  leading-relaxed max-w-2xl mb">
-Explore award-winning wineries from India and around the world.
-                    </p>
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-[12px] text-[#A08070] mb-3">
+            ...
+        </nav>
 
-                   
-                </div>
-            </div>
+        <h1 className="font-serif font-bold text-[#1A0A10] leading-[1.1] text-4xl lg:text-5xl mb-4">
+            Discover Exceptional{" "}
+            <span className="italic text-[#7A1E3A]">Wineries</span>
+        </h1>
+
+        <p className="text-base text-[#8B6E5A] max-w-xl">
+            Explore award-winning wineries from India and around the world.
+        </p>
+
+    </div>
+</div>
 
             {/* ── Search + Sort bar ───────────────────────────────────── */}
             <div className="bg-white border-b border-[#EDE5D8] sticky top-[80px] z-30
@@ -420,7 +377,7 @@ Explore award-winning wineries from India and around the world.
                 )}
             </div>
 
-            <NewsletterCTA />
+            
             <NewsletterFooter />
         </div>
     )
