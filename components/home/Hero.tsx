@@ -6,8 +6,11 @@ import { ChevronDown, Star } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { CloudinaryImage } from '@/components/ui/CloudinaryImage'
 import { images } from '@/constants/images'
+import { useRouter } from 'next/navigation'
 
 export const Hero: React.FC = () => {
+    const router = useRouter()
+
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -135,15 +138,16 @@ export const Hero: React.FC = () => {
                                 size="lg"
                                 variant="primary"
                                 className="tracking-wide text-sm sm:text-base w-full sm:w-auto"
+                                onClick={() => router.push('/wineries')}
                             >
-                                Explore Collection
+                                Explore Wineries
                             </Button>
                             <Button
                                 size="lg"
                                 variant="outline"
                                 className="tracking-wide text-sm sm:text-base w-full sm:w-auto"
                             >
-                                Book a Tasting
+                                Events
                             </Button>
                         </motion.div>
 

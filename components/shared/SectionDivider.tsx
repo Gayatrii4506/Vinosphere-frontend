@@ -58,12 +58,12 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
         */}
 <path
 d="
-M0,0
-C180,45 360,90 540,55
+M0 0,
+C180,25 250,90 540,55
 C720,20 900,90 1080,50
 C1230,25 1340,65 1440,40
 L1440,0
-Z"
+"
 />         </svg>
         </div>
     )

@@ -3,14 +3,18 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 import { Menu, X, Search, ShoppingBag, Heart } from 'lucide-react'
+
 import { NAVIGATION_ITEMS } from '@/constants/navigation'
 import { Button } from '@/components/ui/Button'
 
 export const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+
+    const pathname = usePathname()
+    const isHome = pathname === '/'
 
     useEffect(() => {
         const handleScroll = () => {
@@ -18,142 +22,143 @@ export const Navbar: React.FC = () => {
         }
 
         window.addEventListener('scroll', handleScroll)
+
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    // Home page before scroll
+    const isTransparent = isHome && !isScrolled
+
+    // Dynamic Colors
+    const navText = isTransparent
+        ? 'text-white hover:text-vino-gold'
+        : 'text-vino-dark hover:text-vino-accent'
+
+    const iconColor = isTransparent
+        ? 'text-white hover:text-vino-gold'
+        : 'text-vino-dark hover:text-vino-accent'
+
+    const logoText = isTransparent
+        ? 'text-white'
+        : 'text-vino-dark'
+
     return (
-        <motion.header
-            initial={{ y: 0 }}
-            animate={{ y: 0 }}
-            className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
-                    ? 'bg-vino-dark/80 backdrop-blur-md border-b border-vino-accent/10'
-                    : 'bg-transparent'
-                }`}
+        <header
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+                isTransparent
+                    ? 'bg-transparent'
+                    : 'bg-white/95 backdrop-blur-md shadow-sm'
+            }`}
         >
-            <nav className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     {/* Logo */}
                     <Link
                         href="/"
-                        className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                        className="flex items-center gap-3 hover:opacity-90 transition-opacity"
                     >
-                        <div className="w-8 h-8 bg-gradient-to-br from-vino-gold to-vino-accent rounded-sm flex items-center justify-center">
-                            <span className="text-white font-serif font-bold text-sm">V</span>
+                        <div className="w-10 h-10 rounded-md bg-gradient-to-br from-vino-gold to-vino-accent flex items-center justify-center">
+                            <span className="text-white font-serif font-bold text-lg">
+                                V
+                            </span>
                         </div>
-                        <span className="font-serif text-xl font-bold text-white hidden sm:block">
+
+                        <span
+                            className={`hidden sm:block font-serif text-3xl font-bold transition-colors ${logoText}`}
+                        >
                             VinoSphere
                         </span>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden lg:flex items-center gap-8">
+                    <div className="hidden lg:flex items-center gap-10">
                         {NAVIGATION_ITEMS.map((item) => (
-                            <div
+                            <Link
                                 key={item.label}
-                                className="relative group"
-                                onMouseEnter={() => setActiveDropdown(item.label)}
-                                onMouseLeave={() => setActiveDropdown(null)}
+                                href={item.href}
+                                className={`${navText} text-sm font-semibold transition-colors duration-300`}
                             >
-                                <Link
-                                    href={item.href}
-                                    className="text-vino-gray hover:text-vino-gold transition-colors text-sm font-medium"
-                                >
-                                    {item.label}
-                                </Link>
-
-                                {item.submenu && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={
-                                            activeDropdown === item.label
-                                                ? { opacity: 1, y: 0 }
-                                                : { opacity: 0, y: -10 }
-                                        }
-                                        transition={{ duration: 0.2 }}
-                                        className="absolute top-full left-0 pt-4 hidden group-hover:block"
-                                    >
-                                        <div className="bg-vino-darker border border-vino-accent/20 rounded-lg overflow-hidden min-w-48 py-2">
-                                            {item.submenu.map((subitem) => (
-                                                <Link
-                                                    key={subitem.label}
-                                                    href={subitem.href}
-                                                    className="block px-4 py-2 text-sm text-vino-gray hover:text-vino-gold hover:bg-vino-darkest/50 transition-all"
-                                                >
-                                                    {subitem.label}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </div>
+                                {item.label}
+                            </Link>
                         ))}
                     </div>
 
-                    {/* Right Icons */}
+                    {/* Right Section */}
                     <div className="hidden lg:flex items-center gap-6">
-                        <button className="text-vino-gray hover:text-vino-gold transition-colors">
+                        <button
+                            className={`${iconColor} transition-colors duration-300`}
+                        >
                             <Search size={20} />
                         </button>
-                        <button className="text-vino-gray hover:text-vino-gold transition-colors">
+
+                        <button
+                            className={`${iconColor} transition-colors duration-300`}
+                        >
                             <Heart size={20} />
                         </button>
-                        <button className="text-vino-gray hover:text-vino-gold transition-colors">
+
+                        <button
+                            className={`${iconColor} transition-colors duration-300`}
+                        >
                             <ShoppingBag size={20} />
                         </button>
+
                         <Button size="sm" variant="primary">
                             Sign In
                         </Button>
                     </div>
 
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Button */}
                     <button
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="lg:hidden text-vino-gray hover:text-vino-gold transition-colors"
+                        onClick={() =>
+                            setIsMobileMenuOpen(!isMobileMenuOpen)
+                        }
+                        className={`lg:hidden ${iconColor} transition-colors`}
                     >
-                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        {isMobileMenuOpen ? (
+                            <X size={26} />
+                        ) : (
+                            <Menu size={26} />
+                        )}
                     </button>
                 </div>
 
-                {/* Mobile Navigation */}
+                {/* Mobile Menu */}
                 {isMobileMenuOpen && (
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="lg:hidden border-t border-vino-accent/10 py-4"
+                        className="lg:hidden bg-white rounded-xl mt-2 shadow-lg overflow-hidden"
                     >
-                        {NAVIGATION_ITEMS.map((item) => (
-                            <div key={item.label}>
+                        <div className="py-4">
+                            {NAVIGATION_ITEMS.map((item) => (
                                 <Link
+                                    key={item.label}
                                     href={item.href}
-                                    className="block px-4 py-2 text-sm text-vino-gray hover:text-vino-gold"
+                                    onClick={() =>
+                                        setIsMobileMenuOpen(false)
+                                    }
+                                    className="block px-6 py-3 text-vino-dark hover:bg-vino-cream hover:text-vino-accent transition-colors"
                                 >
                                     {item.label}
                                 </Link>
-                                {item.submenu && (
-                                    <div className="pl-4">
-                                        {item.submenu.map((subitem) => (
-                                            <Link
-                                                key={subitem.label}
-                                                href={subitem.href}
-                                                className="block px-4 py-2 text-xs text-vino-gray-dark hover:text-vino-gold"
-                                            >
-                                                {subitem.label}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                        <div className="px-4 py-4 border-t border-vino-accent/10 mt-4 flex gap-2">
-                            <Button size="sm" variant="primary" className="flex-1">
+                            ))}
+                        </div>
+
+                        <div className="border-t border-gray-200 p-4">
+                            <Button
+                                size="sm"
+                                variant="primary"
+                                className="w-full"
+                            >
                                 Sign In
                             </Button>
                         </div>
                     </motion.div>
                 )}
             </nav>
-        </motion.header>
+        </header>
     )
 }
