@@ -19,6 +19,8 @@ interface SectionDividerProps {
     flip?: boolean
     height?: number
     className?: string
+    /** Optional explicit hex fill color — use when Tailwind JIT won't generate the arbitrary fill class */
+    fillColor?: string
 }
 
 export const SectionDivider: React.FC<SectionDividerProps> = ({
@@ -27,6 +29,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
     flip = false,
     height = 90,
     className = '',
+    fillColor,
 }) => {
     return (
         <div
@@ -40,9 +43,10 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
                 xmlns="http://www.w3.org/2000/svg"
                 className={`
           absolute inset-0 w-full h-full
-          ${fromFill}
+          ${fillColor ? '' : fromFill}
           ${flip ? 'scale-x-[-1]' : ''}
         `}
+                style={fillColor ? { fill: fillColor } : undefined}
             >
                 {/*
           Asymmetrical cubic-bezier curve:
@@ -52,8 +56,15 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({
           - Ends at bottom-right (1440,90)
           This creates an organic, off-centre editorial S-feel.
         */}
-                <path d="M0,0 L0,0 C200,90 400,10 720,55 C1020,95 1260,20 1440,60 L1440,0 Z" />
-            </svg>
+<path
+d="
+M0 0,
+C180,25 250,90 540,55
+C720,20 900,90 1080,50
+C1230,25 1340,65 1440,40
+L1440,0
+"
+/>         </svg>
         </div>
     )
 }
