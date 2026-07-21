@@ -12,8 +12,14 @@ const nextConfig: NextConfig = {
                 hostname: 'res.cloudinary.com',
                 pathname: '/xfklkvdc/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com',
+                pathname: '/**',
+            },
         ],
     },
+    outputFileTracingRoot: __dirname,
 }
 
 export default nextConfig

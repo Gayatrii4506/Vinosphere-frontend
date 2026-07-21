@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Menu, X, Search, ShoppingBag, Heart } from 'lucide-react'
@@ -11,6 +12,9 @@ export const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+    const pathname = usePathname()
+    
+    const isLightMode = pathname === '/discover/wines'
 
     useEffect(() => {
         const handleScroll = () => {
@@ -26,7 +30,7 @@ export const Navbar: React.FC = () => {
             initial={{ y: 0 }}
             animate={{ y: 0 }}
             className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
-                    ? 'bg-vino-dark/80 backdrop-blur-md border-b border-vino-accent/10'
+                    ? (isLightMode ? 'bg-vino-cream/90 backdrop-blur-md border-b border-vino-dark/10' : 'bg-vino-dark/80 backdrop-blur-md border-b border-vino-accent/10')
                     : 'bg-transparent'
                 }`}
         >
@@ -40,7 +44,7 @@ export const Navbar: React.FC = () => {
                         <div className="w-8 h-8 bg-gradient-to-br from-vino-gold to-vino-accent rounded-sm flex items-center justify-center">
                             <span className="text-white font-serif font-bold text-sm">V</span>
                         </div>
-                        <span className="font-serif text-xl font-bold text-white hidden sm:block">
+                        <span className={`font-serif text-xl font-bold hidden sm:block ${isLightMode ? 'text-vino-darker' : 'text-white'}`}>
                             VinoSphere
                         </span>
                     </Link>
@@ -56,12 +60,12 @@ export const Navbar: React.FC = () => {
                             >
                                 <Link
                                     href={item.href}
-                                    className="text-vino-gray hover:text-vino-gold transition-colors text-sm font-medium"
+                                    className={`transition-colors text-sm font-medium ${isLightMode ? 'text-vino-dark/70 hover:text-vino-accent' : 'text-vino-gray hover:text-vino-gold'}`}
                                 >
                                     {item.label}
                                 </Link>
 
-                                {item.submenu && (
+                                {'submenu' in item && item.submenu && (
                                     <motion.div
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={
@@ -91,13 +95,13 @@ export const Navbar: React.FC = () => {
 
                     {/* Right Icons */}
                     <div className="hidden lg:flex items-center gap-6">
-                        <button className="text-vino-gray hover:text-vino-gold transition-colors">
+                        <button className={`transition-colors ${isLightMode ? 'text-vino-dark/70 hover:text-vino-accent' : 'text-vino-gray hover:text-vino-gold'}`}>
                             <Search size={20} />
                         </button>
-                        <button className="text-vino-gray hover:text-vino-gold transition-colors">
+                        <button className={`transition-colors ${isLightMode ? 'text-vino-dark/70 hover:text-vino-accent' : 'text-vino-gray hover:text-vino-gold'}`}>
                             <Heart size={20} />
                         </button>
-                        <button className="text-vino-gray hover:text-vino-gold transition-colors">
+                        <button className={`transition-colors ${isLightMode ? 'text-vino-dark/70 hover:text-vino-accent' : 'text-vino-gray hover:text-vino-gold'}`}>
                             <ShoppingBag size={20} />
                         </button>
                         <Button size="sm" variant="primary">
@@ -105,10 +109,9 @@ export const Navbar: React.FC = () => {
                         </Button>
                     </div>
 
-                    {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="lg:hidden text-vino-gray hover:text-vino-gold transition-colors"
+                        className={`lg:hidden transition-colors ${isLightMode ? 'text-vino-dark/70 hover:text-vino-accent' : 'text-vino-gray hover:text-vino-gold'}`}
                     >
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
@@ -131,7 +134,7 @@ export const Navbar: React.FC = () => {
                                 >
                                     {item.label}
                                 </Link>
-                                {item.submenu && (
+                                {'submenu' in item && item.submenu && (
                                     <div className="pl-4">
                                         {item.submenu.map((subitem) => (
                                             <Link
