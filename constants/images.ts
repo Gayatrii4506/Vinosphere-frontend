@@ -56,11 +56,10 @@ export const wineries = {
     sula: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784639253/sula_x7fqkh.jpg',
     york: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784639378/york_sns47h.jpg',
     soma: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784639611/soma_2_x6h949.jpg',
-    chandon: cloud('vinosphere/wines/bottle-1'),
-    vallonne: cloud('vinosphere/wines/bottle-1'),
-    grover: cloud('vinosphere/wines/bottle-1'),
-    charosa: cloud('vinosphere/wines/bottle-1'),
-    grape:cloud('vinosphere/wines/bottle-1')
+    chandon: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784640201/chandon_tdkuru.webp',
+    vallonne: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784640301/vallone_nft49p.jpg',
+    grover: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784640413/grover_no7o8s.jpg',
+    charosa: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784640507/charosa_liy3a7.jpg'
 }
 // ---------------------------------------------------------------------------
 // Featured Wine Bottles / Collections
