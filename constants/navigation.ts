@@ -3,6 +3,7 @@ export const NAVIGATION_ITEMS = [
         label: 'Home',
         href: '/',
     },
+   
     {
         label: 'About Us',
         href: '/about',

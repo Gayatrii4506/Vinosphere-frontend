@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineCatalog } from '@/components/catalog/WineCatalog'
 import { WINES } from '@/constants/wines'
@@ -10,6 +10,12 @@ export const metadata: Metadata = {
 
 export default function WinesPage() {
     return (
-        <WineCatalog initialWines={WINES} />
+        <Suspense fallback={
+            <div className="bg-vino-cream min-h-screen pt-32 pb-24 flex items-center justify-center">
+                <div className="text-vino-dark/60 text-lg">Loading catalog...</div>
+            </div>
+        }>
+            <WineCatalog initialWines={WINES} />
+        </Suspense>
     )
 }

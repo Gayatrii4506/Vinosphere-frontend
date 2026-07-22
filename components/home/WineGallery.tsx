@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { CloudinaryImage } from '@/components/ui/CloudinaryImage'
@@ -283,30 +284,32 @@ export const WineGallery: React.FC = () => {
                         <div className="w-16 h-px bg-vino-parchment" />
                     </div>
 
-                    <motion.button
-                        whileHover={{
-                            scale: 1.03,
-                            boxShadow: '0 8px 32px rgba(139,30,63,0.25)',
-                        }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={{ duration: 0.22 }}
-                        className="
-              group inline-flex items-center gap-2.5
-              bg-vino-accent hover:bg-vino-accent-light
-              text-white font-semibold text-sm tracking-wide
-              px-8 py-3.5 rounded-full
-              transition-colors duration-300
-              shadow-[0_4px_20px_rgba(139,30,63,0.20)]
-              focus-visible:outline-none focus-visible:ring-2
-              focus-visible:ring-vino-gold
-            "
-                    >
-                        Explore Gallery
-                        <ArrowRight
-                            size={15}
-                            className="transition-transform duration-300 group-hover:translate-x-1"
-                        />
-                    </motion.button>
+                    <Link href="/discover/wines">
+                        <motion.button
+                            whileHover={{
+                                scale: 1.03,
+                                boxShadow: '0 8px 32px rgba(139,30,63,0.25)',
+                            }}
+                            whileTap={{ scale: 0.97 }}
+                            transition={{ duration: 0.22 }}
+                            className="
+                  group inline-flex items-center gap-2.5
+                  bg-vino-accent hover:bg-vino-accent-light
+                  text-white font-semibold text-sm tracking-wide
+                  px-8 py-3.5 rounded-full
+                  transition-colors duration-300
+                  shadow-[0_4px_20px_rgba(139,30,63,0.20)]
+                  focus-visible:outline-none focus-visible:ring-2
+                  focus-visible:ring-vino-gold
+                "
+                        >
+                            Explore Gallery
+                            <ArrowRight
+                                size={15}
+                                className="transition-transform duration-300 group-hover:translate-x-1"
+                            />
+                        </motion.button>
+                    </Link>
                 </motion.div>
             </div>
         </section>

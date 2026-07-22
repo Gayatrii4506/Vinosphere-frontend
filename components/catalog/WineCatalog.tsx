@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { WineFilterSidebar, FilterState } from './WineFilterSidebar'
 import { WineGrid } from './WineGrid'
 import { Wine } from '@/constants/wines'
@@ -10,12 +11,21 @@ interface WineCatalogProps {
 }
 
 export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines }) => {
+    const searchParams = useSearchParams()
+    const typeParam = searchParams ? searchParams.get('type') : null
+
     const [filters, setFilters] = useState<FilterState>({
         priceRange: null,
-        selectedType: null,
+        selectedType: typeParam || null,
         selectedRating: null,
         selectedFoodPairing: null,
     })
+
+    useEffect(() => {
+        if (typeParam) {
+            setFilters(prev => ({ ...prev, selectedType: typeParam }))
+        }
+    }, [typeParam])
     
     const [sortBy, setSortBy] = useState<string>('Popular')
 

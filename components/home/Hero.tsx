@@ -146,8 +146,9 @@ export const Hero: React.FC = () => {
                                 size="lg"
                                 variant="outline"
                                 className="tracking-wide text-sm sm:text-base w-full sm:w-auto"
+                                onClick={() => router.push('/discover/wines')}
                             >
-                                Events
+                                Explore Wines
                             </Button>
                         </motion.div>
 
