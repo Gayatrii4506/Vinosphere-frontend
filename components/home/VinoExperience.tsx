@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import {
     Sparkles,
     BookOpen,
@@ -17,6 +18,7 @@ interface Feature {
     icon: React.ReactNode
     title: string
     description: string
+    href?: string
 }
 
 // ─── Feature data ─────────────────────────────────────────────────────────────
@@ -39,6 +41,7 @@ const FEATURES: Feature[] = [
         title: 'Food Pairings',
         description:
             'Discover the perfect culinary match for every bottle in your cellar.',
+        href: '/food-pairing',
     },
     {
         icon: <GlassWater size={18} />,
@@ -75,45 +78,58 @@ const fadeRight = {
 
 // ─── Feature card ─────────────────────────────────────────────────────────────
 
-const FeatureCard: React.FC<Feature> = ({ icon, title, description }) => (
-    <motion.div
-        variants={fadeUp}
-        whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.45)' }}
-        transition={{ duration: 0.25 }}
-        className="
-      group flex flex-col gap-3
-      rounded-2xl p-5
-      bg-white/[0.05] backdrop-blur-lg
-      border border-white/[0.09]
-      shadow-[0_4px_20px_rgba(0,0,0,0.28)]
-      cursor-default select-none
-    "
-    >
-        {/* Icon chip */}
-        <div
-            className="
-        w-10 h-10 rounded-xl flex items-center justify-center shrink-0
-        bg-vino-accent/20 text-vino-gold
-        group-hover:bg-vino-accent/35 transition-colors duration-300
-      "
+const FeatureCard: React.FC<Feature> = ({ icon, title, description, href }) => {
+    const card = (
+        <motion.div
+            variants={fadeUp}
+            whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.45)' }}
+            transition={{ duration: 0.25 }}
+            className={`
+                group flex flex-col gap-3
+                rounded-2xl p-5
+                bg-white/[0.05] backdrop-blur-lg
+                border border-white/[0.09]
+                shadow-[0_4px_20px_rgba(0,0,0,0.28)]
+                select-none
+                ${href ? 'cursor-pointer' : 'cursor-default'}
+            `}
         >
-            {icon}
-        </div>
+            {/* Icon chip */}
+            <div
+                className="
+                    w-10 h-10 rounded-xl flex items-center justify-center shrink-0
+                    bg-vino-accent/20 text-vino-gold
+                    group-hover:bg-vino-accent/35 transition-colors duration-300
+                "
+            >
+                {icon}
+            </div>
 
-        {/* Title */}
-        <h4 className="font-semibold text-white text-[13.5px] leading-snug tracking-tight">
-            {title}
-        </h4>
+            {/* Title */}
+            <h4 className="font-semibold text-white text-[13.5px] leading-snug tracking-tight">
+                {title}
+            </h4>
 
-        {/* Thin gold rule */}
-        <div className="w-6 h-px bg-vino-gold/50" />
+            {/* Thin gold rule */}
+            <div className="w-6 h-px bg-vino-gold/50" />
 
-        {/* Description */}
-        <p className="text-white/52 text-xs leading-relaxed">
-            {description}
-        </p>
-    </motion.div>
-)
+            {/* Description */}
+            <p className="text-white/52 text-xs leading-relaxed">
+                {description}
+            </p>
+        </motion.div>
+    )
+
+    if (href) {
+        return (
+            <Link href={href} className="block outline-none">
+                {card}
+            </Link>
+        )
+    }
+
+    return card
+}
 
 // ─── Main section ─────────────────────────────────────────────────────────────
 
