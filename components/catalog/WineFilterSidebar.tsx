@@ -31,12 +31,6 @@ export const WineFilterSidebar: React.FC<WineFilterSidebarProps> = ({ filters, s
         { label: 'Over ₹4000', value: '4000-999999' }
     ]
 
-    const ratingOptions = [
-        { label: '5 Stars', value: '90' },
-        { label: '4+ Stars', value: '80' },
-        { label: '3+ Stars', value: '60' }
-    ]
-
     return (
         <aside className="w-full lg:w-64 flex-shrink-0 lg:sticky lg:top-28 self-start space-y-10">
             {/* Price Filter */}
@@ -81,47 +75,6 @@ export const WineFilterSidebar: React.FC<WineFilterSidebarProps> = ({ filters, s
                 </div>
             </div>
 
-            {/* Ratings Filter */}
-            <div>
-                <h4 className="text-sm font-serif text-vino-darker tracking-wider uppercase mb-4 flex justify-between items-center">
-                    Ratings
-                    <span className="text-vino-accent text-xs">-</span>
-                </h4>
-                <div className="space-y-3">
-                    {ratingOptions.map(option => {
-                        const isActive = filters.selectedRating === option.value
-                        return (
-                            <label key={option.value} className="flex items-center gap-3 cursor-pointer group" onClick={() => toggleFilter('selectedRating', option.value)}>
-                                <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${isActive ? 'border-vino-accent' : 'border-vino-dark/20 group-hover:border-vino-accent'}`}>
-                                    <div className={`w-2 h-2 rounded-full transition-colors ${isActive ? 'bg-vino-accent' : 'bg-transparent group-hover:bg-vino-accent/50'}`} />
-                                </div>
-                                <span className={`text-sm transition-colors ${isActive ? 'text-vino-accent font-medium' : 'text-vino-dark/60 group-hover:text-vino-accent'}`}>{option.label}</span>
-                            </label>
-                        )
-                    })}
-                </div>
-            </div>
-
-            {/* Food Pairing Filter */}
-            <div>
-                <h4 className="text-sm font-serif text-vino-darker tracking-wider uppercase mb-4 flex justify-between items-center">
-                    Food Pairing
-                    <span className="text-vino-accent text-xs">-</span>
-                </h4>
-                <div className="space-y-3">
-                    {['Beef', 'Poultry', 'Seafood', 'Pasta', 'Cheese'].map(pairing => {
-                        const isActive = filters.selectedFoodPairing === pairing
-                        return (
-                            <label key={pairing} className="flex items-center gap-3 cursor-pointer group" onClick={() => toggleFilter('selectedFoodPairing', pairing)}>
-                                <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${isActive ? 'border-vino-accent' : 'border-vino-dark/20 group-hover:border-vino-accent'}`}>
-                                    <div className={`w-2 h-2 rounded-full transition-colors ${isActive ? 'bg-vino-accent' : 'bg-transparent group-hover:bg-vino-accent/50'}`} />
-                                </div>
-                                <span className={`text-sm transition-colors ${isActive ? 'text-vino-accent font-medium' : 'text-vino-dark/60 group-hover:text-vino-accent'}`}>{pairing}</span>
-                            </label>
-                        )
-                    })}
-                </div>
-            </div>
             
             <button 
                 onClick={() => setFilters({ priceRange: null, selectedType: null, selectedRating: null, selectedFoodPairing: null })}
