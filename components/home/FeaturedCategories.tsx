@@ -90,19 +90,19 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
                 <div
                     className="
                         group relative w-full overflow-hidden rounded-2xl
-                        aspect-[3/4] sm:aspect-[2/3.5] lg:aspect-[3/5.8]
+                        aspect-[3/3.8] sm:aspect-[3/4] lg:aspect-[3/4.2]
                         bg-gradient-to-b from-vino-cream-dark via-vino-parchment to-vino-cream-dark
                         shadow-sm group-hover:shadow-lg transition-shadow duration-500
                     "
                 >
                     {/*
-                     * Bottle stage — a flex container that occupies 83 % of the card
+                     * Bottle stage — a flex container that occupies the card
                      * height and is centred both axes. This guarantees every bottle
                      * renders at the same visual height regardless of source dimensions.
                      */}
                     <div
                         className="absolute inset-0 flex items-center justify-center"
-                        style={{ padding: '8.5% 12%' }}   /* 8.5 % top/bottom ≈ (100-83)/2 */
+                        style={{ padding: '6% 8%' }}
                     >
                         <div
                             className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
@@ -187,7 +187,7 @@ export const FeaturedCategories: React.FC = () => {
                 }}
             />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
 
                 {/* ── Section header ── */}
                 <motion.div
@@ -195,7 +195,7 @@ export const FeaturedCategories: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.7, ease: 'easeOut' }}
-                    className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14 md:mb-16"
+                    className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 md:mb-10"
                 >
                     <div className="space-y-2">
                         {/* Eyebrow */}
