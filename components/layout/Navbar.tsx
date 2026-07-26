@@ -105,9 +105,9 @@ export const Navbar: React.FC = () => {
                             <ShoppingBag size={20} />
                         </button>
 
-                        <Button size="sm" variant="primary">
+                        <button className={`${navText} text-sm font-semibold transition-colors duration-300`}>
                             Sign In
-                        </Button>
+                        </button>
                     </div>
 
                     {/* Mobile Button */}
@@ -150,13 +150,9 @@ export const Navbar: React.FC = () => {
                         </div>
 
                         <div className="border-t border-gray-200 p-4">
-                            <Button
-                                size="sm"
-                                variant="primary"
-                                className="w-full"
-                            >
+                            <button className="w-full py-2 text-center text-sm font-semibold text-vino-dark hover:text-vino-accent transition-colors">
                                 Sign In
-                            </Button>
+                            </button>
                         </div>
                     </motion.div>
                 )}

@@ -18,33 +18,17 @@ import {
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
 const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 24 },
     visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
     },
 }
 
 const stagger = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-}
-
-const floatGlass = {
-    animate: {
-        y: [0, -14, 0],
-        rotate: [-1, 1, -1],
-        transition: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
-    },
-}
-
-const floatGrapes = {
-    animate: {
-        y: [0, -10, 0],
-        rotate: [1, -1, 1],
-        transition: { duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 },
-    },
+    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 }
 
 // ─── Footer Nav Data ──────────────────────────────────────────────────────────
@@ -53,22 +37,14 @@ const footerNav = [
     {
         heading: 'Explore',
         links: [
-            { label: 'Discover Wines', href: '#' },
-            { label: 'Collections', href: '#' },
-            { label: 'Wine Regions', href: '#' },
-            { label: 'Pairings', href: '#' },
-        ],
-    },
-    {
-        heading: 'Experiences',
-        links: [
-            { label: 'Tastings', href: '#' },
-            { label: 'Events', href: '#' },
-            { label: 'Wine Journal', href: '#' },
-            { label: 'Gift Cards', href: '#' },
+            { label: 'Discover Wines', href: '/discover' },
+            { label: 'Collections', href: '/discover' },
+            { label: 'Wine Regions', href: '/wineries' },
+            { label: 'Pairings', href: '/discover#food-pairing' },
         ],
     },
 ]
+
 
 const socialLinks = [
     { icon: Instagram, label: 'Instagram', href: '#' },
@@ -80,11 +56,11 @@ const socialLinks = [
 // ─── VinoSphere Logo Mark ─────────────────────────────────────────────────────
 
 const VinoSphereLogo: React.FC = () => (
-    <div className="flex items-center gap-2.5">
-        <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#8B1E3F] to-[#5C1428] shadow-[0_4px_16px_rgba(139,30,63,0.45)]">
-            <Wine size={18} className="text-[#C89B3C]" />
+    <div className="flex items-center gap-2">
+        <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#8B1E3F] to-[#5C1428] shadow-[0_4px_12px_rgba(139,30,63,0.4)]">
+            <Wine size={16} className="text-[#C89B3C]" />
         </div>
-        <span className="font-serif font-bold text-xl tracking-tight text-[#2C1810]">
+        <span className="font-serif font-bold text-lg tracking-tight text-[#2C1810]">
             Vino<span className="text-[#8B1E3F]">Sphere</span>
         </span>
     </div>
@@ -107,10 +83,10 @@ export const NewsletterFooter: React.FC = () => {
     }
 
     return (
-        <div className="relative w-full overflow-visible">
+        <div className="relative w-full overflow-hidden">
 
             {/* ═══════════════════════════════════════════════════════════════
-                NEWSLETTER SECTION  — vineyard background + cutouts
+                NEWSLETTER & NAV FOOTER SECTION
             ═══════════════════════════════════════════════════════════════ */}
             <section
                 id="newsletter"
@@ -131,33 +107,26 @@ export const NewsletterFooter: React.FC = () => {
                             objectPosition: 'center',
                         }}
                     />
-                    {/* White-to-cream gradient: bright at top (newsletter form), solid cream at bottom (footer nav) */}
+                    {/* Gradient overlay */}
                     <div
                         className="absolute inset-0"
                         style={{
                             background:
-                                'linear-gradient(to bottom, rgba(255,255,255,0.97) 0%, rgba(255,252,248,0.88) 22%, rgba(254,250,245,0.65) 42%, rgba(245,240,232,0.92) 65%, #F5F0E8 80%)',
-                        }}
-                    />
-                    {/* Warm cream vignette sides */}
-                    <div
-                        className="absolute inset-0"
-                        style={{
-                            background:
-                                'linear-gradient(to right, rgba(250,247,242,0.5) 0%, transparent 20%, transparent 80%, rgba(250,247,242,0.5) 100%)',
+                                'linear-gradient(to bottom, rgba(255,255,255,0.97) 0%, rgba(255,252,248,0.90) 25%, rgba(245,240,232,0.95) 70%, #F5F0E8 100%)',
                         }}
                     />
                 </div>
 
-                {/* ── Wine Glass — far-left overflow decoration ── */}
+                {/* ── Wine Glass — left overflow decoration (Increased Height) ── */}
                 <div
-                    className="pointer-events-none absolute z-20 select-none hidden sm:block"
+                    className="pointer-events-none absolute z-0 select-none hidden sm:block opacity-90"
                     style={{
-                        bottom: '-80px',
-                        left: '-40px',
-                        width: 'clamp(180px, 19vw, 300px)',
+                        bottom: '-35px',
+                        left: '-35px',
+                        width: 'clamp(250px, 22vw, 340px)',
                     }}
                 >
+
                     <img
                         src="https://res.cloudinary.com/xfklkvdc/image/upload/v1784516499/glass_gryp4q.png"
                         alt="Luxury wine glass"
@@ -165,18 +134,26 @@ export const NewsletterFooter: React.FC = () => {
                             width: '100%',
                             height: 'auto',
                             display: 'block',
-                            filter: 'drop-shadow(0 30px 60px rgba(92,20,40,0.25)) drop-shadow(0 8px 24px rgba(0,0,0,0.20))',
+                            filter: 'drop-shadow(0 20px 40px rgba(92,20,40,0.20))',
                         }}
                     />
                 </div>
 
-                {/* ── Grape Bunch — bottom-right editorial overflow ── */}
+
+
+
+
+
+
+
+
+                {/* ── Grape Bunch — right overflow decoration (Enlarged) ── */}
                 <div
-                    className="pointer-events-none absolute z-10 select-none hidden sm:block"
+                    className="pointer-events-none absolute z-0 select-none hidden sm:block opacity-90"
                     style={{
-                        bottom: '20px',
+                        bottom: '0px',
                         right: '-10px',
-                        width: 'clamp(140px, 14vw, 240px)',
+                        width: 'clamp(200px, 20vw, 300px)',
                     }}
                 >
                     <img
@@ -186,29 +163,29 @@ export const NewsletterFooter: React.FC = () => {
                             width: '100%',
                             height: 'auto',
                             display: 'block',
-                            filter: 'drop-shadow(0 28px 50px rgba(50,20,80,0.22)) drop-shadow(0 8px 20px rgba(0,0,0,0.18))',
+                            filter: 'drop-shadow(0 24px 48px rgba(50,20,80,0.22))',
                         }}
                     />
                 </div>
 
-                {/* ── All content ── */}
-                <div className="relative z-10 flex flex-col items-center px-4 sm:px-6 lg:px-8 pb-16">
+
+                {/* ── Compact Content Container ── */}
+                <div className="relative z-10 flex flex-col items-center px-4 sm:px-6 lg:px-8 pt-6 pb-6">
 
                     {/* Newsletter center content */}
                     <motion.div
                         variants={stagger}
                         initial="hidden"
                         whileInView="visible"
-                        viewport={{ once: true, margin: '-80px' }}
-                        className="flex flex-col items-center text-center gap-6 max-w-2xl w-full pt-12"
+                        viewport={{ once: true }}
+                        className="flex flex-col items-center text-center gap-3.5 max-w-xl w-full mb-8 sm:mb-10"
                     >
 
                         {/* Heading */}
                         <motion.h2
                             id="newsletter-heading"
                             variants={fadeUp}
-                            className="font-serif font-bold leading-[1.08] text-[#2C1810]"
-                            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+                            className="font-serif font-bold leading-tight text-[#2C1810] text-2xl sm:text-3xl"
                         >
                             Stay Connected with{' '}
                             <span className="italic text-[#8B1E3F]">VinoSphere</span>
@@ -217,61 +194,182 @@ export const NewsletterFooter: React.FC = () => {
                         {/* Gold rule */}
                         <motion.div
                             variants={fadeUp}
-                            className="w-16 h-px bg-[#C89B3C]"
+                            className="w-12 h-px bg-[#C89B3C]"
                         />
 
                         {/* Description */}
                         <motion.p
                             variants={fadeUp}
-                            className="text-[#5C4033] text-sm sm:text-base leading-relaxed max-w-xl"
+                            className="text-[#5C4033] text-xs sm:text-sm leading-relaxed max-w-lg"
                         >
-                            Be the first to discover curated collections, exclusive tasting events,
-                            expert wine insights, seasonal recommendations, and member-only offer.
+                            Curated collections, exclusive tasting events, and expert wine insights delivered to your inbox.
                         </motion.p>
 
                         {/* Newsletter Form */}
-                        
+                        <motion.div variants={fadeUp} className="w-full max-w-md pt-1">
+                            {!submitted ? (
+                                <form
+                                    onSubmit={handleSubmit}
+                                    className="flex flex-col sm:flex-row gap-2.5"
+                                    aria-label="Newsletter subscription form"
+                                >
+                                    <div className="relative flex-1">
+                                        <Mail
+                                            size={15}
+                                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8B6E5A] pointer-events-none"
+                                        />
+                                        <input
+                                            id="newsletter-email"
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Your email address"
+                                            required
+                                            aria-label="Email address for newsletter"
+                                            className="
+                                                w-full pl-10 pr-3.5 py-2.5
+                                                bg-white/90 backdrop-blur-sm
+                                                border border-[#E8D4A8]/70
+                                                rounded-full
+                                                text-[#2C1810] text-xs font-medium
+                                                placeholder:text-[#8B6E5A]/70
+                                                focus:outline-none focus:border-[#C89B3C]
+                                                focus:ring-2 focus:ring-[#C89B3C]/25
+                                                shadow-[0_2px_12px_rgba(200,155,60,0.1)]
+                                                transition-all duration-300
+                                            "
+                                        />
+                                    </div>
+                                    <motion.button
+                                        type="submit"
+                                        id="newsletter-submit"
+                                        disabled={loading}
+                                        whileHover={{
+                                            scale: 1.03,
+                                            boxShadow: '0 6px 24px rgba(139,30,63,0.35)',
+                                        }}
+                                        whileTap={{ scale: 0.97 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="
+                                            group flex items-center justify-center gap-1.5
+                                            bg-[#8B1E3F] hover:bg-[#A8304F]
+                                            text-white font-semibold text-xs tracking-wider
+                                            px-6 py-2.5 rounded-full
+                                            shadow-[0_4px_16px_rgba(139,30,63,0.25)]
+                                            transition-colors duration-300
+                                            whitespace-nowrap
+                                            disabled:opacity-60
+                                        "
+                                    >
+                                        {loading ? (
+                                            <svg
+                                                className="animate-spin w-3.5 h-3.5"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <circle
+                                                    className="opacity-25"
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke="currentColor"
+                                                    strokeWidth="4"
+                                                />
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8v8z"
+                                                />
+                                            </svg>
+                                        ) : (
+                                            <>
+                                                Subscribe
+                                                <Send
+                                                    size={13}
+                                                    className="transition-transform duration-300 group-hover:translate-x-1"
+                                                />
+                                            </>
+                                        )}
+                                    </motion.button>
+                                </form>
+                            ) : (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.4 }}
+                                    className="
+                                        flex items-center justify-center gap-2.5
+                                        bg-white/90 backdrop-blur-sm
+                                        border border-[#C89B3C]/40
+                                        rounded-full px-6 py-2.5
+                                        shadow-[0_4px_16px_rgba(200,155,60,0.15)]
+                                    "
+                                >
+                                    <div className="w-4 h-4 rounded-full bg-[#8B1E3F] flex items-center justify-center shrink-0">
+                                        <svg
+                                            viewBox="0 0 16 16"
+                                            fill="none"
+                                            className="w-2.5 h-2.5 text-white"
+                                        >
+                                            <path
+                                                d="M3 8l3.5 3.5L13 4"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <span className="text-[#2C1810] font-semibold text-xs tracking-wide">
+                                        Welcome to the VinoSphere Journal!
+                                    </span>
+                                </motion.div>
+                            )}
+
+                            <p className="mt-2 text-[10.5px] text-[#8B6E5A]/70 tracking-wide">
+                                No spam. Unsubscribe anytime. We respect your privacy.
+                            </p>
+                        </motion.div>
                     </motion.div>
 
-
-
-
-                    {/* ── Footer Four-Column Nav Grid ── */}
+                    {/* ── Three-Column Nav Grid: Exact Equal Spacing Across (VinoSphere | Explore | Contact) ── */}
                     <motion.div
                         variants={stagger}
                         initial="hidden"
                         whileInView="visible"
-                        viewport={{ once: true, margin: '-60px' }}
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 w-full max-w-screen-xl items-start"
+                        viewport={{ once: true }}
+                        className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 lg:gap-16 w-full max-w-5xl items-start pt-6 border-t border-[#C89B3C]/30"
                     >
-                        {/* Column 1 — Brand (padded left so glass doesn't overlap) */}
-                        <motion.div variants={fadeUp} className="flex flex-col gap-5 pl-16 sm:pl-20 lg:pl-24 lg:pr-4">
+                        {/* Column 1 — VinoSphere Brand */}
+                        <motion.div variants={fadeUp} className="flex flex-col gap-3">
+
+
+
+
+
                             <VinoSphereLogo />
-                            <p className="text-[#5C4033] text-sm leading-relaxed">
-                                VinoSphere is your gateway to the world&apos;s finest wines — curated
-                                collections, expert insights, and exclusive experiences crafted
-                                for true connoisseurs.
+                            <p className="text-[#5C4033] text-xs leading-relaxed">
+                                VinoSphere is your gateway to fine wines — curated collections, expert insights, and exclusive experiences.
                             </p>
-                            <div className="w-12 h-px bg-[#C89B3C]" />
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 pt-1">
                                 {socialLinks.map(({ icon: Icon, label, href }) => (
                                     <motion.a
                                         key={label}
                                         href={href}
                                         aria-label={label}
-                                        whileHover={{ scale: 1.12, y: -2 }}
+                                        whileHover={{ scale: 1.1, y: -2 }}
                                         whileTap={{ scale: 0.94 }}
                                         transition={{ duration: 0.2 }}
                                         className="
                                             flex items-center justify-center
-                                            w-8 h-8 rounded-full
+                                            w-7 h-7 rounded-full
                                             bg-[#EDE4D6] hover:bg-[#8B1E3F]
                                             text-[#5C4033] hover:text-white
                                             transition-colors duration-300
-                                            shadow-[0_2px_8px_rgba(92,64,51,0.12)]
+                                            shadow-sm
                                         "
                                     >
-                                        <Icon size={14} />
+                                        <Icon size={13} />
                                     </motion.a>
                                 ))}
                             </div>
@@ -282,28 +380,27 @@ export const NewsletterFooter: React.FC = () => {
                             <motion.div
                                 key={col.heading}
                                 variants={fadeUp}
-                                className="flex flex-col gap-6"
+                                className="flex flex-col gap-2.5"
                             >
-                                <h3 className="font-serif font-bold text-[#2C1810] text-lg tracking-tight">
+                                <h3 className="font-serif font-bold text-[#2C1810] text-sm tracking-tight">
                                     {col.heading}
                                 </h3>
-                                <div className="w-8 h-px bg-[#C89B3C]/60" />
-                                <ul className="flex flex-col gap-3">
+                                <ul className="flex flex-col gap-1.5">
                                     {col.links.map(({ label, href }) => (
                                         <li key={label}>
                                             <motion.a
                                                 href={href}
-                                                whileHover={{ x: 5 }}
+                                                whileHover={{ x: 3 }}
                                                 transition={{ duration: 0.2 }}
                                                 className="
                                                     group inline-flex items-center gap-1.5
                                                     text-[#5C4033] hover:text-[#8B1E3F]
-                                                    text-sm font-medium
+                                                    text-xs font-medium
                                                     transition-colors duration-300
                                                 "
                                             >
                                                 <ArrowRight
-                                                    size={12}
+                                                    size={11}
                                                     className="opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300 text-[#C89B3C]"
                                                 />
                                                 {label}
@@ -315,109 +412,77 @@ export const NewsletterFooter: React.FC = () => {
                         ))}
 
                         {/* Column 4 — Contact */}
-                        <motion.div variants={fadeUp} className="flex flex-col gap-6 pr-10 sm:pr-16 lg:pr-20">
-                            <h3 className="font-serif font-bold text-[#2C1810] text-lg tracking-tight">
+                        <motion.div variants={fadeUp} className="flex flex-col gap-2.5">
+                            <h3 className="font-serif font-bold text-[#2C1810] text-sm tracking-tight">
                                 Contact
                             </h3>
-                            <div className="w-8 h-px bg-[#C89B3C]/60" />
-                            <ul className="flex flex-col gap-4">
+                            <ul className="flex flex-col gap-2">
                                 <li>
                                     <a
                                         href="mailto:hello@vinosphere.com"
-                                        className="flex items-start gap-3 text-[#5C4033] hover:text-[#8B1E3F] transition-colors duration-300 group"
+                                        className="flex items-center gap-2.5 text-[#5C4033] hover:text-[#8B1E3F] transition-colors duration-300 group text-xs"
                                     >
-                                        <span className="w-7 h-7 rounded-full bg-[#EDE4D6] group-hover:bg-[#8B1E3F]/10 flex items-center justify-center flex-shrink-0 transition-colors duration-300">
-                                            <Mail size={13} className="text-[#8B1E3F]" />
+                                        <span className="w-6 h-6 rounded-full bg-[#EDE4D6] group-hover:bg-[#8B1E3F]/10 flex items-center justify-center shrink-0">
+                                            <Mail size={12} className="text-[#8B1E3F]" />
                                         </span>
-                                        <span className="text-sm leading-tight pt-1">
-                                            hello@vinosphere.com
-                                        </span>
+                                        <span>hello@vinosphere.com</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a
-                                        href="tel:+18005555678"
-                                        className="flex items-start gap-3 text-[#5C4033] hover:text-[#8B1E3F] transition-colors duration-300 group"
+                                        href="tel:+917757803073"
+                                        className="flex items-center gap-2.5 text-[#5C4033] hover:text-[#8B1E3F] transition-colors duration-300 group text-xs"
                                     >
-                                        <span className="w-7 h-7 rounded-full bg-[#EDE4D6] group-hover:bg-[#8B1E3F]/10 flex items-center justify-center flex-shrink-0 transition-colors duration-300">
-                                            <Phone size={13} className="text-[#8B1E3F]" />
+                                        <span className="w-6 h-6 rounded-full bg-[#EDE4D6] group-hover:bg-[#8B1E3F]/10 flex items-center justify-center shrink-0">
+                                            <Phone size={12} className="text-[#8B1E3F]" />
                                         </span>
-                                        <span className="text-sm leading-tight pt-1">
-                                            +91 77578 03073
-                                        </span>
+                                        <span>+91 77578 03073</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <div className="flex items-start gap-3 text-[#5C4033]">
-                                        <span className="w-7 h-7 rounded-full bg-[#EDE4D6] flex items-center justify-center flex-shrink-0">
-                                            <MapPin size={13} className="text-[#8B1E3F]" />
+                                    <div className="flex items-center gap-2.5 text-[#5C4033] text-xs">
+                                        <span className="w-6 h-6 rounded-full bg-[#EDE4D6] flex items-center justify-center shrink-0">
+                                            <MapPin size={12} className="text-[#8B1E3F]" />
                                         </span>
-                                        <span className="text-sm leading-snug pt-1">
-                                            Nashik
-                                        </span>
+                                        <span>Nashik, Maharashtra</span>
                                     </div>
                                 </li>
                             </ul>
-                            
                         </motion.div>
                     </motion.div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                FOOTER  — cream & beige editorial layout
+                FOOTER BOTTOM BAR — sleek & compact
             ═══════════════════════════════════════════════════════════════ */}
             <footer
                 id="site-footer"
                 aria-label="VinoSphere site footer"
-                className="relative z-10 bg-[#F5F0E8] overflow-hidden"
+                className="relative z-10 bg-[#F5F0E8] border-t border-[#C89B3C]/20"
             >
-                {/* Subtle paper texture overlay */}
-                <div
-                    aria-hidden="true"
-                    className="absolute inset-0 opacity-[0.025] pointer-events-none"
-                    style={{
-                        backgroundImage: 'radial-gradient(circle, #5C4033 1px, transparent 1px)',
-                        backgroundSize: '20px 20px',
-                    }}
-                />
-
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* ── Gold divider ── */}
-                   
-
-                    {/* ── Bottom footer bar ── */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="flex flex-col sm:flex-row items-center justify-between gap-4 py-7"
-                    >
-                        <p className="text-[#8B6E5A] text-xs tracking-wide text-center sm:text-left">
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+                        <p className="text-[#8B6E5A] text-[11px] tracking-wide text-center sm:text-left">
                             © 2026 VinoSphere.{' '}
                             <span className="italic">Crafted for wine lovers.</span>
                         </p>
-                        <div className="flex items-center gap-1">
-                            {/* Decorative dots */}
-                            <div className="w-1 h-1 rounded-full bg-[#C89B3C]/50 hidden sm:block" />
-                            <div className="w-1 h-1 rounded-full bg-[#C89B3C] hidden sm:block mx-1" />
-                            <div className="w-1 h-1 rounded-full bg-[#C89B3C]/50 hidden sm:block mr-3" />
+                        <div className="flex items-center gap-1 text-[11px]">
                             <a
                                 href="#"
-                                className="text-[#8B6E5A] hover:text-[#8B1E3F] text-xs tracking-wide transition-colors duration-300"
+                                className="text-[#8B6E5A] hover:text-[#8B1E3F] transition-colors duration-300"
                             >
                                 Privacy Policy
                             </a>
-                            <span className="text-[#C89B3C]/60 mx-3 text-xs">·</span>
+                            <span className="text-[#C89B3C]/60 mx-2">·</span>
                             <a
                                 href="#"
-                                className="text-[#8B6E5A] hover:text-[#8B1E3F] text-xs tracking-wide transition-colors duration-300"
+                                className="text-[#8B6E5A] hover:text-[#8B1E3F] transition-colors duration-300"
                             >
                                 Terms of Service
                             </a>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </footer>
         </div>
