@@ -13,31 +13,26 @@ export default function Home() {
             <Hero />
 
             {/* dark → cream */}
-            <SectionDivider fromFill="fill-vino-dark" toBg="bg-vino-cream" height={90} />
+            <SectionDivider fromFill="fill-vino-dark" toBg="bg-vino-cream" height={45} />
 
             {/* 2 ── Light featured categories */}
             <FeaturedCategories />
 
-            {/* cream → dark */}
-            <SectionDivider fromFill="fill-vino-cream" toBg="bg-vino-dark" height={90} />
-
-            {/* 3 ── Dark editorial experience */}
+            {/* 3 ── Editorial experience */}
             <VinoExperience />
-
-            {/* dark → gallery-cream */}
-            <SectionDivider fromFill="fill-vino-dark" toBg="bg-[#F8F5EF]" height={90} />
 
             {/* 4 ── Cream wine gallery */}
             <WineGallery />
 
             {/* gallery-cream → events (transparent/dark bg) */}
-            <SectionDivider fromFill="fill-[#F8F5EF]" toBg="bg-transparent" height={90} />
+            <SectionDivider fromFill="fill-[#F8F5EF]" toBg="bg-transparent" height={45} />
 
             {/* 5 ── Upcoming Events */}
             <UpcomingEvents />
 
             {/* events dark → footer cream/white */}
-            <SectionDivider fillColor="#0d0407" toBg="bg-white" height={90} />
+            <SectionDivider fillColor="#0d0407" toBg="bg-white" height={45} />
+
 
             {/* 6 ── Newsletter + Footer */}
             <NewsletterFooter />

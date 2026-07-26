@@ -30,7 +30,7 @@ function cloud(publicId: string, transforms = ''): string {
 // ---------------------------------------------------------------------------
 export const heroImages = {
     /** Full-width background for the hero section */
-    background: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784398109/hero_dldojr.webp',
+    background: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785007947/WhatsApp_Image_2026-07-26_at_12.56.31_AM_slpzjz.jpg',
     /** Secondary atmospheric overlay / parallax layer */
     overlay: cloud('hero_overlay'),
 }
@@ -166,8 +166,9 @@ export const galleryImages = {
 // ---------------------------------------------------------------------------
 export const experienceImages = {
     /** Full-bleed background for the "Discover Wine Like Never Before" section */
-    background: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784479192/sec_2bg_kf4e8v.png',
+    background: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785046334/Gemini_Generated_Image_ma2whima2whima2w_o2xjiq.png',
 }
+
 
 // ---------------------------------------------------------------------------
 // Brand / Misc
@@ -184,12 +185,24 @@ export const brandImages = {
 }
 
 // ---------------------------------------------------------------------------
+// Flagship Line Showcase
+// ---------------------------------------------------------------------------
+export const flagshipImages = {
+    landscape1: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=1200&auto=format&fit=crop',
+    landscape2: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=1200&auto=format&fit=crop',
+    landscape3: 'https://images.unsplash.com/photo-1528823872057-9c018a7a70b3?q=80&w=1200&auto=format&fit=crop',
+    harvest1: 'https://images.unsplash.com/photo-1592861956559-757788a237f0?q=80&w=600&auto=format&fit=crop',
+    harvest2: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=600&auto=format&fit=crop',
+    harvest3: 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?q=80&w=600&auto=format&fit=crop',
+}
+
+// ---------------------------------------------------------------------------
 // Master re-export  (import { images } from '@/constants/images')
 // ---------------------------------------------------------------------------
 export const images = {
     hero: heroImages,
     categories: categoryImages,
-    wineries:wineries,
+    wineries: wineries,
     wines: wineImages,
     regions: regionImages,
     learning: learningImages,
@@ -200,6 +213,7 @@ export const images = {
     brand: brandImages,
     experience: experienceImages,
     gallery: galleryImages,
+    flagship: flagshipImages,
 } as const
 
 export type Images = typeof images
