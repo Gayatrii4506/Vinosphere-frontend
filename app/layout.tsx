@@ -1,6 +1,11 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Navbar } from '@/components/layout/Navbar'
 import '@/styles/globals.css'
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+}
 
 export const metadata: Metadata = {
     title: 'VinoSphere - Premium Wine Discovery Platform',
@@ -15,7 +20,6 @@ export const metadata: Metadata = {
         'luxury wine platform',
     ],
     authors: [{ name: 'VinoSphere' }],
-    viewport: 'width=device-width, initial-scale=1',
     robots: 'index, follow',
 }
 

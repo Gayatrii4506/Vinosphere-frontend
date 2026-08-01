@@ -1,134 +1,40 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import {
-    Sparkles,
-    BookOpen,
     UtensilsCrossed,
-    GlassWater,
+    BookOpen,
     ArrowRight,
 } from 'lucide-react'
 import { images } from '@/constants/images'
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface Feature {
-    icon: React.ReactNode
-    title: string
-    description: string
-    href?: string
-}
-
-// ─── Feature data ─────────────────────────────────────────────────────────────
-
-const FEATURES: Feature[] = [
-    {
-        icon: <Sparkles size={18} />,
-        title: 'AI Wine Recommendations',
-        description:
-            'Intelligent, personalised pairings built around your unique palate.',
-    },
-    {
-        icon: <BookOpen size={18} />,
-        title: 'Curated Collections',
-        description:
-            "Hand-selected bottles from the world's most prestigious estates.",
-  },
-    {
-        icon: <UtensilsCrossed size={18} />,
-        title: 'Food Pairings',
-        description:
-            'Discover the perfect culinary match for every bottle in your cellar.',
-        href: '/food-pairing',
-    },
-    {
-        icon: <GlassWater size={18} />,
-        title: 'Exclusive Wine Experiences',
-        description:
-            'Private tastings, vineyard tours, and sommelier-led masterclasses.',
-    },
-]
 
 // ─── Animation variants ───────────────────────────────────────────────────────
 
 const stagger = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.11, delayChildren: 0.05 } },
+    visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 }
 
 const fadeUp = {
-    hidden: { opacity: 0, y: 22 },
+    hidden: { opacity: 0, y: 16 },
     visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
     },
 }
 
 const fadeRight = {
-    hidden: { opacity: 0, x: 30 },
+    hidden: { opacity: 0, x: 20 },
     visible: {
         opacity: 1,
         x: 0,
-        transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
     },
-}
-
-// ─── Feature card ─────────────────────────────────────────────────────────────
-
-const FeatureCard: React.FC<Feature> = ({ icon, title, description, href }) => {
-    const card = (
-        <motion.div
-            variants={fadeUp}
-            whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.45)' }}
-            transition={{ duration: 0.25 }}
-            className={`
-                group flex flex-col gap-3
-                rounded-2xl p-5
-                bg-white/[0.05] backdrop-blur-lg
-                border border-white/[0.09]
-                shadow-[0_4px_20px_rgba(0,0,0,0.28)]
-                select-none
-                ${href ? 'cursor-pointer' : 'cursor-default'}
-            `}
-        >
-            {/* Icon chip */}
-            <div
-                className="
-                    w-10 h-10 rounded-xl flex items-center justify-center shrink-0
-                    bg-vino-accent/20 text-vino-gold
-                    group-hover:bg-vino-accent/35 transition-colors duration-300
-                "
-            >
-                {icon}
-            </div>
-
-            {/* Title */}
-            <h4 className="font-semibold text-white text-[13.5px] leading-snug tracking-tight">
-                {title}
-            </h4>
-
-            {/* Thin gold rule */}
-            <div className="w-6 h-px bg-vino-gold/50" />
-
-            {/* Description */}
-            <p className="text-white/52 text-xs leading-relaxed">
-                {description}
-            </p>
-        </motion.div>
-    )
-
-    if (href) {
-        return (
-            <Link href={href} className="block outline-none">
-                {card}
-            </Link>
-        )
-    }
-
-    return card
 }
 
 // ─── Main section ─────────────────────────────────────────────────────────────
@@ -136,139 +42,148 @@ const FeatureCard: React.FC<Feature> = ({ icon, title, description, href }) => {
 export const VinoExperience: React.FC = () => {
     return (
         <section
-            className="relative w-full overflow-hidden bg-vino-dark"
+            className="relative w-full overflow-hidden bg-[#eeeef0] h-[520px] sm:h-[550px] lg:h-[580px] flex items-center justify-center py-3 sm:py-5"
             aria-labelledby="vino-experience-heading"
         >
-            {/* ── Background image ──────────────────────────────────────────────
-          Desktop: image pinned to the left at natural proportions
-          Mobile:  image covers the full section (separate layer)
-      ─────────────────────────────────────────────────────────────────── */}
-
-            {/* Desktop bg — left-anchored, natural height */}
-            <div
-                aria-hidden="true"
-                className="absolute inset-0 z-0 hidden lg:block"
-                style={{
-                    backgroundImage: `url('${images.experience.background}')`,
-                    backgroundSize: 'auto 100%',
-                    backgroundPosition: 'left center',
-                    backgroundRepeat: 'no-repeat',
-                }}
+            {/* ── 3D HD Background Image ── */}
+            <Image
+                src={images.experience.background}
+                alt="VinoSphere Experience"
+                fill
+                priority
+                unoptimized
+                className="object-fill pointer-events-none"
             />
 
-            {/* Mobile bg — cover so small screens don't show a sliver */}
-            <div
-                aria-hidden="true"
-                className="absolute inset-0 z-0 lg:hidden"
-                style={{
-                    backgroundImage: `url('${images.experience.background}')`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center center',
-                    backgroundRepeat: 'no-repeat',
-                }}
-            />
+            {/* ── Overlaid Content (Shifted higher & made larger) ── */}
+            <div className="relative z-10 w-full max-w-xl lg:max-w-2xl mx-auto px-4 lg:ml-auto lg:mr-8 xl:mr-16 -mt-3 sm:-mt-6">
+                <motion.div
+                    variants={stagger}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="flex flex-col items-center lg:items-start text-center lg:text-left gap-3 sm:gap-4"
+                >
+                    {/* Eyebrow - Larger & Dark Pink / Burgundy (text-vino-accent) */}
+                    <motion.div variants={fadeRight} className="flex items-center justify-center lg:justify-start gap-3">
+                        <div className="h-[2px] w-8 sm:w-12 bg-vino-accent" />
+                        <span className="text-sm sm:text-base lg:text-lg tracking-[0.25em] uppercase font-extrabold text-vino-accent">
+                            The VinoSphere Experience
+                        </span>
+                        <div className="h-[2px] w-8 sm:w-12 bg-vino-accent hidden lg:block" />
+                    </motion.div>
 
-            {/* ── Overlays ──────────────────────────────────────────────────────
-          Desktop: gradient from transparent (left/bottle) → dark (right/text)
-          Mobile:  heavy uniform tint so text is always readable
-      ─────────────────────────────────────────────────────────────────── */}
+                    {/* Main Heading - Larger & Bolder */}
+                    <motion.h2
+                        id="vino-experience-heading"
+                        variants={fadeRight}
+                        className="font-serif font-bold text-[#1e1610] text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight max-w-xl"
+                    >
+                        More Than Wine. A Journey of Discovery.
+                    </motion.h2>
 
-            {/* Base tint — both viewports */}
-            <div className="absolute inset-0 z-[1] bg-black/45" />
-
-            {/* Desktop directional gradient */}
-            <div className="absolute inset-0 z-[2] hidden lg:block bg-gradient-to-r from-black/5 via-black/35 to-black/82" />
-
-            {/* Mobile heavier uniform overlay */}
-            <div className="absolute inset-0 z-[2] lg:hidden bg-black/30" />
-
-            {/* ── Content ──────────────────────────────────────────────────────── */}
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 md:py-28">
-
-                {/*
-          Layout:
-            Desktop  → 2 columns, left col is empty (bottle shows through),
-                        right col holds all content
-            Tablet+  → single column, centered
-        */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0">
-
-                    {/* Left spacer — desktop only, keeps bottle unobstructed */}
-                    <div className="hidden lg:block" aria-hidden="true" />
-
-                    {/* Right content column */}
+                    {/* ── Two Featured Cards with Dark Burgundy Border & Visible Soft Pink Interior ── */}
                     <motion.div
                         variants={stagger}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-70px' }}
-                        className="flex flex-col gap-6 lg:pl-6 xl:pl-10"
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full text-left pt-1"
                     >
-
-                        {/* ── Eyebrow ── */}
-                        <motion.div variants={fadeRight} className="flex items-center gap-3">
-                            <div className="h-px w-7 bg-vino-gold" />
-                            <span className="text-[10.5px] tracking-[0.24em] uppercase font-semibold text-vino-gold">
-                                The VinoSphere Experience
-                            </span>
-                        </motion.div>
-
-                        {/* ── Heading ── */}
-                        <motion.h2
-                            id="vino-experience-heading"
-                            variants={fadeRight}
-                            className="font-serif font-bold leading-[1.08] text-vino-cream"
-                        >
-                            <span className="block text-[1.85rem] sm:text-[2.3rem] lg:text-[2.65rem] xl:text-[3.1rem]">
-                                More Than Wine.
-                            </span>
-                            <span className="block text-[1.85rem] sm:text-[2.3rem] lg:text-[2.65rem] xl:text-[3.1rem]">
-                                A Journey of{' '}
-                                <span className="bg-gradient-to-r from-vino-gold via-vino-gold-light to-vino-gold bg-clip-text text-transparent">
-                                    Discovery.
-                                </span>
-                            </span>
-                        </motion.h2>
-
-                        {/* ── Description ── */}
-                        <motion.p
-                            variants={fadeRight}
-                            className="text-white/62 text-sm sm:text-[15px] leading-[1.8] max-w-[460px]"
-                        >
-                            Discover wine like never before with AI-powered recommendations,
-                            curated collections, perfect food pairings, and exclusive tasting
-                            experiences — all tailored to your personal taste.
-                        </motion.p>
-
-                        {/* ── 2×2 Feature grid ── */}
+                        {/* Box 1: Food Pairing Recommendations */}
                         <motion.div
-                            variants={stagger}
-                            className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                            variants={fadeUp}
+                            whileHover={{ y: -3, boxShadow: '0 16px 36px rgba(139,30,63,0.2)' }}
+                            transition={{ duration: 0.2 }}
+                            className="
+                                group flex flex-col justify-between gap-2 sm:gap-2.5
+                                rounded-xl p-3.5 sm:p-4.5
+                                bg-[#f9dbe1]/95 hover:bg-[#f5cad4]
+                                backdrop-blur-md
+                                border border-vino-accent/80 hover:border-vino-accent
+                                shadow-[0_8px_24px_rgba(139,30,63,0.12)]
+                                transition-all duration-300
+                            "
                         >
-                            {FEATURES.map((f) => (
-                                <FeatureCard key={f.title} {...f} />
-                            ))}
+                            <div className="flex flex-col gap-1.5 sm:gap-2">
+                                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center bg-vino-accent text-white group-hover:bg-vino-accent-light transition-colors duration-300 shadow-sm">
+                                    <UtensilsCrossed size={16} />
+                                </div>
+
+                                <h3 className="font-serif font-bold text-[#1e1610] text-sm sm:text-base leading-snug">
+                                    Food Pairing Recommendations
+                                </h3>
+
+                                <p className="text-stone-700 text-xs sm:text-xs leading-relaxed font-normal">
+                                    Discover intelligent culinary pairings expertly matched to elevate every bottle in your cellar.
+                                </p>
+                            </div>
+
+                            <Link
+                                href="/discover#food-pairing"
+                                className="inline-flex items-center gap-1.5 text-vino-accent hover:text-vino-accent-light text-xs font-bold tracking-wide transition-colors pt-1"
+                            >
+                                Explore Pairings
+                                <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
+                            </Link>
                         </motion.div>
 
-                        {/* ── CTA button ── */}
-                        <motion.div variants={fadeRight} className="pt-1">
+                        {/* Box 2: Explore Wines Catalog */}
+                        <motion.div
+                            variants={fadeUp}
+                            whileHover={{ y: -3, boxShadow: '0 16px 36px rgba(139,30,63,0.2)' }}
+                            transition={{ duration: 0.2 }}
+                            className="
+                                group flex flex-col justify-between gap-2 sm:gap-2.5
+                                rounded-xl p-3.5 sm:p-4.5
+                                bg-[#f9dbe1]/95 hover:bg-[#f5cad4]
+                                backdrop-blur-md
+                                border border-vino-accent/80 hover:border-vino-accent
+                                shadow-[0_8px_24px_rgba(139,30,63,0.12)]
+                                transition-all duration-300
+                            "
+                        >
+                            <div className="flex flex-col gap-1.5 sm:gap-2">
+                                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center bg-vino-accent text-white group-hover:bg-vino-accent-light transition-colors duration-300 shadow-sm">
+                                    <BookOpen size={16} />
+                                </div>
+
+                                <h3 className="font-serif font-bold text-[#1e1610] text-sm sm:text-base leading-snug">
+                                    Explore Wines Catalog
+                                </h3>
+
+                                <p className="text-stone-700 text-xs sm:text-xs leading-relaxed font-normal">
+                                    Hand-selected bottles, estate reserves, and rare vintages curated from the world&apos;s finest estates.
+                                </p>
+                            </div>
+
+                            <Link
+                                href="/discover"
+                                className="inline-flex items-center gap-1.5 text-vino-accent hover:text-vino-accent-light text-xs font-bold tracking-wide transition-colors pt-1"
+                            >
+                                Browse Catalog
+                                <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
+                            </Link>
+                        </motion.div>
+                    </motion.div>
+
+                    {/* CTA button */}
+                    <motion.div variants={fadeRight} className="pt-1 sm:pt-2">
+                        <Link href="/discover">
                             <motion.button
                                 whileHover={{
                                     scale: 1.03,
-                                    boxShadow: '0 0 28px rgba(200,155,60,0.28)',
+                                    boxShadow: '0 8px 24px rgba(139,30,63,0.4)',
                                 }}
-                                whileTap={{ scale: 0.97 }}
-                                transition={{ duration: 0.22 }}
+                                whileTap={{ scale: 0.98 }}
+                                transition={{ duration: 0.2 }}
                                 className="
-                  group inline-flex items-center gap-2.5
-                  bg-vino-accent hover:bg-vino-accent-light
-                  text-white font-semibold text-[13.5px] tracking-wide
-                  px-7 py-3.5 rounded-full
-                  transition-colors duration-300
-                  focus-visible:outline-none focus-visible:ring-2
-                  focus-visible:ring-vino-gold focus-visible:ring-offset-2
-                  focus-visible:ring-offset-transparent
-                "
+                                    group inline-flex items-center gap-2
+                                    bg-vino-accent hover:bg-vino-accent-light
+                                    text-white font-semibold text-xs sm:text-sm tracking-wide
+                                    px-6 sm:px-7 py-2.5 sm:py-3 rounded-full
+                                    shadow-[0_5px_18px_rgba(139,30,63,0.3)]
+                                    transition-all duration-300
+                                    focus-visible:outline-none focus-visible:ring-2
+                                    focus-visible:ring-vino-accent
+                                "
                             >
                                 Begin Your Wine Journey
                                 <ArrowRight
@@ -276,10 +191,10 @@ export const VinoExperience: React.FC = () => {
                                     className="transition-transform duration-300 group-hover:translate-x-1"
                                 />
                             </motion.button>
-                        </motion.div>
-
+                        </Link>
                     </motion.div>
-                </div>
+
+                </motion.div>
             </div>
         </section>
     )
