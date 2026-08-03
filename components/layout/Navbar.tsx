@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Menu, X, Search, ShoppingBag, Heart } from 'lucide-react'
+import { Menu, X, Search, ShoppingBag, Heart, User } from 'lucide-react'
 
 import { NAVIGATION_ITEMS } from '@/constants/navigation'
 import { Button } from '@/components/ui/Button'
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -105,9 +105,18 @@ export const Navbar: React.FC = () => {
                             <ShoppingBag size={20} />
                         </button>
 
-                        <button className={`${navText} text-sm font-semibold transition-colors duration-300`}>
-                            Sign In
-                        </button>
+                        {user ? (
+                            <Link href="/profile" className={`${navText} flex items-center gap-2 text-sm font-semibold transition-colors duration-300`}>
+                                <div className="w-8 h-8 rounded-full bg-vino-accent/20 flex items-center justify-center border border-vino-accent/30">
+                                    <User size={16} className="text-vino-accent" />
+                                </div>
+                                <span className="hidden sm:inline">Profile</span>
+                            </Link>
+                        ) : (
+                            <Link href="/welcome" className={`${navText} text-sm font-semibold transition-colors duration-300`}>
+                                Login
+                            </Link>
+                        )}
                     </div>
 
                     {/* Mobile Button */}
@@ -150,9 +159,16 @@ export const Navbar: React.FC = () => {
                         </div>
 
                         <div className="border-t border-gray-200 p-4">
-                            <button className="w-full py-2 text-center text-sm font-semibold text-vino-dark hover:text-vino-accent transition-colors">
-                                Sign In
-                            </button>
+                            {user ? (
+                                <Link href="/profile" className="w-full flex items-center justify-center gap-2 py-2 text-center text-sm font-semibold text-vino-dark hover:text-vino-accent transition-colors">
+                                    <User size={18} />
+                                    Profile
+                                </Link>
+                            ) : (
+                                <Link href="/welcome" className="block w-full py-2 text-center text-sm font-semibold text-vino-dark hover:text-vino-accent transition-colors">
+                                    Login
+                                </Link>
+                            )}
                         </div>
                     </motion.div>
                 )}

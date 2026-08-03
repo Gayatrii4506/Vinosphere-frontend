@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Navbar } from '@/components/layout/Navbar'
+import { createClient } from '@/lib/supabase/server'
 import '@/styles/globals.css'
 
 export const viewport: Viewport = {
@@ -23,11 +24,14 @@ export const metadata: Metadata = {
     robots: 'index, follow',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
     return (
         <html lang="en" className="scroll-smooth">
             <head>
@@ -42,7 +46,7 @@ export default function RootLayout({
                 />
             </head>
             <body className="bg-vino-dark text-vino-gray">
-                <Navbar />
+                <Navbar user={user} />
                 <main className="overflow-x-hidden">
                     {children}
                 </main>

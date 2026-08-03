@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Star, Heart, Wine as WineIcon, Utensils, MapPin, Award, CheckCircle2, ShieldCheck } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Wine } from '@/constants/wines'
 
 interface WineDetailModalProps {
@@ -13,6 +14,7 @@ interface WineDetailModalProps {
 export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose }) => {
     const [isLiked, setIsLiked] = React.useState(false)
     const [imgError, setImgError] = React.useState(false)
+    const router = useRouter()
 
     // Lock body scroll when modal is active
     useEffect(() => {
@@ -207,12 +209,18 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
 
                             {/* Modal Action Buttons */}
                             <div className="flex items-center gap-3 pt-4 border-t border-stone-200/80">
-                                <button className="flex-1 bg-vino-accent hover:bg-vino-darker text-white font-bold py-3 px-6 rounded-xl transition-colors duration-300 shadow-md flex items-center justify-center gap-2 text-sm">
+                                <button 
+                                    onClick={() => router.push('/welcome')}
+                                    className="flex-1 bg-vino-accent hover:bg-vino-darker text-white font-bold py-3 px-6 rounded-xl transition-colors duration-300 shadow-md flex items-center justify-center gap-2 text-sm"
+                                >
                                     <ShieldCheck size={16} />
                                     <span>Reserve / Request Bottle</span>
                                 </button>
                                 <button
-                                    onClick={() => setIsLiked(!isLiked)}
+                                    onClick={() => {
+                                        setIsLiked(!isLiked)
+                                        setTimeout(() => router.push('/welcome'), 300)
+                                    }}
                                     className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-300 ${
                                         isLiked 
                                             ? 'bg-vino-accent text-white border-vino-accent' 

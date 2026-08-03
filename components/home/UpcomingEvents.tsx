@@ -9,6 +9,7 @@ import {
     Ticket,
     ArrowRight,
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { CloudinaryImage } from '@/components/ui/CloudinaryImage'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -94,7 +95,10 @@ const headerVariant = {
 
 // ─── Event card ───────────────────────────────────────────────────────────────
 
-const EventCard: React.FC<{ event: EventItem }> = ({ event }) => (
+const EventCard: React.FC<{ event: EventItem }> = ({ event }) => {
+    const router = useRouter()
+    
+    return (
     <motion.article
         variants={fadeUp}
         whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(139,30,63,0.35)' }}
@@ -162,29 +166,33 @@ const EventCard: React.FC<{ event: EventItem }> = ({ event }) => (
 
             {/* CTA */}
             <motion.button
+                onClick={() => router.push('/welcome')}
                 whileHover={{ scale: 1.02, boxShadow: '0 6px 24px rgba(139,30,63,0.45)' }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.2 }}
-                className="
-                    mt-1 w-full flex items-center justify-center gap-1.5
-                    bg-vino-accent hover:bg-vino-accent-light
-                    text-white font-semibold text-xs tracking-wide
-                    py-2.5 rounded-xl
-                    transition-colors duration-300
-                    shadow-[0_4px_16px_rgba(139,30,63,0.30)]
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-gold
-                "
-            >
-                <Ticket size={13} />
-                Book Tickets
-            </motion.button>
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                    className="
+                        mt-1 w-full flex items-center justify-center gap-1.5
+                        bg-vino-accent hover:bg-vino-accent-light
+                        text-white font-semibold text-xs tracking-wide
+                        py-2.5 rounded-xl
+                        transition-colors duration-300
+                        shadow-[0_4px_16px_rgba(139,30,63,0.30)]
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-gold
+                    "
+                >
+                    <Ticket size={13} />
+                    Book Tickets
+                </motion.button>
         </div>
     </motion.article>
-)
+    )
+}
 
 // ─── Main section ─────────────────────────────────────────────────────────────
 
 export const UpcomingEvents: React.FC = () => {
+    const router = useRouter()
+    
     return (
         <section
             id="upcoming-events"
