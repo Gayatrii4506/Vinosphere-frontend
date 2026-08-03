@@ -179,16 +179,18 @@ function WineryCard({ winery, index }: { winery: typeof ALL_WINERIES[0]; index: 
                     <div className="font-serif text-[1.4rem] font-bold text-[#1A0A10] leading-none">{winery.wines}</div>
                     <div className="text-[11px] text-[#A08070] mt-0.5">wines</div>
                 </div>
-                <motion.button
-                    whileHover={{ scale: 1.04, boxShadow: '0 6px 20px rgba(122,30,58,0.25)' }}
-                    whileTap={{ scale: 0.97 }}
-                    className="px-5 py-2.5 rounded-full
-                        bg-[#1A0A10] hover:bg-[#7A1E3A] text-white
-                        text-[13px] font-semibold whitespace-nowrap
-                        transition-colors duration-200"
-                >
-                    Discover the Winery
-                </motion.button>
+                <Link href={`/wineries/${winery.id}`}>
+                    <motion.button
+                        whileHover={{ scale: 1.04, boxShadow: '0 6px 20px rgba(122,30,58,0.25)' }}
+                        whileTap={{ scale: 0.97 }}
+                        className="px-5 py-2.5 rounded-full
+                            bg-[#1A0A10] hover:bg-[#7A1E3A] text-white
+                            text-[13px] font-semibold whitespace-nowrap
+                            transition-colors duration-200"
+                    >
+                        Discover the Winery
+                    </motion.button>
+                </Link>
             </div>
         </motion.article>
     )

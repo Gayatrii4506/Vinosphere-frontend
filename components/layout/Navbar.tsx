@@ -15,7 +15,7 @@ export const Navbar: React.FC = () => {
 
     const pathname = usePathname()
     const isHome = pathname === '/'
-    const isLightMode = pathname === '/discover/wines' || pathname === '/discover'
+    const isLightMode = pathname === '/discover/wines' || pathname === '/discover' || pathname === '/events'
 
     useEffect(() => {
         const handleScroll = () => {
