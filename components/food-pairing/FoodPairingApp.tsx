@@ -122,7 +122,7 @@ export default function FoodPairingApp() {
         })
     }, [filteredPairings, sortBy])
 
-    const toggleArrayItem = (item: string, list: string[], setList: (v: string[]) => void) => {
+    const toggleArrayItem = <T,>(item: T, list: T[], setList: (v: T[]) => void) => {
         if (list.includes(item)) {
             setList(list.filter(i => i !== item))
         } else {

@@ -7,7 +7,7 @@
 //   - Sweetness balances spice and matches dessert sweetness
 //   - Overlapping flavor notes create "congruent" pairings
 
-export function scorePairing(wine, food) {
+export function scorePairing(wine: any, food: any) {
   let score = 0;
   const reasons = [];
 
@@ -33,8 +33,8 @@ export function scorePairing(wine, food) {
   }
 
   // 4. Body should match richness/weight of dish
-  const bodyRank = { light: 1, medium: 2, full: 3 };
-  const richnessRank = { low: 1, medium: 2, high: 3 };
+  const bodyRank: Record<string, number> = { light: 1, medium: 2, full: 3 };
+  const richnessRank: Record<string, number> = { low: 1, medium: 2, high: 3 };
   const bodyDiff = Math.abs(bodyRank[wine.body] - richnessRank[food.richness]);
   if (bodyDiff === 0) {
     score += 2;
@@ -82,7 +82,7 @@ export function scorePairing(wine, food) {
   }
 
   // 8. Flavor note overlap = congruent pairing (shared flavor compounds)
-  const overlap = wine.flavorNotes.filter(f => food.flavorProfile.includes(f));
+  const overlap = wine.flavorNotes.filter((f: any) => food.flavorProfile.includes(f));
   if (overlap.length > 0) {
     score += overlap.length * 1.5;
     reasons.push(`Shared flavor notes: ${overlap.join(", ")}`);
@@ -91,7 +91,7 @@ export function scorePairing(wine, food) {
   return { score: Math.round(score * 10) / 10, reasons };
 }
 
-export function getTopPairings(wine, foods, topN = 5) {
+export function getTopPairings(wine: any, foods: any[], topN = 5) {
   return foods
     .map(food => {
       const { score, reasons } = scorePairing(wine, food);
@@ -102,7 +102,7 @@ export function getTopPairings(wine, foods, topN = 5) {
 }
 
 // Reverse lookup: given a food, find the best wines
-export function getTopWinesForFood(food, wines, topN = 5) {
+export function getTopWinesForFood(food: any, wines: any[], topN = 5) {
   return wines
     .map(wine => {
       const { score, reasons } = scorePairing(wine, food);

@@ -55,7 +55,7 @@ export default function HeroLanding({ setShowCatalog }: HeroLandingProps) {
                         className="w-full md:w-1/2 relative aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl"
                     >
                         <CloudinaryImage
-                            src={images.events.tasting}
+                            src={images.events.privateTasting}
                             alt="Curated Wine Pairings"
                             fill
                             className="object-cover"
