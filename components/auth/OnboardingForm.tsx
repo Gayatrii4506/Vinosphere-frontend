@@ -5,7 +5,22 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Wine, Sparkles, Grape, Compass, ArrowRight, Loader2, AlertCircle } from 'lucide-react'
 import { completeOnboarding } from '@/app/onboarding/actions'
 
-const questions = [
+type QuestionOption = {
+    id: string;
+    label: string;
+    desc?: string;
+    icon?: any;
+};
+
+type QuestionType = {
+    id: string;
+    title: string;
+    subtitle: string;
+    options: QuestionOption[];
+    multi?: boolean;
+};
+
+const questions: QuestionType[] = [
     {
         id: 'experience',
         title: 'What is your wine experience level?',
@@ -41,6 +56,16 @@ const questions = [
     }
 ]
 
+// Adding a dummy question object for the first step to keep the progress bar logic simple
+const profileQuestion: QuestionType = {
+    id: 'profile',
+    title: 'Complete Your Profile',
+    subtitle: 'Tell us a bit about yourself.',
+    options: []
+}
+
+const allQuestions: QuestionType[] = [profileQuestion, ...questions]
+
 export const OnboardingForm = () => {
     const [step, setStep] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -50,9 +75,16 @@ export const OnboardingForm = () => {
     const [experience, setExperience] = useState('')
     const [wineTypes, setWineTypes] = useState<string[]>([])
     const [interest, setInterest] = useState('')
+    
+    // New state for profile
+    const [fullName, setFullName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [city, setCity] = useState('')
+    const [stateLocation, setStateLocation] = useState('') // renamed to avoid conflict
+    const [country, setCountry] = useState('')
 
     const handleNext = () => {
-        if (step < questions.length - 1) {
+        if (step < allQuestions.length - 1) {
             setStep(prev => prev + 1)
         }
     }
@@ -64,15 +96,16 @@ export const OnboardingForm = () => {
     }
 
     const isCurrentStepValid = () => {
-        if (step === 0) return experience !== ''
-        if (step === 1) return wineTypes.length > 0
-        if (step === 2) return interest !== ''
+        if (step === 0) return fullName.trim() !== '' && country.trim() !== ''
+        if (step === 1) return experience !== ''
+        if (step === 2) return wineTypes.length > 0
+        if (step === 3) return interest !== ''
         return false
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (step < questions.length - 1) {
+        if (step < allQuestions.length - 1) {
             handleNext()
             return
         }
@@ -81,6 +114,13 @@ export const OnboardingForm = () => {
         setError(null)
 
         const formData = new FormData()
+        // Profile Data
+        formData.append('full_name', fullName)
+        formData.append('phone', phone)
+        formData.append('city', city)
+        formData.append('state', stateLocation)
+        formData.append('country', country)
+        // Preference Data
         formData.append('experience', experience)
         wineTypes.forEach(type => formData.append('wine_types', type))
         formData.append('interest', interest)
@@ -92,14 +132,14 @@ export const OnboardingForm = () => {
         }
     }
 
-    const currentQ = questions[step]
+    const currentQ = allQuestions[step]
 
     return (
         <div className="w-full max-w-xl mx-auto">
             {/* Progress Bar */}
             <div className="mb-12">
                 <div className="flex justify-between mb-3">
-                    {questions.map((_, i) => (
+                    {allQuestions.map((_, i) => (
                         <div 
                             key={i} 
                             className={`h-1.5 rounded-full flex-1 mx-1 transition-colors duration-500 ${
@@ -109,7 +149,7 @@ export const OnboardingForm = () => {
                     ))}
                 </div>
                 <p className="text-center text-xs text-vino-gray/50 uppercase tracking-widest">
-                    Step {step + 1} of {questions.length}
+                    Step {step + 1} of {allQuestions.length}
                 </p>
             </div>
 
@@ -139,13 +179,39 @@ export const OnboardingForm = () => {
                             </p>
                         </div>
 
-                        <div className="space-y-3">
-                            {currentQ.options.map((opt) => {
-                                const Icon = (opt as any).icon
-                                let isSelected = false
-                                if (step === 0) isSelected = experience === opt.id
-                                if (step === 1) isSelected = wineTypes.includes(opt.id)
-                                if (step === 2) isSelected = interest === opt.id
+                        {step === 0 ? (
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm text-stone-400 mb-1">Full Name *</label>
+                                    <input type="text" required value={fullName} onChange={e => setFullName(e.target.value)} className="w-full px-4 py-3 bg-stone-900/50 border border-stone-800 rounded-xl text-white focus:border-vino-accent/50 outline-none" placeholder="John Doe" />
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-stone-400 mb-1">Phone Number (Optional)</label>
+                                    <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} className="w-full px-4 py-3 bg-stone-900/50 border border-stone-800 rounded-xl text-white focus:border-vino-accent/50 outline-none" placeholder="+1 (555) 000-0000" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm text-stone-400 mb-1">City (Optional)</label>
+                                        <input type="text" value={city} onChange={e => setCity(e.target.value)} className="w-full px-4 py-3 bg-stone-900/50 border border-stone-800 rounded-xl text-white focus:border-vino-accent/50 outline-none" placeholder="Napa" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-stone-400 mb-1">State/Province (Optional)</label>
+                                        <input type="text" value={stateLocation} onChange={e => setStateLocation(e.target.value)} className="w-full px-4 py-3 bg-stone-900/50 border border-stone-800 rounded-xl text-white focus:border-vino-accent/50 outline-none" placeholder="California" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm text-stone-400 mb-1">Country *</label>
+                                    <input type="text" required value={country} onChange={e => setCountry(e.target.value)} className="w-full px-4 py-3 bg-stone-900/50 border border-stone-800 rounded-xl text-white focus:border-vino-accent/50 outline-none" placeholder="United States" />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {currentQ.options.map((opt) => {
+                                    const Icon = (opt as any).icon
+                                    let isSelected = false
+                                    if (step === 1) isSelected = experience === opt.id
+                                    if (step === 2) isSelected = wineTypes.includes(opt.id)
+                                    if (step === 3) isSelected = interest === opt.id
 
                                 return (
                                     <button
@@ -154,8 +220,8 @@ export const OnboardingForm = () => {
                                         onClick={() => {
                                             if (currentQ.multi) toggleMultiSelect(opt.id)
                                             else {
-                                                if (step === 0) setExperience(opt.id)
-                                                if (step === 2) setInterest(opt.id)
+                                                if (step === 1) setExperience(opt.id)
+                                                if (step === 3) setInterest(opt.id)
                                             }
                                         }}
                                         className={`w-full p-4 sm:p-5 rounded-xl border text-left transition-all duration-300 flex items-center gap-4 ${
@@ -186,8 +252,9 @@ export const OnboardingForm = () => {
                                         )}
                                     </button>
                                 )
-                            })}
-                        </div>
+                                })}
+                            </div>
+                        )}
                     </motion.div>
                 </AnimatePresence>
 
@@ -199,7 +266,7 @@ export const OnboardingForm = () => {
                     >
                         {isLoading ? (
                             <Loader2 size={18} className="animate-spin" />
-                        ) : step === questions.length - 1 ? (
+                        ) : step === allQuestions.length - 1 ? (
                             'Complete Profile'
                         ) : (
                             <>
