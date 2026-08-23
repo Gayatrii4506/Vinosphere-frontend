@@ -39,16 +39,15 @@ async function getWines(): Promise<Wine[]> {
             if (!displayImageUrl) {
                 const lowerType = wineType.toLowerCase();
                 if (lowerType.includes('white')) {
-                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785687193/white-wine-bottle.png';
+                    displayImageUrl = 'https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=600&auto=format&fit=crop&q=60';
                 } else if (lowerType.includes('rose') || lowerType.includes('rosé')) {
-                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785687521/rose-wine-bottle.png';
+                    displayImageUrl = 'https://images.unsplash.com/photo-1553122180-2c700cb75571?w=600&auto=format&fit=crop&q=60';
                 } else if (lowerType.includes('sparkling') || lowerType.includes('champagne')) {
-                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785687616/sparkling-wine-bottle.png';
+                    displayImageUrl = 'https://images.unsplash.com/photo-1594261899853-27e6c210ab6e?w=600&auto=format&fit=crop&q=60';
                 } else if (lowerType.includes('dessert')) {
-                    displayImageUrl = 'https://images.unsplash.com/photo-1614742468798-e7c65d642398?auto=format&fit=crop&w=300&q=80';
+                    displayImageUrl = 'https://images.unsplash.com/photo-1614742468798-e7c65d642398?w=600&auto=format&fit=crop&q=60';
                 } else {
-                    // Default to Premium Red Wine image
-                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784956330/pngtree-red-wine-png-image_2399218_fkqedx.jpg';
+                    displayImageUrl = 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&auto=format&fit=crop&q=60';
                 }
             }
 
