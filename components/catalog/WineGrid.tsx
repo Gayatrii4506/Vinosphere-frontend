@@ -47,6 +47,12 @@ export const WineGrid: React.FC<WineGridProps> = ({ wines, sortBy, setSortBy, on
                     >
                         Newest Vintage
                     </span>
+                    <span 
+                        onClick={() => setSortBy('Rating')}
+                        className={`cursor-pointer transition-colors ${sortBy === 'Rating' ? 'text-vino-accent font-bold border-b border-vino-accent pb-0.5' : 'hover:text-vino-accent'}`}
+                    >
+                        Highest Rated
+                    </span>
                 </div>
             </div>
 

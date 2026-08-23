@@ -26,24 +26,50 @@ async function getWines(): Promise<Wine[]> {
         const data = await res.json();
         
         // Map the backend response to the frontend's expected Wine interface
-        return data.data.map((wine: any) => ({
-            id: wine.id,
-            name: wine.name,
-            // Assuming winery has city/state/country, create a friendly origin string
-            origin: wine.winery ? `${wine.winery.city || ''}, ${wine.winery.country || ''}`.replace(/^, /, '') : 'Unknown Origin',
-            volume: '0.75 L', // Defaulting as volume isn't in the schema yet
-            year: wine.vintage || new Date().getFullYear(),
-            rating: 0, // In a full app, this would be computed from reviews
-            reviews: 0,
-            price: wine.price || 0,
-            currency: '₹', // Hardcoded to INR based on current constants
-            imageUrl: wine.image_url || 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784956330/pngtree-red-wine-png-image_2399218_fkqedx.jpg',
-            type: wine.wine_type || 'Red',
-            sugar: 'Dry', // Defaulting
-            country: wine.winery?.country || 'India',
-            manufacturer: wine.winery?.name || 'Unknown Winery',
-            foodPairing: [] // Would join food_pairings table in the future
-        }));
+                // Map the backend response to the frontend's expected Wine interface
+        return data.data.map((wine: any) => {
+            const wineType = wine.wine_type || 'Red';
+            
+            // Deterministic mock rating and review counts to prevent Next.js hydration mismatches
+            const ratingValue = (wine.name.length % 5) * 5 + 80; // yields 80, 85, 90, 95, 100
+            const reviewsCount = (wine.name.length % 10) * 3 + 5; // yields 5 to 32
+
+            // Dynamic fallback image depending on the wine type
+            let displayImageUrl = wine.image_url;
+            if (!displayImageUrl) {
+                const lowerType = wineType.toLowerCase();
+                if (lowerType.includes('white')) {
+                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785687193/white-wine-bottle.png';
+                } else if (lowerType.includes('rose') || lowerType.includes('rosé')) {
+                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785687521/rose-wine-bottle.png';
+                } else if (lowerType.includes('sparkling') || lowerType.includes('champagne')) {
+                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1785687616/sparkling-wine-bottle.png';
+                } else if (lowerType.includes('dessert')) {
+                    displayImageUrl = 'https://images.unsplash.com/photo-1614742468798-e7c65d642398?auto=format&fit=crop&w=300&q=80';
+                } else {
+                    // Default to Premium Red Wine image
+                    displayImageUrl = 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784956330/pngtree-red-wine-png-image_2399218_fkqedx.jpg';
+                }
+            }
+
+            return {
+                id: wine.id,
+                name: wine.name,
+                origin: wine.winery ? `${wine.winery.city || ''}, ${wine.winery.country || ''}`.replace(/^, /, '') : 'Unknown Origin',
+                volume: '0.75 L',
+                year: wine.vintage || new Date().getFullYear(),
+                rating: ratingValue,
+                reviews: reviewsCount,
+                price: wine.price || 0,
+                currency: '₹',
+                imageUrl: displayImageUrl,
+                type: wineType,
+                sugar: 'Dry',
+                country: wine.winery?.country || 'India',
+                manufacturer: wine.winery?.name || 'Unknown Winery',
+                foodPairing: []
+            };
+        });
     } catch (error) {
         console.error('Error fetching wines:', error);
         return [];

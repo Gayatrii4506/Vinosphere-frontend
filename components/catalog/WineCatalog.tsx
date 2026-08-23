@@ -22,6 +22,7 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines }) => {
         selectedType: typeParam || null,
         selectedRating: null,
         selectedFoodPairing: null,
+        selectedVintage: null,
     })
 
     useEffect(() => {
@@ -51,6 +52,15 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines }) => {
                 const minRating = Number(filters.selectedRating)
                 if (wine.rating < minRating) return false
             }
+
+            // Vintage check
+            if (filters.selectedVintage) {
+                if (filters.selectedVintage === '2021-older') {
+                    if (wine.year > 2021) return false
+                } else {
+                    if (wine.year !== Number(filters.selectedVintage)) return false
+                }
+            }
             
             // Food Pairing check
             if (filters.selectedFoodPairing && !wine.foodPairing.includes(filters.selectedFoodPairing)) {
@@ -66,6 +76,7 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines }) => {
             if (sortBy === 'PriceDesc') return b.price - a.price
             if (sortBy === 'Year') return b.year - a.year // newest first
             if (sortBy === 'Popular') return b.reviews - a.reviews // most reviews = popular
+            if (sortBy === 'Rating') return b.rating - a.rating // highest rating first
             return 0
         })
 
@@ -75,7 +86,7 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines }) => {
     return (
         <section className="bg-[#F8F5EF] min-h-screen pt-20 sm:pt-24 pb-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* ── Wine Catalog Header Banner Box - Sleek & Compact ── */}
+                {/* Wine Catalog Header Banner Box - Sleek & Compact */}
                 <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-[#3d0b1d] via-[#63142e] to-[#290613] py-4 px-6 sm:px-8 mb-8 shadow-md border border-[#8B1E3F]/40 flex items-center justify-between gap-4">
                     {/* Rich Dark Watercolor Texture Overlay */}
                     <div
