@@ -37,6 +37,7 @@ export interface Review {
 export interface VinoSphereExperience {
     id: string
     title: string
+    wineryId?: string
     tagline: string
     category: 'Wine Tastings' | 'Vineyard Tours' | 'Harvest Festivals' | 'Food Pairing' | 'Sommelier Workshops' | 'Sunset Soirées'
     badge?: 'Featured' | 'Best Seller' | 'Selling Fast' | 'Exclusive' | 'Reserve Collection'

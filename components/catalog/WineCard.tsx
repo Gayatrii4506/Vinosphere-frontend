@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Heart, Star } from 'lucide-react'
 import { Wine } from '@/constants/wines'
+import { createClient } from '@/lib/supabase/client'
 
 interface WineCardProps {
     wine: Wine
@@ -61,15 +62,50 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
                     </span>
                 </div>
 
-                {/* Footer Price & Like */}
                 <div className="flex items-center justify-between pt-0.5">
                     <div className="text-sm sm:text-base font-bold text-vino-darker">
                         <span className="text-vino-dark/50 text-xs mr-0.5">{wine.currency}</span>{wine.price.toLocaleString()}
                     </div>
                     <button 
-                        onClick={(e) => {
+                        onClick={async (e) => {
                             e.stopPropagation()
-                            setIsLiked(!isLiked)
+                            // Optimistic UI update
+                            const newlyLiked = !isLiked;
+                            setIsLiked(newlyLiked);
+                            
+                            try {
+                                const supabase = createClient();
+                                const { data: { session } } = await supabase.auth.getSession();
+                                
+                                if (!session) {
+                                    alert('Please log in to save wines to your cellar.');
+                                    setIsLiked(isLiked); // Revert
+                                    return;
+                                }
+
+                                if (newlyLiked) {
+                                    // Add to wishlist
+                                    await fetch('http://localhost:5000/api/v1/wishlist', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${session.access_token}`
+                                        },
+                                        body: JSON.stringify({ wineId: wine.id })
+                                    });
+                                } else {
+                                    // Remove from wishlist
+                                    await fetch(`http://localhost:5000/api/v1/wishlist/${wine.id}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Authorization': `Bearer ${session.access_token}`
+                                        }
+                                    });
+                                }
+                            } catch (error) {
+                                console.error('Failed to update wishlist:', error);
+                                setIsLiked(isLiked); // Revert on failure
+                            }
                         }}
                         aria-label="Save to favorites"
                         className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-vino-accent hover:bg-vino-accent hover:text-white transition-colors group/btn"

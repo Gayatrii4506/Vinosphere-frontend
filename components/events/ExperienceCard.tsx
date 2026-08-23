@@ -39,9 +39,18 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
 
                 {/* Top Row: Category Badge & Wishlist/Status */}
                 <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-                    <span className="px-3 py-1 rounded-full bg-vino-accent text-white text-[11px] font-bold tracking-wider uppercase shadow-md backdrop-blur-md">
-                        {experience.category}
-                    </span>
+                    <div className="flex gap-2">
+                        <span className="px-3 py-1 rounded-full bg-vino-accent text-white text-[11px] font-bold tracking-wider uppercase shadow-md backdrop-blur-md">
+                            {experience.category}
+                        </span>
+                        <span className={`px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-md border ${
+                            experience.type === 'event' 
+                                ? 'bg-[#8B1E3F] text-white border-white/20' 
+                                : 'bg-white/95 text-vino-accent border-[#E8D4A8]/80'
+                        }`}>
+                            {experience.type === 'event' ? 'Event' : 'Experience'}
+                        </span>
+                    </div>
 
                     {experience.badge && (
                         <span className="px-3 py-1 rounded-full bg-vino-gold text-vino-darker text-[11px] font-bold tracking-wider uppercase shadow-md">

@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Ticket, Calendar, Clock, MapPin, Sparkles, CreditCard } from 'lucide-react'
 import { VinoSphereExperience } from '@/constants/events'
+import { createClient } from '@/lib/supabase/client'
 
 interface BookingModalProps {
     experience: VinoSphereExperience | null
@@ -16,9 +17,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     initialGuests,
     onClose,
 }) => {
-    const [guests, setGuests] = useState<number>(initialGuests || 2)
+        const [guests, setGuests] = useState<number>(initialGuests || 2)
     const [isConfirmed, setIsConfirmed] = useState<boolean>(false)
     const [ticketCode] = useState<string>(`VINO-${Math.floor(100000 + Math.random() * 900000)}`)
+    const [isBookingInProgress, setIsBookingInProgress] = useState<boolean>(false)
+    const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
     if (!experience) return null
 
@@ -26,9 +29,65 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const serviceFee = 250
     const total = subtotal + serviceFee
 
-    const handleConfirmBooking = (e: React.FormEvent) => {
+    const handleConfirmBooking = async (e: React.FormEvent) => {
         e.preventDefault()
-        setIsConfirmed(true)
+        setIsBookingInProgress(true)
+        setErrorMsg(null)
+
+        try {
+            const supabase = createClient()
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+
+            if (sessionError || !session) {
+                setErrorMsg('Please log in to confirm your booking.')
+                setIsBookingInProgress(false)
+                return
+            }
+
+            // Parse or format booking date
+            let bookingDateStr = new Date().toISOString().split('T')[0]
+            if (experience.type === 'event' && experience.date) {
+                try {
+                    const parsed = new Date(experience.date)
+                    if (!isNaN(parsed.getTime())) {
+                        bookingDateStr = parsed.toISOString().split('T')[0]
+                    }
+                } catch (err) {}
+            }
+
+            const payload = {
+                experience_id: experience.type === 'experience' ? experience.id : null,
+                event_id: experience.type === 'event' ? experience.id : null,
+                winery_id: experience.wineryId || null,
+                booking_date: bookingDateStr,
+                guests: guests,
+                total_amount: total,
+                booking_status: 'confirmed',
+                payment_status: 'paid'
+            }
+
+            const response = await fetch('http://localhost:5000/api/v1/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify(payload)
+            })
+
+            const responseData = await response.json()
+
+            if (!response.ok) {
+                throw new Error(responseData.message || 'Failed to create booking in database')
+            }
+
+            setIsConfirmed(true)
+        } catch (err) {
+            console.error('Error confirming booking:', err)
+            setErrorMsg(err.message || 'An unexpected error occurred. Please try again.')
+        } finally {
+            setIsBookingInProgress(false)
+        }
     }
 
     return (
@@ -118,15 +177,36 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                     </div>
                                 </div>
 
+                                                                {/* Error message banner */}
+                                {errorMsg && (
+                                    <div className="p-3 bg-red-50/10 text-red-400 rounded-xl text-xs font-semibold text-center border border-red-500/20 mb-4">
+                                        {errorMsg}
+                                    </div>
+                                )}
+
                                 {/* Submit Button */}
                                 <motion.button
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
+                                    whileHover={isBookingInProgress ? {} : { scale: 1.02 }}
+                                    whileTap={isBookingInProgress ? {} : { scale: 0.98 }}
                                     type="submit"
-                                    className="w-full py-4 bg-vino-accent hover:bg-vino-accent-light text-white font-semibold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-vino-accent/30 transition-colors"
+                                    disabled={isBookingInProgress}
+                                    className={`w-full py-4 text-white font-semibold text-sm rounded-2xl flex items-center justify-center gap-2 transition-colors ${
+                                        isBookingInProgress
+                                            ? 'bg-vino-accent/60 cursor-not-allowed'
+                                            : 'bg-vino-accent hover:bg-vino-accent-light shadow-lg shadow-vino-accent/30'
+                                    }`}
                                 >
-                                    <CreditCard size={18} />
-                                    <span>Confirm & Pay {experience.currency}{total.toLocaleString()}</span>
+                                    {isBookingInProgress ? (
+                                        <>
+                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                            <span>Processing Reservation...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <CreditCard size={18} />
+                                            <span>Confirm & Pay {experience.currency}{total.toLocaleString()}</span>
+                                        </>
+                                    )}
                                 </motion.button>
                             </form>
                         </div>

@@ -177,31 +177,33 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                         </div>
 
                         {/* Host Bio Card */}
-                        <div className="p-5 rounded-2xl bg-vino-cream/60 border border-[#E8D4A8]/60 flex items-start gap-4">
-                            <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-vino-accent shadow-sm">
-                                <Image src={experience.host.avatar} alt={experience.host.name} fill className="object-cover" />
-                            </div>
-                            <div className="flex-1">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h4 className="font-bold text-vino-darker text-sm flex items-center gap-1.5">
-                                            Hosted by {experience.host.name}
-                                            {experience.host.verified && (
-                                                <ShieldCheck size={16} className="text-vino-accent fill-vino-accent/10" />
-                                            )}
-                                        </h4>
-                                        <p className="text-xs text-vino-dark/60 font-medium">{experience.host.title}</p>
-                                    </div>
-                                    <div className="flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">
-                                        <Star size={11} className="fill-amber-500 text-amber-500" />
-                                        <span>{experience.host.rating}</span>
-                                    </div>
+                        {experience.host && (
+                            <div className="p-5 rounded-2xl bg-vino-cream/60 border border-[#E8D4A8]/60 flex items-start gap-4">
+                                <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-vino-accent shadow-sm">
+                                    <Image src={experience.host.avatar} alt={experience.host.name} fill className="object-cover" />
                                 </div>
-                                <p className="text-xs text-vino-dark/80 mt-2 leading-relaxed">
-                                    {experience.host.bio}
-                                </p>
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h4 className="font-bold text-vino-darker text-sm flex items-center gap-1.5">
+                                                Hosted by {experience.host.name}
+                                                {experience.host.verified && (
+                                                    <ShieldCheck size={16} className="text-vino-accent fill-vino-accent/10" />
+                                                )}
+                                            </h4>
+                                            <p className="text-xs text-vino-dark/60 font-medium">{experience.host.title}</p>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">
+                                            <Star size={11} className="fill-amber-500 text-amber-500" />
+                                            <span>{experience.host.rating}</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs text-vino-dark/80 mt-2 leading-relaxed">
+                                        {experience.host.bio}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Overview & Highlights */}
                         <div className="space-y-4">
@@ -224,23 +226,25 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                         </div>
 
                         {/* Experience Itinerary Timeline */}
-                        <div>
-                            <h3 className="font-serif text-lg font-bold text-vino-darker mb-4">Step-by-Step Itinerary</h3>
-                            <div className="space-y-4 relative before:absolute before:left-3.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-vino-dark/10">
-                                {experience.itinerary.map((step, idx) => (
-                                    <div key={idx} className="flex items-start gap-4 relative pl-2">
-                                        <div className="w-4 h-4 rounded-full bg-vino-accent text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-1 shadow-sm">
-                                            {idx + 1}
+                        {experience.type === 'event' && experience.itinerary && experience.itinerary.length > 0 && (
+                            <div>
+                                <h3 className="font-serif text-lg font-bold text-vino-darker mb-4">Step-by-Step Itinerary</h3>
+                                <div className="space-y-4 relative before:absolute before:left-3.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-vino-dark/10">
+                                    {experience.itinerary.map((step, idx) => (
+                                        <div key={idx} className="flex items-start gap-4 relative pl-2">
+                                            <div className="w-4 h-4 rounded-full bg-vino-accent text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-1 shadow-sm">
+                                                {idx + 1}
+                                            </div>
+                                            <div>
+                                                <span className="text-xs font-bold text-vino-accent uppercase tracking-wider">{step.time}</span>
+                                                <h4 className="font-serif font-bold text-vino-darker text-sm">{step.title}</h4>
+                                                <p className="text-xs text-vino-dark/70 mt-0.5">{step.description}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <span className="text-xs font-bold text-vino-accent uppercase tracking-wider">{step.time}</span>
-                                            <h4 className="font-serif font-bold text-vino-darker text-sm">{step.title}</h4>
-                                            <p className="text-xs text-vino-dark/70 mt-0.5">{step.description}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Included Perks */}
                         <div>
@@ -256,7 +260,7 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                         </div>
 
                         {/* Featured Wines List */}
-                        {experience.featuredWines.length > 0 && (
+                        {experience.type === 'experience' && experience.featuredWines && experience.featuredWines.length > 0 && (
                             <div>
                                 <h3 className="font-serif text-lg font-bold text-vino-darker mb-3">Featured Vintages Served</h3>
                                 <div className="space-y-2.5">
