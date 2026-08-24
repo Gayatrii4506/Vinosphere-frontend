@@ -168,6 +168,19 @@ export function eventCardUrl(publicId: string): string {
  * Use this with placeholder="blur" to get a smooth loading experience.
  */
 export function blurPlaceholderUrl(publicId: string): string {
+    if (publicId && publicId.startsWith('http')) {
+        if (!publicId.includes('res.cloudinary.com')) {
+            // Not a Cloudinary URL, return original to avoid breaks
+            return publicId;
+        }
+        // Extract public ID from full Cloudinary URL
+        // e.g. https://res.cloudinary.com/xfklkvdc/image/upload/v1784639253/sula_x7fqkh.jpg
+        const match = publicId.match(/\/image\/upload\/(?:v\d+\/)?(.+)$/);
+        if (match) {
+            // Strip extension
+            publicId = match[1].replace(/\.[^/.]+$/, "");
+        }
+    }
     return buildCloudinaryUrl(publicId, {
         width: 32,
         height: 32,

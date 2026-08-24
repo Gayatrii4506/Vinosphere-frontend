@@ -50,15 +50,17 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
      * blurPlaceholderUrl with the same src string (Cloudinary ignores any
      * existing transforms and overlays the blur ones).
      */
-    const blurDataURL = blurPublicId
-        ? blurPlaceholderUrl(blurPublicId)
-        : blurPlaceholderUrl(src)
+    const isCloudinary = src && src.includes('res.cloudinary.com');
+    const blurDataURL = isCloudinary
+        ? (blurPublicId ? blurPlaceholderUrl(blurPublicId) : blurPlaceholderUrl(src))
+        : undefined;
+    const resolvedPlaceholder = isCloudinary ? placeholder : undefined;
 
     return (
         <Image
             src={src}
             alt={alt}
-            placeholder={placeholder}
+            placeholder={resolvedPlaceholder}
             blurDataURL={blurDataURL}
             quality={quality}
             sizes={sizes}

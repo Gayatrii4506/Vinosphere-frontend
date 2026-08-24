@@ -208,8 +208,12 @@ export function WineriesClient({ dbWineries = [] }: { dbWineries?: any[] }) {
     const [visible, setVisible] = useState(3)
 
     const mergedWineries = useMemo(() => {
-        // Map database wineries
-        const mappedDb = dbWineries.map((dbW) => {
+        if (!dbWineries || dbWineries.length === 0) {
+            return ALL_WINERIES;
+        }
+
+        // Map database wineries only
+        return dbWineries.map((dbW) => {
             const staticMatch = ALL_WINERIES.find(sw => sw.id === dbW.slug || sw.id === dbW.id);
             return {
                 id: dbW.slug || dbW.id,
@@ -224,13 +228,6 @@ export function WineriesClient({ dbWineries = [] }: { dbWineries?: any[] }) {
                 description: dbW.description || staticMatch?.description || '',
             };
         });
-
-        // Add static wineries that didn't get matched/updated
-        const unmatchedStatic = ALL_WINERIES.filter(sw => 
-            !dbWineries.some(dbW => dbW.slug === sw.id || dbW.id === sw.id)
-        );
-
-        return [...mappedDb, ...unmatchedStatic];
     }, [dbWineries]);
 
     const filtered = useMemo(() =>
