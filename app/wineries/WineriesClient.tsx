@@ -201,18 +201,44 @@ function WineryCard({ winery, index }: { winery: typeof ALL_WINERIES[0]; index: 
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export function WineriesClient() {
+export function WineriesClient({ dbWineries = [] }: { dbWineries?: any[] }) {
     const [query, setQuery] = useState('')
     const [activeSort, setActiveSort] = useState('Most Popular')
     const [sortOpen, setSortOpen] = useState(false)
     const [visible, setVisible] = useState(3)
 
+    const mergedWineries = useMemo(() => {
+        // Map database wineries
+        const mappedDb = dbWineries.map((dbW) => {
+            const staticMatch = ALL_WINERIES.find(sw => sw.id === dbW.slug || sw.id === dbW.id);
+            return {
+                id: dbW.slug || dbW.id,
+                name: dbW.name,
+                verified: dbW.verified || staticMatch?.verified || false,
+                location: dbW.city ? `${dbW.city}, ${dbW.state || ''}` : (staticMatch?.location || 'Nashik, Maharashtra'),
+                rating: dbW.average_rating ? Number(dbW.average_rating) : (staticMatch?.rating || 4.0),
+                totalRatings: staticMatch?.totalRatings || 100,
+                wines: staticMatch?.wines || 5,
+                image: dbW.banner_url || dbW.logo_url || staticMatch?.image || 'https://images.unsplash.com/photo-1543418219-44e30b057fc5?w=800&q=80',
+                badge: dbW.verified ? 'Premium' : (staticMatch?.badge || 'Boutique'),
+                description: dbW.description || staticMatch?.description || '',
+            };
+        });
+
+        // Add static wineries that didn't get matched/updated
+        const unmatchedStatic = ALL_WINERIES.filter(sw => 
+            !dbWineries.some(dbW => dbW.slug === sw.id || dbW.id === sw.id)
+        );
+
+        return [...mappedDb, ...unmatchedStatic];
+    }, [dbWineries]);
+
     const filtered = useMemo(() =>
-        ALL_WINERIES.filter(w =>
+        mergedWineries.filter(w =>
             !query ||
             w.name.toLowerCase().includes(query.toLowerCase()) ||
             w.location.toLowerCase().includes(query.toLowerCase())
-        ), [query])
+        ), [query, mergedWineries])
 
     return (
         <div className="min-h-screen bg-white">

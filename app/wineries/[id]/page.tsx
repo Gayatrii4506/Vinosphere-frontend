@@ -18,19 +18,48 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!winery) return { title: 'Winery Not Found' }
     return {
         title: `${winery.name} | Vinosphere`,
-        description: `${winery.tagline} — Visit ${winery.name} in ${winery.location}. Explore wines, estate experiences, tasting packages and more.`,
+        description: `${winery.tagline} – Visit ${winery.name} in ${winery.location}. Explore wines, estate experiences, tasting packages and more.`,
     }
 }
 
 export default async function WineryDetailPage({ params }: Props) {
     const { id } = await params
-    const winery = WINERY_DETAILS[id]
 
-    if (!winery) notFound()
+    // 1. Fetch live winery details from the Express backend
+    let dbWinery = null;
+    try {
+        const res = await fetch(`http://localhost:5000/api/v1/wineries/${id}`, {
+            next: { revalidate: 0 } // disable fetch cache to always show latest updates
+        });
+        if (res.ok) {
+            const json = await res.json();
+            dbWinery = json.data;
+        }
+    } catch (err) {
+        console.error("Error fetching live winery details:", err);
+    }
+
+    const staticWinery = WINERY_DETAILS[id];
+    
+    // Fallback if neither exists
+    if (!staticWinery && !dbWinery) notFound();
+
+    // 2. Merge static mock listings with database edits
+    const mergedWinery = {
+        ...(staticWinery || {}),
+        id: dbWinery?.id || staticWinery?.id || id,
+        name: dbWinery?.name || staticWinery?.name || 'Unnamed Winery',
+        tagline: dbWinery?.description || staticWinery?.tagline || '',
+        heroImage: dbWinery?.banner_url || staticWinery?.heroImage || '',
+        logo: dbWinery?.logo_url || staticWinery?.logo || '',
+        location: dbWinery?.city ? `${dbWinery.city}, ${dbWinery.state || ''}` : (staticWinery?.location || ''),
+        region: dbWinery?.state || staticWinery?.region || '',
+        coordinates: dbWinery?.latitude ? { lat: Number(dbWinery.latitude), lng: Number(dbWinery.longitude) } : (staticWinery?.coordinates || null)
+    };
 
     return (
         <>
-            <WineryDetailClient winery={winery} />
+            <WineryDetailClient winery={mergedWinery as any} />
             <NewsletterFooter />
         </>
     )
