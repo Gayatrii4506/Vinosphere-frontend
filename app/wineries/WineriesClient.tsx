@@ -209,12 +209,15 @@ export function WineriesClient({ dbWineries = [] }: { dbWineries?: any[] }) {
     const [visible, setVisible] = useState(3)
 
     const mergedWineries = useMemo(() => {
-        if (!dbWineries || dbWineries.length === 0) {
+        // Filter out draft/unpublished database records to avoid duplicates and show only active listings
+        const publishedDb = (dbWineries || []).filter(w => w.status === 'published');
+
+        if (publishedDb.length === 0) {
             return ALL_WINERIES;
         }
 
         // Map database wineries only
-        return dbWineries.map((dbW) => {
+        return publishedDb.map((dbW) => {
             const staticMatch = ALL_WINERIES.find(sw => {
                 const cleanDbSlug = dbW.slug.toLowerCase().replace('-winery', '').replace('-vineyards', '').replace('-village', '').trim();
                 const cleanStaticId = sw.id.toLowerCase();
