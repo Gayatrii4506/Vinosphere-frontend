@@ -54,7 +54,9 @@ export default async function WineryDetailPage({ params }: Props) {
         logo: dbWinery?.logo_url || staticWinery?.logo || '',
         location: dbWinery?.city ? `${dbWinery.city}, ${dbWinery.state || ''}` : (staticWinery?.location || ''),
         region: dbWinery?.state || staticWinery?.region || '',
-        coordinates: dbWinery?.latitude ? { lat: Number(dbWinery.latitude), lng: Number(dbWinery.longitude) } : (staticWinery?.coordinates || null)
+        coordinates: dbWinery?.latitude ? { lat: Number(dbWinery.latitude), lng: Number(dbWinery.longitude) } : (staticWinery?.coordinates || null),
+        awards: dbWinery?.awards && dbWinery.awards.length > 0 ? dbWinery.awards : (staticWinery?.awards || []),
+        storyTimeline: dbWinery?.timeline && dbWinery.timeline.length > 0 ? dbWinery.timeline : (staticWinery?.storyTimeline || [])
     };
 
     return (
