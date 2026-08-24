@@ -132,6 +132,7 @@ function WineryCard({ winery, index }: { winery: typeof ALL_WINERIES[0]; index: 
                     fill
                     sizes="112px"
                     quality={75}
+                    placeholder="empty"
                     className="object-cover transition-transform duration-500 group-hover:scale-[1.07]"
                 />
             </div>
@@ -214,7 +215,11 @@ export function WineriesClient({ dbWineries = [] }: { dbWineries?: any[] }) {
 
         // Map database wineries only
         return dbWineries.map((dbW) => {
-            const staticMatch = ALL_WINERIES.find(sw => sw.id === dbW.slug || sw.id === dbW.id);
+            const staticMatch = ALL_WINERIES.find(sw => {
+                const cleanDbSlug = dbW.slug.toLowerCase().replace('-winery', '').replace('-vineyards', '').replace('-village', '').trim();
+                const cleanStaticId = sw.id.toLowerCase();
+                return cleanDbSlug.includes(cleanStaticId) || cleanStaticId.includes(cleanDbSlug);
+            });
             return {
                 id: dbW.slug || dbW.id,
                 name: dbW.name,
