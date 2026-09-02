@@ -1,3 +1,4 @@
+import { API_V1_URL } from '@/lib/api-config'
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineCatalog } from '@/components/catalog/WineCatalog'
@@ -21,7 +22,7 @@ async function getWishlist(): Promise<Wine[]> {
             redirect('/login'); // Assuming there's a login route, or handle gracefully
         }
 
-        const res = await fetch('http://localhost:5000/api/v1/wishlist', {
+        const res = await fetch(`${API_V1_URL}/wishlist`, {
             cache: 'no-store',
             headers: {
                 'Authorization': `Bearer ${session.access_token}`
@@ -82,7 +83,7 @@ export default async function CellarPage() {
                 <div className="bg-[#F8F5EF] min-h-screen pt-32 pb-24 flex flex-col items-center justify-center">
                     <h2 className="font-serif text-3xl font-bold text-vino-darker mb-4">Your Cellar is Empty</h2>
                     <p className="text-stone-500 max-w-md text-center">
-                        You haven't added any wines to your wishlist yet. Head over to the catalog to discover new wines!
+                        You haven&apos;t added any wines to your wishlist yet. Head over to the catalog to discover new wines!
                     </p>
                 </div>
             ) : (

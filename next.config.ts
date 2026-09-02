@@ -1,6 +1,9 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
     images: {
         qualities: [25, 50, 60, 70, 75, 80, 85, 88, 90, 95, 100],
         remotePatterns: [

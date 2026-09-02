@@ -1,5 +1,7 @@
 'use client'
 
+import { API_V1_URL } from '@/lib/api-config'
+
 import React, { useState } from 'react'
 import { Heart, Star } from 'lucide-react'
 import { Wine } from '@/constants/wines'
@@ -78,14 +80,23 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
                                 const { data: { session } } = await supabase.auth.getSession();
                                 
                                 if (!session) {
-                                    alert('Please log in to save wines to your cellar.');
-                                    setIsLiked(isLiked); // Revert
+                                    // In demo mode without session, allow instant local UI feedback
+                                    try {
+                                        const saved = JSON.parse(localStorage.getItem('vinosphere_liked_wines') || '[]');
+                                        if (newlyLiked) {
+                                            if (!saved.includes(wine.id)) saved.push(wine.id);
+                                        } else {
+                                            const idx = saved.indexOf(wine.id);
+                                            if (idx > -1) saved.splice(idx, 1);
+                                        }
+                                        localStorage.setItem('vinosphere_liked_wines', JSON.stringify(saved));
+                                    } catch (e) {}
                                     return;
                                 }
 
                                 if (newlyLiked) {
                                     // Add to wishlist
-                                    await fetch('http://localhost:5000/api/v1/wishlist', {
+                                    await fetch(`${API_V1_URL}/wishlist`, {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',
@@ -95,7 +106,7 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
                                     });
                                 } else {
                                     // Remove from wishlist
-                                    await fetch(`http://localhost:5000/api/v1/wishlist/${wine.id}`, {
+                                    await fetch(`${API_V1_URL}/wishlist/${wine.id}`, {
                                         method: 'DELETE',
                                         headers: {
                                             'Authorization': `Bearer ${session.access_token}`

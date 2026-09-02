@@ -1,3 +1,4 @@
+import { API_V1_URL } from '@/lib/api-config'
 import type { Metadata } from 'next'
 import { WineriesClient } from './WineriesClient'
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 export default async function WineriesPage() {
     let dbWineries = [];
     try {
-        const res = await fetch('http://localhost:5000/api/v1/wineries', {
+        const res = await fetch(`${API_V1_URL}/wineries`, {
             next: { revalidate: 0 } // disable cache to show latest list
         });
         if (res.ok) {

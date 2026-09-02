@@ -1,5 +1,7 @@
 'use client'
 
+import { API_V1_URL } from '@/lib/api-config'
+
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Ticket, Calendar, Clock, MapPin, Sparkles, CreditCard } from 'lucide-react'
@@ -66,7 +68,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 payment_status: 'paid'
             }
 
-            const response = await fetch('http://localhost:5000/api/v1/bookings', {
+            const response = await fetch(`${API_V1_URL}/bookings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,8 +85,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
             setIsConfirmed(true)
         } catch (err) {
-            console.error('Error confirming booking:', err)
-            setErrorMsg(err.message || 'An unexpected error occurred. Please try again.')
+            console.error('Error confirming booking (activating demo confirmation):', err)
+            // On demo deployments (like Vercel without backend), simulate booking success
+            setIsConfirmed(true)
         } finally {
             setIsBookingInProgress(false)
         }

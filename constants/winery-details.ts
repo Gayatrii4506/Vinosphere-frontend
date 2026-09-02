@@ -68,6 +68,7 @@ export interface WineryDetails {
     phone: string
     email: string
     website: string
+    coordinates?: { lat: number; lng: number } | null
 }
 
 export const WINERY_DETAILS: Record<string, WineryDetails> = {

@@ -30,7 +30,7 @@ export const AuthForm = () => {
             await signup(formData)
         }
         
-        // Note: we don't necessarily setIsLoading(false) here because 
+        // Note: we don&apos;t necessarily setIsLoading(false) here because 
         // the server actions use redirect(), which will navigate away.
         // If it doesn't navigate (e.g. error handled client side in future), we would.
         // For now, the page will either redirect or the URL will update with an error param.
@@ -158,7 +158,7 @@ export const AuthForm = () => {
                     className="text-sm text-vino-gray/70 hover:text-white transition-colors"
                 >
                     {isLogin ? (
-                        <>Don't have an account? <span className="text-vino-accent font-medium hover:underline underline-offset-4">Sign Up</span></>
+                        <>Don&apos;t have an account? <span className="text-vino-accent font-medium hover:underline underline-offset-4">Sign Up</span></>
                     ) : (
                         <>Already have an account? <span className="text-vino-accent font-medium hover:underline underline-offset-4">Sign In</span></>
                     )}

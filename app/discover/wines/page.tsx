@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineCatalog } from '@/components/catalog/WineCatalog'
-import { Wine } from '@/constants/wines'
+import { Wine, WINES } from '@/constants/wines'
+import { API_V1_URL } from '@/lib/api-config'
 
 export const metadata: Metadata = {
     title: 'Wine Catalog | VinoSphere',
@@ -13,7 +14,7 @@ export const dynamic = 'force-dynamic';
 
 async function getWines(): Promise<Wine[]> {
     try {
-        const res = await fetch('http://localhost:5000/api/v1/discovery/wines', {
+        const res = await fetch(`${API_V1_URL}/discovery/wines`, {
             // Next.js caching: adjust as needed, 'no-store' forces a fresh fetch
             cache: 'no-store' 
         });
@@ -77,6 +78,7 @@ async function getWines(): Promise<Wine[]> {
 
 export default async function WinesPage() {
     const fetchedWines = await getWines();
+    const winesToDisplay = fetchedWines.length > 0 ? fetchedWines : WINES;
 
     return (
         <Suspense fallback={
@@ -84,7 +86,7 @@ export default async function WinesPage() {
                 <div className="text-vino-dark/60 text-lg">Loading catalog...</div>
             </div>
         }>
-            <WineCatalog initialWines={fetchedWines} />
+            <WineCatalog initialWines={winesToDisplay} />
         </Suspense>
     )
 }

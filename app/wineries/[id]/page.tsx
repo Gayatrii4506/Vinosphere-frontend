@@ -1,3 +1,4 @@
+import { API_V1_URL } from '@/lib/api-config'
 import { notFound } from 'next/navigation'
 import { WINERY_DETAILS } from '@/constants/winery-details'
 import { WineryDetailClient } from '@/components/wineries/WineryDetailClient'
@@ -28,7 +29,7 @@ export default async function WineryDetailPage({ params }: Props) {
     // 1. Fetch live winery details from the Express backend
     let dbWinery = null;
     try {
-        const res = await fetch(`http://localhost:5000/api/v1/wineries/${id}`, {
+        const res = await fetch(`${API_V1_URL}/wineries/${id}`, {
             next: { revalidate: 0 } // disable fetch cache to always show latest updates
         });
         if (res.ok) {
@@ -54,7 +55,7 @@ export default async function WineryDetailPage({ params }: Props) {
         logo: dbWinery?.logo_url || staticWinery?.logo || '',
         location: dbWinery?.city ? `${dbWinery.city}, ${dbWinery.state || ''}` : (staticWinery?.location || ''),
         region: dbWinery?.state || staticWinery?.region || '',
-        coordinates: dbWinery?.latitude ? { lat: Number(dbWinery.latitude), lng: Number(dbWinery.longitude) } : (staticWinery?.coordinates || null),
+        coordinates: dbWinery?.latitude ? { lat: Number(dbWinery.latitude), lng: Number(dbWinery.longitude) } : ((staticWinery as any)?.coordinates || null),
         awards: dbWinery?.awards && dbWinery.awards.length > 0 ? dbWinery.awards : (staticWinery?.awards || []),
         storyTimeline: dbWinery?.timeline && dbWinery.timeline.length > 0 ? dbWinery.timeline : (staticWinery?.storyTimeline || [])
     };

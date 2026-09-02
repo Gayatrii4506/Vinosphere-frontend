@@ -39,6 +39,7 @@ export interface VinoSphereExperience {
     title: string
     wineryId?: string
     tagline: string
+    type?: 'event' | 'experience'
     category: 'Wine Tastings' | 'Vineyard Tours' | 'Harvest Festivals' | 'Food Pairing' | 'Sommelier Workshops' | 'Sunset Soirées'
     badge?: 'Featured' | 'Best Seller' | 'Selling Fast' | 'Exclusive' | 'Reserve Collection'
     image: string
@@ -61,6 +62,7 @@ export interface VinoSphereExperience {
         lng: number
     }
     overview: string
+    description?: string
     highlights: string[]
     host: Host
     itinerary: ItineraryStep[]

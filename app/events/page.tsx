@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineEventsCatalog } from '@/components/events/WineEventsCatalog'
-import { VinoSphereExperience } from '@/constants/events'
+import { VinoSphereExperience, EXPERIENCES } from '@/constants/events'
+import { API_V1_URL } from '@/lib/api-config'
 
 export const metadata: Metadata = {
     title: 'Wine Experiences & Masterclasses | VinoSphere',
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 async function getExperiences(): Promise<VinoSphereExperience[]> {
     try {
-        const res = await fetch('http://localhost:5000/api/v1/discovery/events', {
+        const res = await fetch(`${API_V1_URL}/discovery/events`, {
             cache: 'no-store'
         });
         
@@ -153,8 +154,7 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     time: displayTime,
                     duration: displayDuration,
                     price: item.price || 0,
-                    description: item.description || '',
-                    host: {
+                                        host: {
                         name: item.host_info?.name || 'VinoSphere Host',
                         title: item.host_info?.title || 'Expert Sommelier',
                         avatar: item.host_info?.avatar || 'https://ui-avatars.com/api/?name=' + (item.host_info?.name || 'Host'),
@@ -180,6 +180,7 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
 
 export default async function EventsPage() {
     const fetchedExperiences = await getExperiences();
+    const experiencesToDisplay = fetchedExperiences.length > 0 ? fetchedExperiences : EXPERIENCES;
 
     return (
         <Suspense
@@ -194,7 +195,7 @@ export default async function EventsPage() {
                 </div>
             }
         >
-            <WineEventsCatalog initialExperiences={fetchedExperiences} />
+            <WineEventsCatalog initialExperiences={experiencesToDisplay} />
         </Suspense>
     )
 }
