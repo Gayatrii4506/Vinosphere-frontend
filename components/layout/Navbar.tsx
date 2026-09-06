@@ -99,11 +99,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                             <Heart size={20} />
                         </button>
 
-                        <button
-                            className={`${iconColor} transition-colors duration-300`}
-                        >
-                            <ShoppingBag size={20} />
-                        </button>
+                       
 
                         {user ? (
                             <Link href="/profile" className={`${navText} flex items-center gap-2 text-sm font-semibold transition-colors duration-300`}>

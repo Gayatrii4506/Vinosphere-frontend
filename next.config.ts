@@ -26,6 +26,16 @@ const nextConfig: NextConfig = {
                 hostname: 'ui-avatars.com',
                 pathname: '/**',
             },
+            /**
+             * Unsplash Plus CDN – used for high-resolution images from Unsplash API.
+             * Food and wine images enriched via the image_service.py Unsplash integration.
+             * License: Unsplash License (free for product use; attribution encouraged)
+             */
+            {
+                protocol: 'https',
+                hostname: 'plus.unsplash.com',
+                pathname: '/**',
+            },
         ],
     },
     outputFileTracingRoot: __dirname,

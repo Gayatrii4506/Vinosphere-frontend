@@ -40,7 +40,7 @@ const footerNav = [
             { label: 'Discover Wines', href: '/discover' },
             { label: 'Collections', href: '/discover' },
             { label: 'Wine Regions', href: '/wineries' },
-            { label: 'Pairings', href: '/discover#food-pairing' },
+            { label: 'Pairings', href: '/food-pairing' },
         ],
     },
 ]
@@ -96,7 +96,7 @@ export const NewsletterFooter: React.FC = () => {
                 {/* Vineyard background image */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/vineyard-bg.png"
+                        src="https://res.cloudinary.com/xfklkvdc/image/upload/v1785060878/e9bfab5c-378c-4c5f-8020-2dcc6342eb24.png"
                         alt="Luxury vineyard at golden hour"
                         style={{
                             position: 'absolute',
