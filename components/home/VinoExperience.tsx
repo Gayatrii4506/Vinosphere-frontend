@@ -116,7 +116,7 @@ export const VinoExperience: React.FC = () => {
                             </div>
 
                             <Link
-                                href="/discover#food-pairing"
+                                href="/food-pairing"
                                 className="inline-flex items-center gap-1.5 text-vino-accent hover:text-vino-accent-light text-xs font-bold tracking-wide transition-colors pt-1"
                             >
                                 Explore Pairings

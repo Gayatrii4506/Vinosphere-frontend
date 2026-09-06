@@ -12,6 +12,10 @@ export const NAVIGATION_ITEMS = [
         href: '/discover/wines',
     },
     {
+        label: 'Food Pairing',
+        href: '/food-pairing',
+    },
+    {
         label: 'Experiences',
         href: '/events',
     },
