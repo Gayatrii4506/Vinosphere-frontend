@@ -39,6 +39,9 @@
   ],
   "exclude": [
     "node_modules",
-    "Food_Recom"
+    "Food_Recom",
+    "admin_dashboard",
+    "winery_dashboard",
+    "vinosphere-backend"
   ]
 }
