@@ -14,6 +14,9 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
     const pathname = usePathname()
+    if (pathname && pathname.startsWith('/admin')) {
+        return null
+    }
     const isHome = pathname === '/'
     const isLightMode = pathname === '/discover/wines' || pathname === '/discover' || pathname === '/events'
 

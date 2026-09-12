@@ -72,13 +72,16 @@ function HeroSection({ winery }: { winery: WineryDetails }) {
     const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
     const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
+    const awards = winery?.awards || []
+    const heroImage = winery?.heroImage || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=1600&q=80'
+
     return (
         <section ref={ref} className="relative h-[92vh] min-h-[620px] overflow-hidden">
             {/* Parallax Image */}
             <motion.div style={{ y }} className="absolute inset-0 scale-110">
                 <Image
-                    src={winery.heroImage}
-                    alt={winery.name}
+                    src={heroImage}
+                    alt={winery?.name || 'Winery'}
                     fill
                     className="object-cover"
                     priority
@@ -104,22 +107,24 @@ function HeroSection({ winery }: { winery: WineryDetails }) {
             <motion.div style={{ opacity }} className="absolute inset-0 flex items-end pb-14 md:pb-20">
                 <div className="w-full max-w-7xl mx-auto px-6 lg:px-12">
                     {/* Award badges */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.7 }}
-                        className="flex flex-wrap gap-2 mb-6"
-                    >
-                        {winery.awards.slice(0, 3).map((award, i) => (
-                            <span
-                                key={i}
-                                className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-[#C89B3C]/40 text-[#E8D49C] text-[10px] font-semibold tracking-wider px-3 py-1.5 rounded-full"
-                            >
-                                <Award size={9} className="text-[#C89B3C]" />
-                                {award.title} {award.year}
-                            </span>
-                        ))}
-                    </motion.div>
+                    {awards.length > 0 && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2, duration: 0.7 }}
+                            className="flex flex-wrap gap-2 mb-6"
+                        >
+                            {awards.slice(0, 3).map((award, i) => (
+                                <span
+                                    key={i}
+                                    className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-[#C89B3C]/40 text-[#E8D49C] text-[10px] font-semibold tracking-wider px-3 py-1.5 rounded-full"
+                                >
+                                    <Award size={9} className="text-[#C89B3C]" />
+                                    {award.title} {award.year}
+                                </span>
+                            ))}
+                        </motion.div>
+                    )}
 
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
@@ -127,7 +132,7 @@ function HeroSection({ winery }: { winery: WineryDetails }) {
                         transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tight mb-3"
                     >
-                        {winery.name}
+                        {winery?.name}
                     </motion.h1>
 
                     <motion.p
@@ -136,7 +141,7 @@ function HeroSection({ winery }: { winery: WineryDetails }) {
                         transition={{ delay: 0.5, duration: 0.7 }}
                         className="text-lg md:text-xl text-[#E8D49C] font-light tracking-wide italic mb-2"
                     >
-                        {winery.tagline}
+                        {winery?.tagline}
                     </motion.p>
 
                     <motion.div
@@ -147,13 +152,17 @@ function HeroSection({ winery }: { winery: WineryDetails }) {
                     >
                         <span className="flex items-center gap-1.5">
                             <MapPin size={13} className="text-[#C89B3C]" />
-                            {winery.location}
+                            {winery?.location || 'India'}
                         </span>
-                        <span className="w-1 h-1 rounded-full bg-[#C89B3C]/60" />
-                        <span>Est. {winery.established}</span>
+                        {winery?.established && (
+                            <>
+                                <span className="w-1 h-1 rounded-full bg-[#C89B3C]/60" />
+                                <span>Est. {winery.established}</span>
+                            </>
+                        )}
                         <span className="w-1 h-1 rounded-full bg-[#C89B3C]/60" />
                         <StarRating rating={4.5} size={12} />
-                        <span>4.5 · 12,416 reviews</span>
+                        <span>4.5 · Highly Rated</span>
                     </motion.div>
 
                     <motion.div
@@ -204,6 +213,9 @@ function HeroSection({ winery }: { winery: WineryDetails }) {
 
 // ─── Story Timeline ───────────────────────────────────────────────────────────
 function StorySection({ winery }: { winery: WineryDetails }) {
+    const timeline = winery?.storyTimeline || []
+    if (timeline.length === 0) return null
+
     return (
         <section className="bg-[#F8F4EE] py-24 lg:py-32 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -227,9 +239,9 @@ function StorySection({ winery }: { winery: WineryDetails }) {
                     <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#C89B3C]/30 via-[#C89B3C] to-[#C89B3C]/30 hidden md:block" />
 
                     <div className="space-y-16 md:space-y-24">
-                        {winery.storyTimeline.map((item, index) => (
+                        {timeline.map((item, index) => (
                             <motion.div
-                                key={item.year}
+                                key={item.year || index}
                                 initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: '-60px' }}
@@ -257,8 +269,8 @@ function StorySection({ winery }: { winery: WineryDetails }) {
                                 <div className="flex-1 md:max-w-[45%]">
                                     <div className="relative h-60 md:h-72 rounded-3xl overflow-hidden shadow-xl">
                                         <Image
-                                            src={item.image}
-                                            alt={item.title}
+                                            src={item.image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80'}
+                                            alt={item.title || 'Heritage'}
                                             fill
                                             className="object-cover"
                                             sizes="(max-width: 768px) 100vw, 45vw"
@@ -277,6 +289,9 @@ function StorySection({ winery }: { winery: WineryDetails }) {
 
 // ─── Estate Experience ────────────────────────────────────────────────────────
 function EstateSection({ winery }: { winery: WineryDetails }) {
+    const experiences = winery?.estateExperiences || []
+    if (experiences.length === 0) return null
+
     return (
         <section className="bg-white py-24 lg:py-32">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -294,9 +309,9 @@ function EstateSection({ winery }: { winery: WineryDetails }) {
                 </motion.div>
 
                 <div className="space-y-24">
-                    {winery.estateExperiences.map((exp, i) => (
+                    {experiences.map((exp, i) => (
                         <motion.div
-                            key={exp.title}
+                            key={exp.title || i}
                             initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: '-60px' }}
@@ -307,8 +322,8 @@ function EstateSection({ winery }: { winery: WineryDetails }) {
                             <div className="w-full lg:w-1/2">
                                 <div className="relative h-80 lg:h-[420px] rounded-[2rem] overflow-hidden shadow-2xl group">
                                     <Image
-                                        src={exp.image}
-                                        alt={exp.title}
+                                        src={exp.image || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80'}
+                                        alt={exp.title || 'Estate Experience'}
                                         fill
                                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                                         sizes="(max-width: 1024px) 100vw, 50vw"
@@ -326,12 +341,13 @@ function EstateSection({ winery }: { winery: WineryDetails }) {
                                 <div className="w-10 h-px bg-[#C89B3C]" />
                                 <h3 className="font-serif text-3xl lg:text-4xl font-bold text-[#1A0A10] leading-tight">{exp.title}</h3>
                                 <p className="text-[#8B6E5A] text-base leading-relaxed max-w-md">{exp.description}</p>
-                                <motion.button
+                                <motion.a
+                                    href="#packages"
                                     whileHover={{ x: 4 }}
                                     className="inline-flex items-center gap-2 text-[#7A1F3D] font-semibold text-sm hover:gap-3 transition-all duration-200"
                                 >
                                     Learn more <ArrowRight size={14} />
-                                </motion.button>
+                                </motion.a>
                             </div>
                         </motion.div>
                     ))}
@@ -343,8 +359,13 @@ function EstateSection({ winery }: { winery: WineryDetails }) {
 
 // ─── Signature Wine Collection ─────────────────────────────────────────────────
 function WineCollectionSection({ winery }: { winery: WineryDetails }) {
+    const wines = winery?.signatureWines || []
     const [active, setActive] = useState(0)
-    const wine = winery.signatureWines[active]
+
+    if (wines.length === 0) return null
+    const safeActive = active < wines.length ? active : 0
+    const wine = wines[safeActive]
+    if (!wine) return null
 
     return (
         <section id="wines" className="bg-[#F8F4EE] py-24 lg:py-32 overflow-hidden">
@@ -365,7 +386,7 @@ function WineCollectionSection({ winery }: { winery: WineryDetails }) {
                 {/* Featured wine display */}
                 <AnimatePresence mode="wait">
                     <motion.div
-                        key={active}
+                        key={safeActive}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
@@ -379,7 +400,7 @@ function WineCollectionSection({ winery }: { winery: WineryDetails }) {
                                 <div className="absolute inset-0 scale-75 rounded-full bg-[#C89B3C]/10 blur-3xl" />
                                 <div className="relative h-full rounded-3xl overflow-hidden shadow-2xl border border-[#EDE5D8]">
                                     <Image
-                                        src={wine.image}
+                                        src={wine.image || 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80'}
                                         alt={wine.name}
                                         fill
                                         className="object-cover"
@@ -405,12 +426,12 @@ function WineCollectionSection({ winery }: { winery: WineryDetails }) {
                             {/* Score */}
                             <div className="flex items-center gap-4">
                                 <div className="w-16 h-16 rounded-2xl bg-[#7A1F3D] flex flex-col items-center justify-center shadow-lg">
-                                    <span className="font-serif text-2xl font-bold text-white">{wine.rating}</span>
+                                    <span className="font-serif text-2xl font-bold text-white">{wine.rating || 92}</span>
                                     <span className="text-[8px] text-[#C89B3C] tracking-wider uppercase">pts</span>
                                 </div>
                                 <div>
                                     <p className="text-sm font-semibold text-[#1A0A10]">Critic Score</p>
-                                    <p className="text-xs text-[#8B6E5A]">Wine Spectator Rating</p>
+                                    <p className="text-xs text-[#8B6E5A]">Sommelier Evaluation</p>
                                 </div>
                             </div>
 
@@ -424,43 +445,46 @@ function WineCollectionSection({ winery }: { winery: WineryDetails }) {
                             <div className="flex items-center gap-4">
                                 <div>
                                     <p className="text-[10px] text-[#A08070] uppercase tracking-wider">From</p>
-                                    <p className="font-serif text-3xl font-bold text-[#1A0A10]">{wine.currency}{wine.price.toLocaleString()}</p>
+                                    <p className="font-serif text-3xl font-bold text-[#1A0A10]">{wine.currency || '₹'}{(wine.price || 0).toLocaleString()}</p>
                                 </div>
-                                <motion.button
+                                <motion.a
+                                    href="/wines"
                                     whileHover={{ scale: 1.04, boxShadow: '0 8px 24px rgba(122,31,61,0.3)' }}
                                     whileTap={{ scale: 0.97 }}
-                                    className="flex-1 bg-[#7A1F3D] hover:bg-[#9A2F52] text-white font-bold text-sm py-3.5 rounded-2xl transition-colors shadow-lg"
+                                    className="flex-1 text-center bg-[#7A1F3D] hover:bg-[#9A2F52] text-white font-bold text-sm py-3.5 rounded-2xl transition-colors shadow-lg"
                                 >
-                                    View Wine
-                                </motion.button>
+                                    View Wine Catalog
+                                </motion.a>
                             </div>
                         </div>
                     </motion.div>
                 </AnimatePresence>
 
                 {/* Wine selector tabs */}
-                <div className="flex flex-wrap gap-3 justify-center">
-                    {winery.signatureWines.map((w, i) => (
-                        <motion.button
-                            key={w.id}
-                            onClick={() => setActive(i)}
-                            whileHover={{ scale: 1.03 }}
-                            whileTap={{ scale: 0.97 }}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-2xl border transition-all duration-200 ${active === i
-                                ? 'bg-[#7A1F3D] border-[#7A1F3D] text-white shadow-lg'
-                                : 'bg-white border-[#EDE5D8] text-[#5C4033] hover:border-[#C89B3C]'
-                                }`}
-                        >
-                            <div className="relative w-8 h-10 rounded-lg overflow-hidden shrink-0">
-                                <Image src={w.image} alt={w.name} fill className="object-cover" sizes="32px" />
-                            </div>
-                            <div className="text-left">
-                                <p className={`text-xs font-bold leading-tight ${active === i ? 'text-white' : 'text-[#1A0A10]'}`}>{w.name}</p>
-                                <p className={`text-[10px] ${active === i ? 'text-[#E8D49C]' : 'text-[#A08070]'}`}>{w.vintage} · {w.type}</p>
-                            </div>
-                        </motion.button>
-                    ))}
-                </div>
+                {wines.length > 1 && (
+                    <div className="flex flex-wrap gap-3 justify-center">
+                        {wines.map((w, i) => (
+                            <motion.button
+                                key={w.id || i}
+                                onClick={() => setActive(i)}
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-2xl border transition-all duration-200 ${safeActive === i
+                                    ? 'bg-[#7A1F3D] border-[#7A1F3D] text-white shadow-lg'
+                                    : 'bg-white border-[#EDE5D8] text-[#5C4033] hover:border-[#C89B3C]'
+                                    }`}
+                            >
+                                <div className="relative w-8 h-10 rounded-lg overflow-hidden shrink-0">
+                                    <Image src={w.image || 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80'} alt={w.name} fill className="object-cover" sizes="32px" />
+                                </div>
+                                <div className="text-left">
+                                    <p className={`text-xs font-bold leading-tight ${safeActive === i ? 'text-white' : 'text-[#1A0A10]'}`}>{w.name}</p>
+                                    <p className={`text-[10px] ${safeActive === i ? 'text-[#E8D49C]' : 'text-[#A08070]'}`}>{w.vintage} · {w.type}</p>
+                                </div>
+                            </motion.button>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     )
@@ -575,6 +599,9 @@ function VirtualTourSection() {
 
 // ─── Awards & Recognition ─────────────────────────────────────────────────────
 function AwardsSection({ winery }: { winery: WineryDetails }) {
+    const awards = winery?.awards || []
+    if (awards.length === 0) return null
+
     return (
         <section className="bg-[#F8F4EE] py-24 lg:py-32">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -592,7 +619,7 @@ function AwardsSection({ winery }: { winery: WineryDetails }) {
                 </motion.div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {winery.awards.map((award, i) => (
+                    {awards.map((award, i) => (
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 24 }}
@@ -609,7 +636,7 @@ function AwardsSection({ winery }: { winery: WineryDetails }) {
                                 <div className="w-12 h-12 rounded-2xl bg-[#C89B3C]/10 flex items-center justify-center">
                                     <Award size={22} className="text-[#C89B3C]" />
                                 </div>
-                                <MedalBadge medal={award.medal} />
+                                <MedalBadge medal={award.medal || 'Gold'} />
                             </div>
 
                             <h4 className="font-serif text-lg font-bold text-[#1A0A10] mb-1 group-hover:text-[#7A1F3D] transition-colors">{award.title}</h4>
@@ -630,6 +657,9 @@ function AwardsSection({ winery }: { winery: WineryDetails }) {
 
 // ─── Visitor Experience Packages ──────────────────────────────────────────────
 function VisitorSection({ winery }: { winery: WineryDetails }) {
+    const packages = winery?.packages || []
+    if (packages.length === 0 && !winery?.timings && !winery?.phone && !winery?.email) return null
+
     return (
         <section id="packages" className="bg-white py-24 lg:py-32">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -645,63 +675,67 @@ function VisitorSection({ winery }: { winery: WineryDetails }) {
                         Tasting <span className="italic text-[#7A1F3D]">Experiences</span>
                     </motion.h2>
                     <motion.div variants={fadeUp} className="mt-6 flex flex-wrap justify-center gap-6 text-sm text-[#8B6E5A]">
-                        <span className="flex items-center gap-1.5"><Clock size={13} className="text-[#C89B3C]" />{winery.timings}</span>
-                        <span className="flex items-center gap-1.5"><Phone size={13} className="text-[#C89B3C]" />{winery.phone}</span>
-                        <span className="flex items-center gap-1.5"><Mail size={13} className="text-[#C89B3C]" />{winery.email}</span>
+                        {winery?.timings && <span className="flex items-center gap-1.5"><Clock size={13} className="text-[#C89B3C]" />{winery.timings}</span>}
+                        {winery?.phone && <span className="flex items-center gap-1.5"><Phone size={13} className="text-[#C89B3C]" />{winery.phone}</span>}
+                        {winery?.email && <span className="flex items-center gap-1.5"><Mail size={13} className="text-[#C89B3C]" />{winery.email}</span>}
                     </motion.div>
                 </motion.div>
 
-                <div className="grid md:grid-cols-3 gap-6">
-                    {winery.packages.map((pkg, i) => (
-                        <motion.div
-                            key={pkg.id}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.12, duration: 0.65 }}
-                            className={`relative rounded-3xl overflow-hidden border transition-all duration-300 ${pkg.highlight
-                                ? 'border-[#C89B3C] shadow-2xl shadow-[#C89B3C]/15 scale-[1.02]'
-                                : 'border-[#EDE5D8] hover:border-[#C89B3C]/50 hover:shadow-xl'
-                                }`}
-                        >
-                            {pkg.highlight && (
-                                <div className="absolute top-0 left-0 right-0 bg-[#C89B3C] text-[#1A0A10] text-[10px] font-bold tracking-[0.2em] uppercase py-1.5 text-center">
-                                    Most Popular
-                                </div>
-                            )}
-                            <div className={`p-8 ${pkg.highlight ? 'bg-[#FDF8EE] pt-10' : 'bg-white'}`}>
-                                <div className="mb-6">
-                                    <p className="text-xs text-[#A08070] uppercase tracking-wider mb-1">{pkg.duration}</p>
-                                    <h3 className="font-serif text-2xl font-bold text-[#1A0A10] mb-3">{pkg.name}</h3>
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="font-serif text-4xl font-bold text-[#7A1F3D]">{pkg.currency}{pkg.price.toLocaleString()}</span>
-                                        <span className="text-xs text-[#A08070]">per person</span>
+                {packages.length > 0 && (
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {packages.map((pkg, i) => (
+                            <motion.div
+                                key={pkg.id || i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.12, duration: 0.65 }}
+                                className={`relative rounded-3xl overflow-hidden border transition-all duration-300 ${pkg.highlight
+                                    ? 'border-[#C89B3C] shadow-2xl shadow-[#C89B3C]/15 scale-[1.02]'
+                                    : 'border-[#EDE5D8] hover:border-[#C89B3C]/50 hover:shadow-xl'
+                                    }`}
+                            >
+                                {pkg.highlight && (
+                                    <div className="absolute top-0 left-0 right-0 bg-[#C89B3C] text-[#1A0A10] text-[10px] font-bold tracking-[0.2em] uppercase py-1.5 text-center">
+                                        Most Popular
                                     </div>
-                                </div>
-
-                                <div className="space-y-2.5 mb-8">
-                                    {pkg.includes.map((item, j) => (
-                                        <div key={j} className="flex items-start gap-2.5">
-                                            <CheckCircle2 size={14} className="text-[#C89B3C] shrink-0 mt-0.5" />
-                                            <span className="text-xs text-[#5C4033] leading-relaxed">{item}</span>
+                                )}
+                                <div className={`p-8 ${pkg.highlight ? 'bg-[#FDF8EE] pt-10' : 'bg-white'}`}>
+                                    <div className="mb-6">
+                                        <p className="text-xs text-[#A08070] uppercase tracking-wider mb-1">{pkg.duration}</p>
+                                        <h3 className="font-serif text-2xl font-bold text-[#1A0A10] mb-3">{pkg.name}</h3>
+                                        <div className="flex items-baseline gap-1">
+                                            <span className="font-serif text-4xl font-bold text-[#7A1F3D]">{pkg.currency || '₹'}{(pkg.price || 0).toLocaleString()}</span>
+                                            <span className="text-xs text-[#A08070]">per person</span>
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
 
-                                <motion.button
-                                    whileHover={{ scale: 1.03 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    className={`w-full py-3.5 rounded-2xl font-bold text-sm transition-all ${pkg.highlight
-                                        ? 'bg-[#7A1F3D] text-white shadow-lg hover:bg-[#9A2F52]'
-                                        : 'border-2 border-[#7A1F3D] text-[#7A1F3D] hover:bg-[#7A1F3D] hover:text-white'
-                                        }`}
-                                >
-                                    Book This Experience
-                                </motion.button>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                                    <div className="space-y-2.5 mb-8">
+                                        {(pkg.includes || []).map((item, j) => (
+                                            <div key={j} className="flex items-start gap-2.5">
+                                                <CheckCircle2 size={14} className="text-[#C89B3C] shrink-0 mt-0.5" />
+                                                <span className="text-xs text-[#5C4033] leading-relaxed">{item}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <Link href="/experiences">
+                                        <motion.button
+                                            whileHover={{ scale: 1.03 }}
+                                            whileTap={{ scale: 0.97 }}
+                                            className={`w-full py-3.5 rounded-2xl font-bold text-sm transition-all ${pkg.highlight
+                                                ? 'bg-[#7A1F3D] text-white shadow-lg hover:bg-[#9A2F52]'
+                                                : 'border-2 border-[#7A1F3D] text-[#7A1F3D] hover:bg-[#7A1F3D] hover:text-white'
+                                                }`}
+                                        >
+                                            Book This Experience
+                                        </motion.button>
+                                    </Link>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     )
@@ -709,7 +743,10 @@ function VisitorSection({ winery }: { winery: WineryDetails }) {
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 function GallerySection({ winery }: { winery: WineryDetails }) {
+    const gallery = winery?.gallery || []
     const [lightbox, setLightbox] = useState<string | null>(null)
+
+    if (gallery.length === 0) return null
 
     return (
         <section className="bg-[#F8F4EE] py-24 lg:py-32">
@@ -729,7 +766,7 @@ function GallerySection({ winery }: { winery: WineryDetails }) {
 
                 {/* Masonry grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[200px]">
-                    {winery.gallery.map((img, i) => (
+                    {gallery.map((img, i) => (
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, scale: 0.97 }}
@@ -740,8 +777,8 @@ function GallerySection({ winery }: { winery: WineryDetails }) {
                             className={`relative rounded-2xl overflow-hidden cursor-pointer group ${img.span === 'wide' ? 'col-span-2' : img.span === 'tall' ? 'row-span-2' : ''}`}
                         >
                             <Image
-                                src={img.src}
-                                alt={img.alt}
+                                src={img.src || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80'}
+                                alt={img.alt || 'Gallery photo'}
                                 fill
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                                 sizes="(max-width: 768px) 50vw, 33vw"
@@ -791,8 +828,13 @@ function GallerySection({ winery }: { winery: WineryDetails }) {
 
 // ─── Reviews ──────────────────────────────────────────────────────────────────
 function ReviewsSection({ winery }: { winery: WineryDetails }) {
+    const reviews = winery?.reviews || []
     const [current, setCurrent] = useState(0)
-    const reviews = winery.reviews
+
+    if (reviews.length === 0) return null
+    const safeCurrent = current < reviews.length ? current : 0
+    const activeReview = reviews[safeCurrent]
+    if (!activeReview) return null
 
     return (
         <section className="bg-[#7A1F3D] py-24 lg:py-32 overflow-hidden relative">
@@ -825,7 +867,7 @@ function ReviewsSection({ winery }: { winery: WineryDetails }) {
 
                 <AnimatePresence mode="wait">
                     <motion.div
-                        key={current}
+                        key={safeCurrent}
                         initial={{ opacity: 0, x: 30 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -30 }}
@@ -835,8 +877,8 @@ function ReviewsSection({ winery }: { winery: WineryDetails }) {
                         <div className="relative inline-block mb-6">
                             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#C89B3C] mx-auto">
                                 <Image
-                                    src={reviews[current].avatar}
-                                    alt={reviews[current].author}
+                                    src={activeReview.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=80'}
+                                    alt={activeReview.author || 'Guest'}
                                     width={64} height={64}
                                     className="object-cover w-full h-full"
                                 />
@@ -844,46 +886,48 @@ function ReviewsSection({ winery }: { winery: WineryDetails }) {
                         </div>
 
                         <div className="flex justify-center mb-4">
-                            <StarRating rating={reviews[current].rating} size={18} />
+                            <StarRating rating={activeReview.rating || 5} size={18} />
                         </div>
 
                         <blockquote className="font-serif text-xl md:text-2xl text-white/90 italic leading-relaxed mb-6 max-w-2xl mx-auto">
-                            &ldquo;{reviews[current].text}&rdquo;
+                            &ldquo;{activeReview.text}&rdquo;
                         </blockquote>
 
                         <div>
-                            <p className="font-semibold text-[#E8D49C] text-sm">{reviews[current].author}</p>
-                            <p className="text-xs text-[#C89B3C]/70 mt-0.5">{reviews[current].visit} · {reviews[current].date}</p>
+                            <p className="font-semibold text-[#E8D49C] text-sm">{activeReview.author}</p>
+                            <p className="text-xs text-[#C89B3C]/70 mt-0.5">{activeReview.visit || 'Estate Visit'} · {activeReview.date || 'Recent'}</p>
                         </div>
                     </motion.div>
                 </AnimatePresence>
 
                 {/* Navigation */}
-                <div className="flex items-center justify-center gap-6">
-                    <motion.button
-                        whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-                        onClick={() => setCurrent((c) => (c - 1 + reviews.length) % reviews.length)}
-                        className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                    >
-                        <ChevronLeft size={16} />
-                    </motion.button>
-                    <div className="flex gap-2">
-                        {reviews.map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setCurrent(i)}
-                                className={`transition-all duration-300 rounded-full ${i === current ? 'w-6 h-2 bg-[#C89B3C]' : 'w-2 h-2 bg-white/30 hover:bg-white/60'}`}
-                            />
-                        ))}
+                {reviews.length > 1 && (
+                    <div className="flex items-center justify-center gap-6">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+                            onClick={() => setCurrent((c) => (c - 1 + reviews.length) % reviews.length)}
+                            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                        >
+                            <ChevronLeft size={16} />
+                        </motion.button>
+                        <div className="flex gap-2">
+                            {reviews.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setCurrent(i)}
+                                    className={`transition-all duration-300 rounded-full ${i === safeCurrent ? 'w-6 h-2 bg-[#C89B3C]' : 'w-2 h-2 bg-white/30 hover:bg-white/60'}`}
+                                />
+                            ))}
+                        </div>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+                            onClick={() => setCurrent((c) => (c + 1) % reviews.length)}
+                            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                        >
+                            <ChevronRight size={16} />
+                        </motion.button>
                     </div>
-                    <motion.button
-                        whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-                        onClick={() => setCurrent((c) => (c + 1) % reviews.length)}
-                        className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                    >
-                        <ChevronRight size={16} />
-                    </motion.button>
-                </div>
+                )}
             </div>
         </section>
     )
@@ -891,6 +935,9 @@ function ReviewsSection({ winery }: { winery: WineryDetails }) {
 
 // ─── Related Wineries ─────────────────────────────────────────────────────────
 function RelatedWineriesSection({ winery }: { winery: WineryDetails }) {
+    const related = winery?.relatedWineries || []
+    if (related.length === 0) return null
+
     return (
         <section className="bg-[#F8F4EE] py-24 lg:py-28">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -918,9 +965,9 @@ function RelatedWineriesSection({ winery }: { winery: WineryDetails }) {
                 </motion.div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {winery.relatedWineries.map((rel, i) => (
+                    {related.map((rel, i) => (
                         <motion.div
-                            key={rel.id}
+                            key={rel.id || i}
                             initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -929,7 +976,7 @@ function RelatedWineriesSection({ winery }: { winery: WineryDetails }) {
                             <Link href={`/wineries/${rel.id}`} className="group block">
                                 <div className="relative h-56 rounded-3xl overflow-hidden mb-4 shadow-lg">
                                     <Image
-                                        src={rel.image}
+                                        src={rel.image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80'}
                                         alt={rel.name}
                                         fill
                                         className="object-cover transition-transform duration-500 group-hover:scale-108"
@@ -944,8 +991,8 @@ function RelatedWineriesSection({ winery }: { winery: WineryDetails }) {
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between px-1">
-                                    <StarRating rating={rel.rating} size={12} />
-                                    <span className="text-sm font-bold text-[#1A0A10]">{rel.rating.toFixed(1)}</span>
+                                    <StarRating rating={rel.rating || 4.5} size={12} />
+                                    <span className="text-sm font-bold text-[#1A0A10]">{(rel.rating || 4.5).toFixed(1)}</span>
                                 </div>
                             </Link>
                         </motion.div>
@@ -958,6 +1005,8 @@ function RelatedWineriesSection({ winery }: { winery: WineryDetails }) {
 
 // ─── Main Client Component ─────────────────────────────────────────────────────
 export function WineryDetailClient({ winery }: { winery: WineryDetails }) {
+    if (!winery) return null
+
     return (
         <main className="font-sans bg-[#F8F4EE]">
             {/* Breadcrumb nav */}
@@ -967,7 +1016,7 @@ export function WineryDetailClient({ winery }: { winery: WineryDetails }) {
                     <ChevronRight size={10} />
                     <Link href="/wineries" className="hover:text-[#7A1F3D] transition-colors">Wineries</Link>
                     <ChevronRight size={10} />
-                    <span className="text-[#7A1F3D] font-semibold">{winery.name}</span>
+                    <span className="text-[#7A1F3D] font-semibold">{winery?.name || 'Winery'}</span>
                 </div>
             </nav>
 
@@ -976,6 +1025,7 @@ export function WineryDetailClient({ winery }: { winery: WineryDetails }) {
                 <StorySection winery={winery} />
                 <EstateSection winery={winery} />
                 <WineCollectionSection winery={winery} />
+                <VirtualTourSection />
                 <AwardsSection winery={winery} />
                 <VisitorSection winery={winery} />
                 <GallerySection winery={winery} />

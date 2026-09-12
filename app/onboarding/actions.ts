@@ -47,7 +47,8 @@ export async function completeOnboarding(formData: FormData) {
             country: country,
             experience_level: experienceLevel,
             favorite_wine_types: favoriteTypes,
-            primary_interest: primaryInterest
+            primary_interest: primaryInterest,
+            role: 'user'
         })
 
     if (dbError) {
