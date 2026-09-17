@@ -209,6 +209,7 @@ export default function FoodPairingApp() {
     const [categories, setCategories] = useState<string[]>([])
     const [selectedCategory, setSelectedCategory] = useState<string>('')
     const [dishes, setDishes] = useState<FoodCategoryItem[]>([])
+    const [showAllDishes, setShowAllDishes] = useState(false)
     const [selectedDish, setSelectedDish] = useState<string>('')
     const [customDishInput, setCustomDishInput] = useState<string>('')
     const [apiRecommendations, setApiRecommendations] = useState<WineRecommendation[]>([])
@@ -271,6 +272,7 @@ export default function FoodPairingApp() {
         async function fetchDishesForCat() {
             setLoadingDishes(true)
             setApiError(null)
+            setShowAllDishes(false)
             try {
                 const dishList = await getFoods(selectedCategory)
                 if (isMounted) {
@@ -506,9 +508,9 @@ export default function FoodPairingApp() {
                                 </div>
                             ) : (
                                 <div className="flex flex-wrap gap-2.5">
-                                    {categories.map((cat) => (
+                                    {categories.map((cat, idx) => (
                                         <button
-                                            key={cat}
+                                            key={`${cat}-${idx}`}
                                             onClick={() => setSelectedCategory(cat)}
                                             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
                                                 selectedCategory === cat
@@ -545,9 +547,9 @@ export default function FoodPairingApp() {
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                                        {dishes.map((d) => (
+                                        {(showAllDishes ? dishes : dishes.slice(0, 6)).map((d, idx) => (
                                             <button
-                                                key={d.food_name}
+                                                key={`${d.food_name}-${idx}`}
                                                 onClick={() => {
                                                     setSelectedDish(d.food_name)
                                                     setCustomDishInput('')
@@ -572,6 +574,17 @@ export default function FoodPairingApp() {
                                                 </div>
                                             </button>
                                         ))}
+                                    </div>
+                                )}
+                                {!loadingDishes && dishes.length > 6 && (
+                                    <div className="mt-6 flex justify-center">
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => setShowAllDishes(!showAllDishes)}
+                                            className="text-xs text-[#8B1E3F] border-[#8B1E3F] hover:bg-[#8B1E3F] hover:text-white transition-colors px-6 py-2.5 rounded-xl font-bold tracking-wider"
+                                        >
+                                            {showAllDishes ? 'Show Less' : `Show All ${dishes.length} Dishes`}
+                                        </Button>
                                     </div>
                                 )}
                             </div>
@@ -600,9 +613,9 @@ export default function FoodPairingApp() {
                                     Select from Featured Wines
                                 </label>
                                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                                    {staticWines.map((w) => (
+                                    {staticWines.map((w, idx) => (
                                         <button
-                                            key={w.id}
+                                            key={`${w.id}-${idx}`}
                                             onClick={() => {
                                                 setSelectedWineForFood(w.name)
                                                 setCustomWineInput('')
@@ -789,9 +802,9 @@ export default function FoodPairingApp() {
                                     Wine Style
                                 </label>
                                 <div className="space-y-1.5">
-                                    {wineTypeOptions.map((type) => (
+                                    {wineTypeOptions.map((type, idx) => (
                                         <label
-                                            key={type}
+                                            key={`${type}-${idx}`}
                                             className="flex items-center gap-2.5 text-xs text-stone-700 hover:text-[#8B1E3F] cursor-pointer py-1"
                                         >
                                             <input
@@ -812,9 +825,9 @@ export default function FoodPairingApp() {
                                     Grape Varieties
                                 </label>
                                 <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
-                                    {grapeOptions.map((grape) => (
+                                    {grapeOptions.map((grape, idx) => (
                                         <button
-                                            key={grape}
+                                            key={`${grape}-${idx}`}
                                             onClick={() => toggleArrayItem(grape, selectedGrapes, setSelectedGrapes)}
                                             className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
                                                 selectedGrapes.includes(grape)
@@ -863,7 +876,7 @@ export default function FoodPairingApp() {
                                         initial={{ opacity: 0, y: 15 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.25, delay: idx * 0.05 }}
-                                        key={wine.id}
+                                        key={`${wine.id}-${idx}`}
                                         className="bg-white rounded-3xl p-5 border border-stone-200/90 hover:border-[#8B1E3F]/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative"
                                     >
                                         {/* Top Card Section: Image + Wine Details */}
