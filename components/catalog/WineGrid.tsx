@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { Wine as WineIcon } from 'lucide-react'
 import { WineCard } from './WineCard'
 import { Pagination } from './Pagination'
 import { Wine } from '@/constants/wines'
@@ -64,9 +65,12 @@ export const WineGrid: React.FC<WineGridProps> = ({ wines, sortBy, setSortBy, on
                     ))}
                 </div>
             ) : (
-                <div className="py-20 text-center flex flex-col items-center justify-center">
-                    <p className="text-vino-dark/60 text-lg mb-4">No wines found matching your filters.</p>
-                    <button className="text-vino-accent hover:underline">Clear Filters</button>
+                <div className="py-20 text-center flex flex-col items-center justify-center bg-white rounded-2xl border border-stone-200/80 p-8 shadow-sm">
+                    <WineIcon className="w-12 h-12 text-vino-accent/40 mb-3" />
+                    <h3 className="font-serif text-xl font-bold text-vino-darker mb-2">No Wines in Catalog Yet</h3>
+                    <p className="text-stone-500 text-sm max-w-md text-center mb-4">
+                        Wines added from the Winery Dashboard will automatically appear here in real time.
+                    </p>
                 </div>
             )}
 

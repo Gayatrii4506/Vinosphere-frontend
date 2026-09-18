@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineCatalog } from '@/components/catalog/WineCatalog'
-import { Wine, WINES } from '@/constants/wines'
+import { Wine } from '@/constants/wines'
 import { API_V1_URL } from '@/lib/api-config'
 
 export const metadata: Metadata = {
@@ -78,7 +78,6 @@ async function getWines(): Promise<Wine[]> {
 
 export default async function WinesPage() {
     const fetchedWines = await getWines();
-    const winesToDisplay = fetchedWines.length > 0 ? fetchedWines : WINES;
 
     return (
         <Suspense fallback={
@@ -86,7 +85,7 @@ export default async function WinesPage() {
                 <div className="text-vino-dark/60 text-lg">Loading catalog...</div>
             </div>
         }>
-            <WineCatalog initialWines={winesToDisplay} />
+            <WineCatalog initialWines={fetchedWines} />
         </Suspense>
     )
 }
