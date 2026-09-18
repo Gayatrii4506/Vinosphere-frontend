@@ -125,18 +125,20 @@ export const FeaturedCategories: React.FC = () => {
                             transition={{ duration: 0.5, delay: 0.25 }}
                             className="flex flex-wrap items-center gap-3 pt-2"
                         >
-                            <Link href="/discover/wines">
-                                <button className="px-6 py-2.5 rounded bg-[#A33845] hover:bg-[#8B2B37] text-white text-xs font-bold tracking-[0.2em] uppercase transition-colors shadow-sm">
-                                    BUY NOW
-                                </button>
+                            <Link
+                                href="/discover/wines"
+                                className="px-6 py-2.5 rounded bg-[#A33845] hover:bg-[#8B2B37] text-white text-xs font-bold tracking-[0.2em] uppercase transition-colors shadow-sm inline-block"
+                            >
+                                BUY NOW
                             </Link>
 
                             {/* Red / Burgundy Explore Wineries Pill Button */}
-                            <Link href="/wineries">
-                                <button className="px-5 py-2 rounded-full border border-[#A33845] text-[#A33845] hover:bg-[#A33845] hover:text-white text-xs font-bold tracking-widest uppercase transition-all shadow-sm flex items-center gap-2 group">
-                                    Explore Wineries
-                                    <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
-                                </button>
+                            <Link
+                                href="/wineries"
+                                className="px-5 py-2 rounded-full border border-[#A33845] text-[#A33845] hover:bg-[#A33845] hover:text-white text-xs font-bold tracking-widest uppercase transition-all shadow-sm flex items-center gap-2 group inline-flex"
+                            >
+                                Explore Wineries
+                                <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
                             </Link>
                         </motion.div>
 

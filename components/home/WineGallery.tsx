@@ -151,31 +151,26 @@ export const WineGallery: React.FC = () => {
                         <div className="w-10 h-px bg-vino-parchment" />
                     </div>
 
-                    <Link href="/discover">
-                        <motion.button
-                            whileHover={{
-                                scale: 1.02,
-                                boxShadow: '0 6px 24px rgba(139,30,63,0.25)',
-                            }}
-                            whileTap={{ scale: 0.98 }}
-                            transition={{ duration: 0.2 }}
-                            className="
-                                group inline-flex items-center gap-2
-                                bg-vino-accent hover:bg-vino-accent-light
-                                text-white font-semibold text-xs sm:text-sm tracking-wide
-                                px-6 py-2.5 rounded-full
-                                transition-colors duration-300
-                                shadow-[0_4px_16px_rgba(139,30,63,0.20)]
-                                focus-visible:outline-none focus-visible:ring-2
-                                focus-visible:ring-vino-gold
-                            "
-                        >
-                            Explore Gallery
-                            <ArrowRight
-                                size={14}
-                                className="transition-transform duration-300 group-hover:translate-x-1"
-                            />
-                        </motion.button>
+                    <Link
+                        href="/discover"
+                        className="
+                            group inline-flex items-center gap-2
+                            bg-vino-accent hover:bg-vino-accent-light
+                            text-white font-semibold text-xs sm:text-sm tracking-wide
+                            px-6 py-2.5 rounded-full
+                            transition-all duration-300
+                            shadow-[0_4px_16px_rgba(139,30,63,0.20)]
+                            hover:shadow-[0_6px_24px_rgba(139,30,63,0.25)]
+                            hover:scale-[1.02] active:scale-[0.98]
+                            focus-visible:outline-none focus-visible:ring-2
+                            focus-visible:ring-vino-gold
+                        "
+                    >
+                        Explore Gallery
+                        <ArrowRight
+                            size={14}
+                            className="transition-transform duration-300 group-hover:translate-x-1"
+                        />
                     </Link>
                 </div>
             </div>

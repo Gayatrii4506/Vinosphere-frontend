@@ -10,6 +10,7 @@ import {
     ArrowRight,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { CloudinaryImage } from '@/components/ui/CloudinaryImage'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -165,24 +166,23 @@ const EventCard: React.FC<{ event: EventItem }> = ({ event }) => {
             </div>
 
             {/* CTA */}
-            <motion.button
-                onClick={() => router.push('/welcome')}
-                whileHover={{ scale: 1.02, boxShadow: '0 6px 24px rgba(139,30,63,0.45)' }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
-                    className="
-                        mt-1 w-full flex items-center justify-center gap-1.5
-                        bg-vino-accent hover:bg-vino-accent-light
-                        text-white font-semibold text-xs tracking-wide
-                        py-2.5 rounded-xl
-                        transition-colors duration-300
-                        shadow-[0_4px_16px_rgba(139,30,63,0.30)]
-                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-gold
-                    "
-                >
-                    <Ticket size={13} />
-                    Book Tickets
-                </motion.button>
+            <Link
+                href="/welcome"
+                className="
+                    mt-1 w-full flex items-center justify-center gap-1.5
+                    bg-vino-accent hover:bg-vino-accent-light
+                    text-white font-semibold text-xs tracking-wide
+                    py-2.5 rounded-xl
+                    transition-all duration-300
+                    shadow-[0_4px_16px_rgba(139,30,63,0.30)]
+                    hover:shadow-[0_6px_24px_rgba(139,30,63,0.45)]
+                    hover:scale-[1.02] active:scale-[0.98]
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-gold
+                "
+            >
+                <Ticket size={13} />
+                Book Tickets
+            </Link>
         </div>
     </motion.article>
     )

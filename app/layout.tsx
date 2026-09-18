@@ -45,7 +45,7 @@ export default async function RootLayout({
                     crossOrigin="anonymous"
                 />
             </head>
-            <body className="bg-vino-dark text-vino-gray">
+            <body className="bg-vino-dark text-vino-gray" suppressHydrationWarning>
                 <Navbar user={user} />
                 <main className="overflow-x-hidden">
                     {children}

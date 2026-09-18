@@ -226,6 +226,7 @@ export const NewsletterFooter: React.FC = () => {
                                             placeholder="Your email address"
                                             required
                                             aria-label="Email address for newsletter"
+                                            suppressHydrationWarning
                                             className="
                                                 w-full pl-10 pr-3.5 py-2.5
                                                 bg-white/90 backdrop-blur-sm
@@ -244,6 +245,7 @@ export const NewsletterFooter: React.FC = () => {
                                         type="submit"
                                         id="newsletter-submit"
                                         disabled={loading}
+                                        suppressHydrationWarning
                                         whileHover={{
                                             scale: 1.03,
                                             boxShadow: '0 6px 24px rgba(139,30,63,0.35)',

@@ -45,9 +45,10 @@ function MedalBadge({ medal }: { medal: string }) {
         'Double Gold': 'bg-[#FDF0D0] text-[#7A5C00] border-[#D4A800]',
         'Gold': 'bg-[#FEF5DC] text-[#8B6A00] border-[#C89B3C]',
         'Silver': 'bg-[#F0F4F8] text-[#4A6080] border-[#9AB0C8]',
+        'Bronze': 'bg-[#FDF4EE] text-[#8A4A28] border-[#CD7F32]',
     }
     return (
-        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border tracking-wide uppercase ${colors[medal] ?? colors['Gold']}`}>
+        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border tracking-wide uppercase ${colors[medal] ?? 'bg-[#F9F6F0] text-[#7A1F3D] border-[#7A1F3D]/30'}`}>
             <Award size={9} />
             {medal}
         </span>
@@ -719,17 +720,14 @@ function VisitorSection({ winery }: { winery: WineryDetails }) {
                                         ))}
                                     </div>
 
-                                    <Link href="/experiences">
-                                        <motion.button
-                                            whileHover={{ scale: 1.03 }}
-                                            whileTap={{ scale: 0.97 }}
-                                            className={`w-full py-3.5 rounded-2xl font-bold text-sm transition-all ${pkg.highlight
-                                                ? 'bg-[#7A1F3D] text-white shadow-lg hover:bg-[#9A2F52]'
-                                                : 'border-2 border-[#7A1F3D] text-[#7A1F3D] hover:bg-[#7A1F3D] hover:text-white'
-                                                }`}
-                                        >
-                                            Book This Experience
-                                        </motion.button>
+                                    <Link
+                                        href="/experiences"
+                                        className={`w-full block text-center py-3.5 rounded-2xl font-bold text-sm transition-all hover:scale-[1.03] active:scale-[0.97] ${pkg.highlight
+                                            ? 'bg-[#7A1F3D] text-white shadow-lg hover:bg-[#9A2F52]'
+                                            : 'border-2 border-[#7A1F3D] text-[#7A1F3D] hover:bg-[#7A1F3D] hover:text-white'
+                                            }`}
+                                    >
+                                        Book This Experience
                                     </Link>
                                 </div>
                             </motion.div>
