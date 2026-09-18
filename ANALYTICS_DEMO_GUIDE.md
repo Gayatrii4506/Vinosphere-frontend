@@ -136,7 +136,9 @@ Potential Winery Management Action
 > *Recommendation → Guaranteed Revenue Increase*
 > 
 > It provides winery operators with evidence-based clarity and actionable direction.
+
 ---
+
 ## Production Safety & Cleanup
 
 All demonstration data is strictly isolated to winery ID `00000000-0000-4000-d000-000000000999`.
