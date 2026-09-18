@@ -8,8 +8,10 @@ import { Menu, X, Search, ShoppingBag, Heart, User } from 'lucide-react'
 
 import { NAVIGATION_ITEMS } from '@/constants/navigation'
 import { Button } from '@/components/ui/Button'
+import { useWishlist } from '@/context/WishlistContext'
 
 export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
+    const { wishlistCount } = useWishlist()
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -96,11 +98,18 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                             <Search size={20} />
                         </button>
 
-                        <button
-                            className={`${iconColor} transition-colors duration-300`}
+                        <Link
+                            href="/cellar"
+                            title="My Cellar / Wishlist"
+                            className={`${iconColor} transition-colors duration-300 relative flex items-center justify-center`}
                         >
                             <Heart size={20} />
-                        </button>
+                            {wishlistCount > 0 && (
+                                <span className="absolute -top-1.5 -right-2 bg-vino-accent text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-sm">
+                                    {wishlistCount}
+                                </span>
+                            )}
+                        </Link>
 
                        
 
@@ -155,6 +164,21 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                                     {item.label}
                                 </Link>
                             ))}
+                            <Link
+                                href="/cellar"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="flex items-center justify-between px-6 py-3 text-vino-dark hover:bg-vino-cream hover:text-vino-accent transition-colors"
+                            >
+                                <span className="flex items-center gap-2">
+                                    <Heart size={16} className="text-vino-accent" />
+                                    My Cellar (Wishlist)
+                                </span>
+                                {wishlistCount > 0 && (
+                                    <span className="bg-vino-accent text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                                        {wishlistCount}
+                                    </span>
+                                )}
+                            </Link>
                         </div>
 
                         <div className="border-t border-gray-200 p-4">

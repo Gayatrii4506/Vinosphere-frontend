@@ -1,11 +1,10 @@
 'use client'
 
-import { API_V1_URL } from '@/lib/api-config'
-
 import React, { useState } from 'react'
 import { Heart, Star } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Wine } from '@/constants/wines'
-import { createClient } from '@/lib/supabase/client'
+import { useWishlist } from '@/context/WishlistContext'
 
 interface WineCardProps {
     wine: Wine
@@ -13,7 +12,9 @@ interface WineCardProps {
 }
 
 export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
-    const [isLiked, setIsLiked] = useState(false)
+    const router = useRouter()
+    const { isWishlisted, toggleWishlist } = useWishlist()
+    const isLiked = isWishlisted(wine.id)
     const [imgError, setImgError] = useState(false)
 
     // Fallback image if custom Cloudinary URL fails to load
@@ -71,54 +72,12 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
                     <button 
                         onClick={async (e) => {
                             e.stopPropagation()
-                            // Optimistic UI update
-                            const newlyLiked = !isLiked;
-                            setIsLiked(newlyLiked);
-                            
-                            try {
-                                const supabase = createClient();
-                                const { data: { session } } = await supabase.auth.getSession();
-                                
-                                if (!session) {
-                                    // In demo mode without session, allow instant local UI feedback
-                                    try {
-                                        const saved = JSON.parse(localStorage.getItem('vinosphere_liked_wines') || '[]');
-                                        if (newlyLiked) {
-                                            if (!saved.includes(wine.id)) saved.push(wine.id);
-                                        } else {
-                                            const idx = saved.indexOf(wine.id);
-                                            if (idx > -1) saved.splice(idx, 1);
-                                        }
-                                        localStorage.setItem('vinosphere_liked_wines', JSON.stringify(saved));
-                                    } catch (e) {}
-                                    return;
-                                }
-
-                                if (newlyLiked) {
-                                    // Add to wishlist
-                                    await fetch(`${API_V1_URL}/wishlist`, {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'Authorization': `Bearer ${session.access_token}`
-                                        },
-                                        body: JSON.stringify({ wineId: wine.id })
-                                    });
-                                } else {
-                                    // Remove from wishlist
-                                    await fetch(`${API_V1_URL}/wishlist/${wine.id}`, {
-                                        method: 'DELETE',
-                                        headers: {
-                                            'Authorization': `Bearer ${session.access_token}`
-                                        }
-                                    });
-                                }
-                            } catch (error) {
-                                console.error('Failed to update wishlist:', error);
-                                setIsLiked(isLiked); // Revert on failure
+                            const res = await toggleWishlist(wine)
+                            if (res.requiresAuth) {
+                                router.push('/welcome?redirect=/discover/wines')
                             }
                         }}
-                        aria-label="Save to favorites"
+                        aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
                         className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-vino-accent hover:bg-vino-accent hover:text-white transition-colors group/btn"
                     >
                         <Heart 

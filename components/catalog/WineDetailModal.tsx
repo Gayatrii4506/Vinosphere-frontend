@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Star, Heart, Wine as WineIcon, Utensils, MapPin, Award, CheckCircle2, ShieldCheck } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Wine } from '@/constants/wines'
+import { useWishlist } from '@/context/WishlistContext'
 
 interface WineDetailModalProps {
     wine: Wine | null
@@ -12,7 +13,8 @@ interface WineDetailModalProps {
 }
 
 export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose }) => {
-    const [isLiked, setIsLiked] = React.useState(false)
+    const { isWishlisted, toggleWishlist } = useWishlist()
+    const isLiked = wine ? isWishlisted(wine.id) : false
     const [imgError, setImgError] = React.useState(false)
     const router = useRouter()
 
@@ -217,16 +219,19 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
                                     <span>Reserve / Request Bottle</span>
                                 </button>
                                 <button
-                                    onClick={() => {
-                                        setIsLiked(!isLiked)
-                                        setTimeout(() => router.push('/welcome'), 300)
+                                    onClick={async () => {
+                                        if (!wine) return
+                                        const res = await toggleWishlist(wine)
+                                        if (res.requiresAuth) {
+                                            router.push('/welcome?redirect=/discover/wines')
+                                        }
                                     }}
                                     className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-300 ${
                                         isLiked 
                                             ? 'bg-vino-accent text-white border-vino-accent' 
                                             : 'bg-white text-stone-600 border-stone-300 hover:border-vino-accent hover:text-vino-accent'
                                     }`}
-                                    title="Add to Wishlist"
+                                    title={isLiked ? 'Remove from Wishlist' : 'Add to Wishlist'}
                                 >
                                     <Heart size={18} className={isLiked ? 'fill-white' : ''} />
                                 </button>

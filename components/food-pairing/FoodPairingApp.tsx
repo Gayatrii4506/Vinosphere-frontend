@@ -239,6 +239,18 @@ export default function FoodPairingApp() {
     const [sommelierModalWine, setSommelierModalWine] = useState<any>(null)
     const [favorites, setFavorites] = useState<string[]>([])
 
+    // Lock body scroll when sommelier modal is active
+    useEffect(() => {
+        if (sommelierModalWine) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = 'unset'
+        }
+        return () => {
+            document.body.style.overflow = 'unset'
+        }
+    }, [sommelierModalWine])
+
     // 1. Fetch categories on mount
     useEffect(() => {
         let isMounted = true
@@ -976,20 +988,20 @@ export default function FoodPairingApp() {
             {/* ─── Sommelier Analysis Deep Dive Modal ─── */}
             <AnimatePresence>
                 {sommelierModalWine && (
-                    <>
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setSommelierModalWine(null)}
-                            className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm"
+                            className="fixed inset-0 bg-stone-950/70 backdrop-blur-sm"
                         />
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            initial={{ opacity: 0, scale: 0.95, y: 15 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 15 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-50 w-full max-w-2xl max-h-[90vh] bg-white rounded-3xl shadow-2xl overflow-y-auto border border-stone-200 p-6 sm:p-8"
+                            className="relative z-10 w-full max-w-2xl max-h-[88vh] bg-white rounded-3xl shadow-2xl overflow-y-auto border border-stone-200/80 p-6 sm:p-8 my-auto"
                         >
                             {/* Modal Header */}
                             <div className="flex items-start justify-between pb-4 border-b border-stone-100">
@@ -1007,6 +1019,7 @@ export default function FoodPairingApp() {
                                 </div>
                                 <button
                                     onClick={() => setSommelierModalWine(null)}
+                                    aria-label="Close modal"
                                     className="p-2 rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors"
                                 >
                                     <X size={18} />
@@ -1111,7 +1124,7 @@ export default function FoodPairingApp() {
                                 )
                             })()}
                         </motion.div>
-                    </>
+                    </div>
                 )}
             </AnimatePresence>
         </div>

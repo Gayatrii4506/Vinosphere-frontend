@@ -12,11 +12,15 @@ export async function login(formData: FormData) {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
+  const redirectParam = (formData.get('redirect') as string) || ''
 
   const { error, data: authData } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    return redirect(`/welcome?error=${error.message}`)
+    const errorUrl = redirectParam 
+      ? `/welcome?error=${encodeURIComponent(error.message)}&redirect=${encodeURIComponent(redirectParam)}`
+      : `/welcome?error=${encodeURIComponent(error.message)}`
+    return redirect(errorUrl)
   }
   
   // Check if onboarding is complete
@@ -25,7 +29,8 @@ export async function login(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  const targetUrl = redirectParam && redirectParam.startsWith('/') ? redirectParam : '/'
+  redirect(targetUrl)
 }
 
 export async function signup(formData: FormData) {

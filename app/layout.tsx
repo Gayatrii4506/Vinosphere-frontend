@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Navbar } from '@/components/layout/Navbar'
 import { createClient } from '@/lib/supabase/server'
+import { WishlistProvider } from '@/context/WishlistContext'
 import '@/styles/globals.css'
 
 export const viewport: Viewport = {
@@ -46,10 +47,12 @@ export default async function RootLayout({
                 />
             </head>
             <body className="bg-vino-dark text-vino-gray" suppressHydrationWarning>
-                <Navbar user={user} />
-                <main className="overflow-x-hidden">
-                    {children}
-                </main>
+                <WishlistProvider>
+                    <Navbar user={user} />
+                    <main className="overflow-x-hidden">
+                        {children}
+                    </main>
+                </WishlistProvider>
             </body>
         </html>
     )

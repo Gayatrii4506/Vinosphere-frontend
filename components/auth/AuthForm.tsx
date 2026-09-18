@@ -10,6 +10,7 @@ export const AuthForm = () => {
     const searchParams = useSearchParams()
     const errorParam = searchParams.get('error')
     const messageParam = searchParams.get('message')
+    const redirectParam = searchParams.get('redirect')
 
     const [isLogin, setIsLogin] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
@@ -23,6 +24,9 @@ export const AuthForm = () => {
         const formData = new FormData()
         formData.append('email', email)
         formData.append('password', password)
+        if (redirectParam) {
+            formData.append('redirect', redirectParam)
+        }
 
         if (isLogin) {
             await login(formData)
@@ -68,6 +72,19 @@ export const AuthForm = () => {
                     >
                         <AlertCircle className="text-green-400 shrink-0 mt-0.5" size={18} />
                         <p className="text-sm text-green-200">{messageParam}</p>
+                    </motion.div>
+                )}
+
+                {!errorParam && !messageParam && redirectParam && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-6 p-4 rounded-xl bg-vino-accent/20 border border-vino-accent/40 flex items-start gap-3"
+                    >
+                        <Wine className="text-vino-accent shrink-0 mt-0.5" size={18} />
+                        <p className="text-sm text-stone-200">
+                            Please log in or create an account to save wines to your personal cellar.
+                        </p>
                     </motion.div>
                 )}
             </AnimatePresence>

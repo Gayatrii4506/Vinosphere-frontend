@@ -2,9 +2,10 @@ import { API_V1_URL } from '@/lib/api-config'
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineCatalog } from '@/components/catalog/WineCatalog'
-import { Wine } from '@/constants/wines'
+import { Wine, WINES } from '@/constants/wines'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { isWineIdMatch } from '@/lib/utils/wine-id'
 
 export const metadata: Metadata = {
     title: 'My Cellar | VinoSphere',
@@ -19,51 +20,74 @@ async function getWishlist(): Promise<Wine[]> {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
-            redirect('/login'); // Assuming there's a login route, or handle gracefully
+            redirect('/welcome?redirect=/cellar');
         }
 
-        const res = await fetch(`${API_V1_URL}/wishlist`, {
-            cache: 'no-store',
-            headers: {
-                'Authorization': `Bearer ${session.access_token}`
+        let rawItems: any[] = [];
+
+        try {
+            const res = await fetch(`${API_V1_URL}/wishlist`, {
+                cache: 'no-store',
+                headers: {
+                    'Authorization': `Bearer ${session.access_token}`
+                }
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                rawItems = data.data || [];
             }
-        });
-        
-        if (!res.ok) {
-            console.error('Failed to fetch wishlist from backend');
-            return [];
+        } catch (fetchErr) {
+            console.warn('Backend wishlist fetch failed in cellar, falling back to direct Supabase:', fetchErr);
         }
 
-        const data = await res.json();
-        
-        // Map the backend response to the frontend's expected Wine interface
-        // The data is nested: item.wines contains the actual wine details
-        return data.data.map((item: any) => {
+        // Direct Supabase fallback if backend returned nothing or failed
+        if (rawItems.length === 0) {
+            const { data: directData } = await supabase
+                .from('wishlist')
+                .select('user_id, wine_id, created_at, wines(*, wineries(name, city, country), wine_inventory(price, stock_quantity), wine_images(image_url, is_primary))')
+                .eq('user_id', session.user.id);
+
+            if (directData && directData.length > 0) {
+                rawItems = directData;
+            }
+        }
+
+        // Map the wishlist items to the frontend Wine interface
+        return rawItems.map((item: any) => {
             const wine = item.wines;
-            if (!wine) return null;
+            if (wine) {
+                const inventory = Array.isArray(wine.wine_inventory) ? wine.wine_inventory[0] : wine.wine_inventory;
+                const images = wine.wine_images || [];
+                const primaryImage = images.find((img: any) => img.is_primary) || images[0];
 
-            const inventory = Array.isArray(wine.wine_inventory) ? wine.wine_inventory[0] : wine.wine_inventory;
-            const images = wine.wine_images || [];
-            const primaryImage = images.find((img: any) => img.is_primary) || images[0];
+                return {
+                    id: wine.id,
+                    name: wine.name,
+                    origin: wine.wineries ? `${wine.wineries.city || ''}, ${wine.wineries.country || ''}`.replace(/^, /, '') : 'Unknown Origin',
+                    volume: '0.75 L',
+                    year: wine.vintage || new Date().getFullYear(),
+                    rating: 90,
+                    reviews: 12,
+                    price: inventory?.price || 0,
+                    currency: '₹',
+                    imageUrl: primaryImage?.image_url || 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784956330/pngtree-red-wine-png-image_2399218_fkqedx.jpg',
+                    type: wine.wine_type || 'Red',
+                    sugar: 'Dry',
+                    country: wine.wineries?.country || 'India',
+                    manufacturer: wine.wineries?.name || 'Unknown Winery',
+                    foodPairing: []
+                };
+            }
 
-            return {
-                id: wine.id,
-                name: wine.name,
-                origin: wine.wineries ? `${wine.wineries.city || ''}, ${wine.wineries.country || ''}`.replace(/^, /, '') : 'Unknown Origin',
-                volume: '0.75 L',
-                year: wine.vintage || new Date().getFullYear(),
-                rating: 0,
-                reviews: 0,
-                price: inventory?.price || 0,
-                currency: '₹',
-                imageUrl: primaryImage?.image_url || 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784956330/pngtree-red-wine-png-image_2399218_fkqedx.jpg',
-                type: wine.wine_type || 'Red',
-                sugar: 'Dry',
-                country: wine.wineries?.country || 'India',
-                manufacturer: wine.wineries?.name || 'Unknown Winery',
-                foodPairing: []
-            };
-        }).filter(Boolean); // Remove nulls if any
+            // Fallback for static catalog demo wines
+            const staticWine = WINES.find(w => isWineIdMatch(w.id, item.wine_id));
+            if (staticWine) {
+                return staticWine;
+            }
+
+            return null;
+        }).filter(Boolean) as Wine[];
     } catch (error) {
         console.error('Error fetching wishlist:', error);
         return [];
