@@ -75,7 +75,7 @@ export interface VinoSphereExperience {
 }
 
 export const EXPERIENCE_CATEGORIES = [
-    'All Experiences',
+    'All Journeys',
     'Wine Tastings',
     'Vineyard Tours',
     'Harvest Festivals',

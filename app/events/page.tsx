@@ -5,7 +5,7 @@ import { VinoSphereExperience } from '@/constants/events'
 import { API_V1_URL } from '@/lib/api-config'
 
 export const metadata: Metadata = {
-    title: 'Wine Experiences & Masterclasses | VinoSphere',
+    title: 'Estate Journeys & Wine Masterclasses | VinoSphere',
     description: 'Discover and book exclusive grape harvest festivals, sommelier masterclasses, vineyard tours, and chef pairing dinners with VinoSphere.',
 }
 
@@ -209,7 +209,7 @@ export default async function EventsPage() {
                     <div className="flex flex-col items-center gap-3">
                         <div className="w-10 h-10 border-4 border-vino-accent border-t-transparent rounded-full animate-spin" />
                         <div className="text-vino-dark/60 text-sm font-semibold tracking-wider uppercase">
-                            Loading VinoSphere Experiences...
+                            Loading VinoSphere Estate Journeys...
                         </div>
                     </div>
                 </div>

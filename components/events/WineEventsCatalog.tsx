@@ -22,7 +22,7 @@ export const WineEventsCatalog: React.FC<WineEventsCatalogProps> = ({
     // Filter & Search state
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [selectedLocation, setSelectedLocation] = useState<string>('All Locations')
-    const [selectedCategory, setSelectedCategory] = useState<string>('All Experiences')
+    const [selectedCategory, setSelectedCategory] = useState<string>('All Journeys')
     const [sortBy, setSortBy] = useState<string>('Upcoming Date')
     const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid')
     const [timelineFilter, setTimelineFilter] = useState<'all' | 'upcoming' | 'past'>('all')
@@ -66,7 +66,7 @@ export const WineEventsCatalog: React.FC<WineEventsCatalogProps> = ({
                 }
 
                 // Category match
-                if (selectedCategory !== 'All Experiences') {
+                if (selectedCategory !== 'All Journeys' && selectedCategory !== 'All Experiences') {
                     if (exp.category !== selectedCategory) {
                         return false
                     }
@@ -193,7 +193,7 @@ export const WineEventsCatalog: React.FC<WineEventsCatalogProps> = ({
                         </div>
                     ) : (
                         <div className="py-20 text-center bg-white rounded-3xl border border-vino-dark/10 p-8 max-w-lg mx-auto">
-                            <h3 className="font-serif text-xl font-bold text-vino-darker">No experiences found</h3>
+                            <h3 className="font-serif text-xl font-bold text-vino-darker">No estate journeys found</h3>
                             <p className="text-xs text-vino-dark/60 mt-2">
                                 Try clearing your search query or selecting a different location filter.
                             </p>
@@ -201,7 +201,7 @@ export const WineEventsCatalog: React.FC<WineEventsCatalogProps> = ({
                                 onClick={() => {
                                     setSearchQuery('')
                                     setSelectedLocation('All Locations')
-                                    setSelectedCategory('All Experiences')
+                                    setSelectedCategory('All Journeys')
                                     setTimelineFilter('all')
                                 }}
                                 className="mt-4 px-4 py-2 bg-vino-accent text-white text-xs font-semibold rounded-xl hover:bg-vino-accent-light transition-colors"

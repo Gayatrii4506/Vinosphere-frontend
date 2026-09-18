@@ -70,7 +70,7 @@ export const ExperienceHero: React.FC<ExperienceHeroProps> = ({
                         <div className="flex-1 flex items-center gap-3 px-4 py-2 w-full border-b sm:border-b-0 sm:border-r border-vino-dark/10">
                             <Compass size={20} className="text-vino-accent shrink-0" />
                             <div className="w-full">
-                                <label htmlFor="experience-search-input" className="block text-[10px] font-bold uppercase tracking-wider text-vino-dark/50">Experience</label>
+                                <label htmlFor="experience-search-input" className="block text-[10px] font-bold uppercase tracking-wider text-vino-dark/50">Estate Journey</label>
                                 <input
                                     id="experience-search-input"
                                     type="text"

@@ -26,6 +26,7 @@ export const ExperienceFilterBar: React.FC<ExperienceFilterBarProps> = ({
 }) => {
     const getCategoryIcon = (cat: string) => {
         switch (cat) {
+            case 'All Journeys':
             case 'All Experiences': return <Compass size={14} className="shrink-0" />
             case 'Wine Tastings': return <Wine size={14} className="shrink-0" />
             case 'Vineyard Tours': return <Tent size={14} className="shrink-0" />

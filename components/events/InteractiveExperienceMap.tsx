@@ -24,7 +24,7 @@ export const InteractiveExperienceMap: React.FC<MapProps> = ({ experiences, onSe
                             <span>Terroir Location Explorer</span>
                         </div>
                         <h2 className="font-serif text-3xl sm:text-4xl font-bold text-vino-darker">
-                            Nearby Vineyard Experiences
+                            Nearby Vineyard Journeys
                         </h2>
                     </div>
                     <p className="text-xs text-vino-dark/60 max-w-sm">

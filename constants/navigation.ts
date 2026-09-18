@@ -16,7 +16,7 @@ export const NAVIGATION_ITEMS = [
         href: '/food-pairing',
     },
     {
-        label: 'Experiences',
+        label: 'Estate Journeys',
         href: '/events',
     },
     {
