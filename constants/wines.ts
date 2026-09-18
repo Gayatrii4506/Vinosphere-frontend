@@ -10,10 +10,18 @@ export interface Wine {
     currency: string
     imageUrl: string
     type: 'Red' | 'White' | 'Rose' | 'Sparkling'
-    sugar: 'Dry' | 'Semi-Dry' | 'Sweet' | 'Semi-Sweet'
+    sugar: 'Dry' | 'Semi-Dry' | 'Sweet' | 'Semi-Sweet' | string
     country: string
     manufacturer: string
     foodPairing: string[]
+    description?: string
+    tasteNotes?: string[]
+    alcoholPercentage?: number | string
+    servingTemperature?: string
+    body?: string
+    acidity?: string
+    tannin?: string
+    grapeVariety?: string
 }
 
 export const WINES: Wine[] = []

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Star, Heart, Wine as WineIcon, Utensils, MapPin, Award, CheckCircle2, ShieldCheck } from 'lucide-react'
+import { X, Star, Heart, Wine as WineIcon, Utensils, MapPin, Award, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Wine } from '@/constants/wines'
 import { useWishlist } from '@/context/WishlistContext'
@@ -34,9 +34,12 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
 
     const displayImg = imgError || !wine.imageUrl ? '/bottle.png' : wine.imageUrl
 
-    // Sommelier description helper
+    // Sommelier description helper (uses winery description if provided)
     const getSommelierNotes = (wine: Wine) => {
-        const typeDesc = {
+        if (wine.description && wine.description.trim()) {
+            return wine.description.trim()
+        }
+        const typeDesc: Record<string, string> = {
             Red: 'Richly structured with ripe dark plum notes, velvety tannins, and a hint of French oak spice.',
             White: 'Crisp and refreshing with vibrant citrus blossom aromas, minerality, and a smooth balanced finish.',
             Rose: 'Delicate summer berry aromas with vibrant acidity, subtle floral notes, and a clean, refreshing palate.',
@@ -48,11 +51,14 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
     // Food pairing icon mapper
     const getFoodEmoji = (food: string) => {
         const lower = food.toLowerCase()
-        if (lower.includes('seafood') || lower.includes('fish')) return '🐟'
-        if (lower.includes('poultry') || lower.includes('chicken')) return '🍗'
+        if (lower.includes('seafood') || lower.includes('fish') || lower.includes('prawn') || lower.includes('salmon')) return '🐟'
+        if (lower.includes('poultry') || lower.includes('chicken') || lower.includes('duck')) return '🍗'
         if (lower.includes('beef') || lower.includes('meat') || lower.includes('steak')) return '🥩'
-        if (lower.includes('cheese')) return '🧀'
-        if (lower.includes('pasta')) return '🍝'
+        if (lower.includes('lamb') || lower.includes('mutton') || lower.includes('bbq') || lower.includes('roast') || lower.includes('grill')) return '🍖'
+        if (lower.includes('paneer') || lower.includes('cheese')) return '🧀'
+        if (lower.includes('pasta') || lower.includes('pizza') || lower.includes('risotto')) return '🍝'
+        if (lower.includes('curry') || lower.includes('tikka') || lower.includes('spice') || lower.includes('indian')) return '🍛'
+        if (lower.includes('dessert') || lower.includes('chocolate') || lower.includes('cake')) return '🍫'
         return '🍷'
     }
 
@@ -159,7 +165,7 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
                                 </div>
 
                                 {/* Quick Spec Grid */}
-                                <div className="grid grid-cols-4 gap-2 text-center mb-6">
+                                <div className="grid grid-cols-4 gap-2 text-center mb-4">
                                     <div className="bg-stone-100/80 p-2.5 rounded-xl border border-stone-200/60">
                                         <span className="block text-[9px] uppercase tracking-wider text-stone-400 font-semibold mb-0.5">Vintage</span>
                                         <span className="text-xs font-bold text-vino-darker">{wine.year}</span>
@@ -178,8 +184,38 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
                                     </div>
                                 </div>
 
+                                {/* Supplementary Sensory Bar */}
+                                {(wine.alcoholPercentage || wine.servingTemperature || wine.body || wine.grapeVariety) && (
+                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-stone-600 bg-stone-100/60 border border-stone-200/60 rounded-xl px-3.5 py-2 mb-5">
+                                        {wine.alcoholPercentage && (
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <span className="text-stone-400">ABV:</span>
+                                                <span className="text-vino-darker font-semibold">{wine.alcoholPercentage}%</span>
+                                            </span>
+                                        )}
+                                        {wine.servingTemperature && (
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <span className="text-stone-400">Serving:</span>
+                                                <span className="text-vino-darker font-semibold">{wine.servingTemperature}</span>
+                                            </span>
+                                        )}
+                                        {wine.body && (
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <span className="text-stone-400">Body:</span>
+                                                <span className="text-vino-darker font-semibold">{wine.body}</span>
+                                            </span>
+                                        )}
+                                        {wine.grapeVariety && (
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <span className="text-stone-400">Grape:</span>
+                                                <span className="text-vino-darker font-semibold">{wine.grapeVariety}</span>
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+
                                 {/* Sommelier Notes / Description */}
-                                <div className="mb-6">
+                                <div className="mb-5">
                                     <h4 className="text-xs uppercase tracking-wider font-bold text-stone-700 mb-2 flex items-center gap-1.5">
                                         <Award size={14} className="text-vino-accent" />
                                         <span>Sommelier Notes & Profile</span>
@@ -189,24 +225,46 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
                                     </p>
                                 </div>
 
-                                {/* Food Pairing Recommendations */}
-                                <div className="mb-6">
-                                    <h4 className="text-xs uppercase tracking-wider font-bold text-stone-700 mb-2 flex items-center gap-1.5">
-                                        <Utensils size={14} className="text-vino-accent" />
-                                        <span>Recommended Food Pairings</span>
-                                    </h4>
-                                    <div className="flex flex-wrap gap-2">
-                                        {wine.foodPairing.map((food, idx) => (
-                                            <span
-                                                key={idx}
-                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-vino-accent/10 border border-vino-accent/20 text-vino-accent text-xs font-semibold"
-                                            >
-                                                <span>{getFoodEmoji(food)}</span>
-                                                <span>{food}</span>
-                                            </span>
-                                        ))}
+                                {/* Tasting Notes */}
+                                {wine.tasteNotes && wine.tasteNotes.length > 0 && (
+                                    <div className="mb-5">
+                                        <h4 className="text-xs uppercase tracking-wider font-bold text-stone-700 mb-2 flex items-center gap-1.5">
+                                            <Sparkles size={14} className="text-amber-600" />
+                                            <span>Aroma & Tasting Notes</span>
+                                        </h4>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {wine.tasteNotes.map((note, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="inline-flex items-center px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-900 text-xs font-medium"
+                                                >
+                                                    {note}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
+
+                                {/* Food Pairing Recommendations */}
+                                {wine.foodPairing && wine.foodPairing.length > 0 && (
+                                    <div className="mb-5">
+                                        <h4 className="text-xs uppercase tracking-wider font-bold text-stone-700 mb-2 flex items-center gap-1.5">
+                                            <Utensils size={14} className="text-vino-accent" />
+                                            <span>Recommended Food Pairings</span>
+                                        </h4>
+                                        <div className="flex flex-wrap gap-2">
+                                            {wine.foodPairing.map((food, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-vino-accent/10 border border-vino-accent/20 text-vino-accent text-xs font-semibold"
+                                                >
+                                                    <span>{getFoodEmoji(food)}</span>
+                                                    <span>{food}</span>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Modal Action Buttons */}
