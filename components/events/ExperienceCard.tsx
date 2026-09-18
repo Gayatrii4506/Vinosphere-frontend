@@ -44,19 +44,25 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                             {experience.category}
                         </span>
                         <span className={`px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-md border ${
-                            experience.type === 'event' 
-                                ? 'bg-[#8B1E3F] text-white border-white/20' 
-                                : 'bg-white/95 text-vino-accent border-[#E8D4A8]/80'
+                            experience.status === 'past'
+                                ? 'bg-stone-900/90 text-amber-300 border-amber-500/40'
+                                : experience.type === 'event' 
+                                    ? 'bg-[#8B1E3F] text-white border-white/20' 
+                                    : 'bg-white/95 text-vino-accent border-[#E8D4A8]/80'
                         }`}>
-                            {experience.type === 'event' ? 'Event' : 'Experience'}
+                            {experience.status === 'past' ? (experience.type === 'event' ? 'Past Event' : 'Past Journey') : (experience.type === 'event' ? 'Event' : 'Journey')}
                         </span>
                     </div>
 
-                    {experience.badge && (
+                    {experience.badge ? (
                         <span className="px-3 py-1 rounded-full bg-vino-gold text-vino-darker text-[11px] font-bold tracking-wider uppercase shadow-md">
                             {experience.badge}
                         </span>
-                    )}
+                    ) : experience.status === 'past' ? (
+                        <span className="px-3 py-1 rounded-full bg-stone-900/80 text-stone-200 border border-stone-700 text-[10px] font-bold tracking-wider uppercase shadow-md">
+                            Concluded
+                        </span>
+                    ) : null}
                 </div>
 
                 {/* Bottom Overlay Info */}
@@ -104,8 +110,8 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
 
                         <div className="flex items-center gap-1">
                             <Users size={13} className="text-vino-accent" />
-                            <span className={isSpotsLow ? 'text-rose-600 font-bold' : ''}>
-                                {experience.spotsLeft} spots left
+                            <span className={experience.status === 'past' ? 'text-stone-800 font-bold' : (isSpotsLow ? 'text-rose-600 font-bold' : '')}>
+                                {experience.status === 'past' ? `${experience.turnoutCount || 180} Guests Attended` : `${experience.spotsLeft} spots left`}
                             </span>
                         </div>
                     </div>
@@ -113,8 +119,10 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                     {/* Progress Bar */}
                     <div className="w-full h-1.5 bg-vino-dark/10 rounded-full overflow-hidden">
                         <div
-                            className={`h-full rounded-full transition-all duration-500 ${isSpotsLow ? 'bg-rose-500' : 'bg-vino-gold'}`}
-                            style={{ width: `${spotsPct}%` }}
+                            className={`h-full rounded-full transition-all duration-500 ${
+                                experience.status === 'past' ? 'bg-amber-500' : (isSpotsLow ? 'bg-rose-500' : 'bg-vino-gold')
+                            }`}
+                            style={{ width: `${experience.status === 'past' ? 100 : spotsPct}%` }}
                         />
                     </div>
                 </div>
@@ -122,7 +130,9 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                 {/* Price & CTA Button */}
                 <div className="flex items-center justify-between pt-2">
                     <div>
-                        <span className="text-[10px] text-vino-dark/50 uppercase tracking-widest font-semibold block">Price per guest</span>
+                        <span className="text-[10px] text-vino-dark/50 uppercase tracking-widest font-semibold block">
+                            {experience.status === 'past' ? 'Concluded Event' : 'Price per guest'}
+                        </span>
                         <div className="flex items-baseline gap-1.5">
                             <span className="text-2xl font-serif font-bold text-vino-darker">
                                 {experience.currency}{experience.price.toLocaleString()}
@@ -135,9 +145,16 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                         </div>
                     </div>
 
-                    <div className="w-10 h-10 rounded-full bg-vino-cream flex items-center justify-center text-vino-accent group-hover:bg-vino-accent group-hover:text-white transition-all duration-300 shadow-sm">
-                        <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
-                    </div>
+                    {experience.status === 'past' ? (
+                        <div className="px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs group-hover:bg-vino-accent group-hover:text-white group-hover:border-vino-accent transition-all duration-300 flex items-center gap-1.5 shadow-sm">
+                            <span>View Recap</span>
+                            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                    ) : (
+                        <div className="w-10 h-10 rounded-full bg-vino-cream flex items-center justify-center text-vino-accent group-hover:bg-vino-accent group-hover:text-white transition-all duration-300 shadow-sm">
+                            <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                    )}
                 </div>
             </div>
         </motion.article>

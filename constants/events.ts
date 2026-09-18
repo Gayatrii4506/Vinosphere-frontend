@@ -69,6 +69,9 @@ export interface VinoSphereExperience {
     included: IncludedItem[]
     featuredWines: FeaturedWine[]
     reviews: Review[]
+    status?: 'upcoming' | 'ongoing' | 'past'
+    turnoutCount?: number
+    recapNotes?: string
 }
 
 export const EXPERIENCE_CATEGORIES = [
@@ -418,5 +421,80 @@ export const EXPERIENCES: VinoSphereExperience[] = [
                 comment: 'The vibe at the Tuscan Terrace was unmatched. Great music, endless sparkling wine, and fantastic crowd!',
             },
         ],
+    },
+    {
+        id: 'york-monsoon-barrel-retrospective-2025',
+        title: 'Monsoon Reserve Barrel & Cellar Retrospective',
+        tagline: 'An intimate library vintage vertical tasting and cellar dinner hosted during the lush monsoon mist.',
+        category: 'Sommelier Workshops',
+        badge: 'Exclusive',
+        image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=1200',
+        gallery: [
+            'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&q=80&w=1200',
+        ],
+        winery: 'York Winery & Tasting Room',
+        location: 'Gangapur Dam, Nashik',
+        region: 'Nashik, Maharashtra',
+        date: 'Sat, 16 Aug 2025',
+        time: '5:00 PM - 9:30 PM',
+        duration: '4.5 Hours',
+        rating: 4.96,
+        reviewCount: 68,
+        price: 3400,
+        currency: '₹',
+        spotsLeft: 0,
+        totalSpots: 45,
+        coordinates: { lat: 19.9980, lng: 73.7850 },
+        overview: 'A historic retrospective evening at York Winery overlooking the mist-covered Gangapur dam waters. Winemakers and collectors gathered for an exclusive vertical uncorking of York Reserve Cabernet and barrel samples, culminating in a 5-course chef-crafted pairing feast.',
+        highlights: [
+            'Vertical tasting across 5 consecutive reserve vintages',
+            'Direct barrel sampling guided by the Master Winemaker',
+            '5-course farm-fresh monsoon culinary dinner pairing',
+            'Personalized signed cellar reserve collector bottle',
+        ],
+        host: {
+            name: 'Kailash Gurnani',
+            title: 'Chief Winemaker',
+            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=250',
+            rating: 4.98,
+            bio: 'Australian-trained enologist heading winemaking at York Winery with deep passion for balanced, expressive Indian terroir.',
+            verified: true,
+        },
+        itinerary: [
+            { time: '5:00 PM', title: 'Cellar Welcome & Sparkling Toast', description: 'Reception in the underground barrel room with York Sparkling Rosé.' },
+            { time: '6:15 PM', title: 'Vertical Library Vintage Masterclass', description: 'Comparative deep-dive into cellared vintages 2018 through 2023.' },
+            { time: '8:00 PM', title: 'Candlelit 5-Course Pairing Banquet', description: 'Long-table gourmet feast in the cellar with paired Reserve Shiraz.' },
+        ],
+        included: [
+            { item: '6 Hand-selected Reserve Vintages', iconName: 'Wine' },
+            { item: '5-Course Chef Pairing Dinner', iconName: 'Utensils' },
+            { item: 'Exclusive Barrel Sample Tastings', iconName: 'Award' },
+        ],
+        featuredWines: [
+            { name: 'York Reserve Cabernet Sauvignon', vintage: '2019', type: 'Red', notes: 'Ripe blackcurrant, cedar wood, elegant velvety tannins.' },
+            { name: 'York Arros Shiraz Cabernet', vintage: '2020', type: 'Red Blend', notes: 'Dark plum, toasted vanilla, spices and lingering complex finish.' },
+        ],
+        reviews: [
+            {
+                id: 'r-past-1',
+                author: 'Aditya Singhania',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+                rating: 5,
+                date: 'August 2025',
+                comment: 'The vertical tasting was world-class. Being able to taste barrel samples side-by-side with aged vintages was a revelation.',
+            },
+            {
+                id: 'r-past-2',
+                author: 'Pooja Kashyap',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
+                rating: 5,
+                date: 'August 2025',
+                comment: 'Incredible atmosphere in the candlelit cellar with the rain pouring outside. Outstanding hospitality and food pairing!',
+            },
+        ],
+        status: 'past',
+        turnoutCount: 45,
+        recapNotes: 'Concluded with full house capacity. 45 passionate wine connoisseurs experienced an exceptional evening of vintage verticals and cellar pairings.',
     },
 ]

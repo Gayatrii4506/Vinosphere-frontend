@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineEventsCatalog } from '@/components/events/WineEventsCatalog'
-import { VinoSphereExperience, EXPERIENCES } from '@/constants/events'
+import { VinoSphereExperience } from '@/constants/events'
 import { API_V1_URL } from '@/lib/api-config'
 
 export const metadata: Metadata = {
@@ -127,12 +127,28 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                         : (item.start_time && item.end_time ? calculateDuration(item.start_time, item.end_time) : '2 Hours');
                 }
 
+                const eventStatus = item.event_status || (item.date && new Date(item.date) < new Date(new Date().toDateString()) ? 'past' : 'upcoming');
+                const turnoutCount = item.turnout_count ?? undefined;
+                const reviews = Array.isArray(item.reviews) && item.reviews.length > 0 
+                    ? item.reviews.map((r: any, idx: number) => ({
+                        id: r.id || `rev-${idx}`,
+                        author: r.author || 'Wine Enthusiast',
+                        avatar: r.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(r.author || 'Guest')}`,
+                        rating: r.rating || 5,
+                        date: r.date || 'Recent Event',
+                        comment: r.comment || ''
+                      }))
+                    : [];
+                const eventRating = item.rating || (reviews.length > 0 
+                    ? Number((reviews.reduce((acc: number, r: any) => acc + (r.rating || 5), 0) / reviews.length).toFixed(1)) 
+                    : 5.0);
+
                 return {
                     id: item.id || Math.random().toString(),
                     title: item.title || 'Untitled Event',
                     wineryId: item.winery_id || wineryObj.id || '',
-                    rating: 4.8,
-                    reviewCount: 15,
+                    rating: eventRating,
+                    reviewCount: reviews.length,
                     currency: '₹',
                     spotsLeft: item.max_capacity || 12,
                     totalSpots: item.max_capacity || 150,
@@ -141,6 +157,7 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                         lng: parseFloat(wineryObj.longitude) || 73.7898
                     },
                     overview: item.description || '',
+                    description: item.description || '',
                     type: isEvent ? 'event' : 'experience',
                     tagline: item.description?.substring(0, 50) || 'An unforgettable experience',
                     category,
@@ -148,13 +165,13 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     image: item.cover_image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb',
                     gallery,
                     winery: wineryObj.name || 'VinoSphere Partner',
-                    location: locationStr || 'Napa Valley, CA',
-                    region: wineryObj.country || 'USA',
+                    location: locationStr || 'Nashik Valley, India',
+                    region: wineryObj.country || 'India',
                     date: displayDate,
                     time: displayTime,
                     duration: displayDuration,
                     price: item.price || 0,
-                                        host: {
+                    host: {
                         name: item.host_info?.name || 'VinoSphere Host',
                         title: item.host_info?.title || 'Expert Sommelier',
                         avatar: item.host_info?.avatar || 'https://ui-avatars.com/api/?name=' + (item.host_info?.name || 'Host'),
@@ -166,7 +183,10 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     itinerary: item.itinerary || [],
                     included,
                     featuredWines,
-                    reviews: [] // Reviews not stored in this payload yet
+                    reviews: reviews,
+                    status: eventStatus,
+                    turnoutCount: turnoutCount,
+                    recapNotes: item.recap_notes || ''
                 };
             });
         }
@@ -180,7 +200,7 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
 
 export default async function EventsPage() {
     const fetchedExperiences = await getExperiences();
-    const experiencesToDisplay = fetchedExperiences.length > 0 ? fetchedExperiences : EXPERIENCES;
+    const experiencesToDisplay = fetchedExperiences;
 
     return (
         <Suspense

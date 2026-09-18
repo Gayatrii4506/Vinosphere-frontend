@@ -39,6 +39,32 @@ body {
   background: #C89B3C;
 }
 
+/* Scrollbar-none utility for horizontal carousels, chips, and filter bars */
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.scrollbar-none,
+.no-scrollbar {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+/* Universal suppression of scrollbars on horizontal filter lists and chips */
+[class*="overflow-x-auto"]::-webkit-scrollbar {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+[class*="overflow-x-auto"] {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Playfair Display', Georgia, serif;

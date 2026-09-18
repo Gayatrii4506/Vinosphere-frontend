@@ -176,6 +176,22 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                             </div>
                         </div>
 
+                        {/* Concluded Event Recap Callout */}
+                        {experience.status === 'past' && (
+                            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs space-y-1.5">
+                                <div className="flex items-center justify-between font-bold text-amber-950">
+                                    <span className="flex items-center gap-1.5">
+                                        <Award size={15} className="text-amber-700" />
+                                        <span>Concluded Event Showcase</span>
+                                    </span>
+                                    <span>👥 {experience.turnoutCount || 180} Guests Attended</span>
+                                </div>
+                                <p className="text-stone-700 leading-relaxed">
+                                    {experience.recapNotes || `This event was successfully conducted on ${experience.date} at ${experience.winery}. Explore verified attendee feedback and ratings below.`}
+                                </p>
+                            </div>
+                        )}
+
                         {/* Host Bio Card */}
                         {experience.host && (
                             <div className="p-5 rounded-2xl bg-vino-cream/60 border border-[#E8D4A8]/60 flex items-start gap-4">
@@ -316,46 +332,72 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
 
                     </div>
 
-                    {/* Fixed Bottom Booking Bar */}
+                    {/* Fixed Bottom Booking / Archive Bar */}
                     <div className="absolute bottom-0 inset-x-0 bg-white border-t border-vino-dark/10 p-4 sm:p-5 flex items-center justify-between z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.08)]">
-                        <div>
-                            <span className="text-[10px] uppercase font-bold text-vino-dark/50 tracking-wider">Total Amount</span>
-                            <div className="flex items-baseline gap-1">
-                                <span className="font-serif text-2xl font-bold text-vino-darker">
-                                    {experience.currency}{totalPrice.toLocaleString()}
-                                </span>
-                                <span className="text-xs text-vino-dark/60">({guests} {guests === 1 ? 'guest' : 'guests'})</span>
-                            </div>
-                        </div>
-
-                        {/* Guest Count Switcher */}
-                        <div className="flex items-center gap-3">
-                            <div className="flex items-center bg-vino-cream rounded-xl p-1 border border-vino-dark/10">
-                                <button
-                                    onClick={() => setGuests(Math.max(1, guests - 1))}
-                                    className="w-7 h-7 rounded-lg bg-white flex items-center justify-center font-bold text-vino-darker hover:bg-vino-accent hover:text-white transition-colors"
+                        {experience.status === 'past' ? (
+                            <>
+                                <div>
+                                    <span className="text-[10px] uppercase font-bold text-amber-700 tracking-wider">Archive Status</span>
+                                    <div className="flex items-center gap-2 mt-0.5">
+                                        <span className="font-serif text-lg font-bold text-stone-800">
+                                            Concluded Showcase
+                                        </span>
+                                        <span className="text-xs bg-amber-100 text-amber-900 font-semibold px-2.5 py-0.5 rounded-full border border-amber-200">
+                                            {experience.turnoutCount ? `${experience.turnoutCount} Guests Attended` : 'Concluded'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <motion.button
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    onClick={onClose}
+                                    className="px-6 py-3 bg-stone-900 hover:bg-stone-800 text-white font-semibold text-sm rounded-2xl flex items-center gap-2 shadow-lg transition-colors"
                                 >
-                                    -
-                                </button>
-                                <span className="px-3 text-xs font-bold text-vino-darker">{guests}</span>
-                                <button
-                                    onClick={() => setGuests(Math.min(experience.spotsLeft, guests + 1))}
-                                    className="w-7 h-7 rounded-lg bg-white flex items-center justify-center font-bold text-vino-darker hover:bg-vino-accent hover:text-white transition-colors"
-                                >
-                                    +
-                                </button>
-                            </div>
+                                    <span>Browse Upcoming Events</span>
+                                </motion.button>
+                            </>
+                        ) : (
+                            <>
+                                <div>
+                                    <span className="text-[10px] uppercase font-bold text-vino-dark/50 tracking-wider">Total Amount</span>
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="font-serif text-2xl font-bold text-vino-darker">
+                                            {experience.currency}{totalPrice.toLocaleString()}
+                                        </span>
+                                        <span className="text-xs text-vino-dark/60">({guests} {guests === 1 ? 'guest' : 'guests'})</span>
+                                    </div>
+                                </div>
 
-                            <motion.button
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.97 }}
-                                onClick={() => onOpenBooking(experience, guests)}
-                                className="px-6 py-3 bg-vino-accent hover:bg-vino-accent-light text-white font-semibold text-sm rounded-2xl flex items-center gap-2 shadow-lg shadow-vino-accent/30 transition-colors"
-                            >
-                                <Ticket size={16} />
-                                <span>Reserve Ticket</span>
-                            </motion.button>
-                        </div>
+                                {/* Guest Count Switcher */}
+                                <div className="flex items-center gap-3">
+                                    <div className="flex items-center bg-vino-cream rounded-xl p-1 border border-vino-dark/10">
+                                        <button
+                                            onClick={() => setGuests(Math.max(1, guests - 1))}
+                                            className="w-7 h-7 rounded-lg bg-white flex items-center justify-center font-bold text-vino-darker hover:bg-vino-accent hover:text-white transition-colors"
+                                        >
+                                            -
+                                        </button>
+                                        <span className="px-3 text-xs font-bold text-vino-darker">{guests}</span>
+                                        <button
+                                            onClick={() => setGuests(Math.min(experience.spotsLeft, guests + 1))}
+                                            className="w-7 h-7 rounded-lg bg-white flex items-center justify-center font-bold text-vino-darker hover:bg-vino-accent hover:text-white transition-colors"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.03 }}
+                                        whileTap={{ scale: 0.97 }}
+                                        onClick={() => onOpenBooking(experience, guests)}
+                                        className="px-6 py-3 bg-vino-accent hover:bg-vino-accent-light text-white font-semibold text-sm rounded-2xl flex items-center gap-2 shadow-lg shadow-vino-accent/30 transition-colors"
+                                    >
+                                        <Ticket size={16} />
+                                        <span>Reserve Ticket</span>
+                                    </motion.button>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </motion.div>
             </div>
