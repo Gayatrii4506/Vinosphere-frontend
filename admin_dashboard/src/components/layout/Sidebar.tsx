@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { LayoutDashboard, Wine, FileCheck, Users, LogOut, Calendar, Compass, Ticket, Star } from 'lucide-react'
+import { LayoutDashboard, Wine, FileCheck, Users, LogOut, Calendar, Compass, Ticket, Star, BarChart3 } from 'lucide-react'
 
 export default function Sidebar() {
   return (
@@ -47,6 +47,10 @@ export default function Sidebar() {
         <Link href="/reviews" className="flex items-center gap-3 px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-xl transition-all duration-300 group">
           <Star size={20} className="text-primary group-hover:scale-110 transition-transform duration-300" />
           <span className="font-medium">Reviews</span>
+        </Link>
+        <Link href="/analytics" className="flex items-center gap-3 px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-xl transition-all duration-300 group">
+          <BarChart3 size={20} className="text-primary group-hover:scale-110 transition-transform duration-300" />
+          <span className="font-medium">Analytics</span>
         </Link>
       </nav>
       

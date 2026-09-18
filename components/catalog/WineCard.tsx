@@ -5,6 +5,7 @@ import { Heart, Star } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Wine } from '@/constants/wines'
 import { useWishlist } from '@/context/WishlistContext'
+import { useAnalytics } from '@/hooks/useAnalytics'
 
 interface WineCardProps {
     wine: Wine
@@ -16,13 +17,17 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
     const { isWishlisted, toggleWishlist } = useWishlist()
     const isLiked = isWishlisted(wine.id)
     const [imgError, setImgError] = useState(false)
+    const { trackEvent } = useAnalytics()
 
     // Fallback image if custom Cloudinary URL fails to load
     const displayImg = imgError || !wine.imageUrl ? '/bottle.png' : wine.imageUrl
 
     return (
         <div 
-            onClick={() => onSelect?.(wine)}
+            onClick={() => {
+                trackEvent?.('wine_view', { wine_id: wine.id, winery_id: wine.wineryId })
+                onSelect?.(wine)
+            }}
             className="group relative flex flex-col justify-between rounded-xl bg-white border border-stone-200/90 p-3 shadow-sm hover:shadow-lg hover:border-vino-accent/50 cursor-pointer transition-all duration-300"
         >
             {/* Direct Image - Compact Height */}
@@ -73,7 +78,7 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
                         onClick={async (e) => {
                             e.stopPropagation()
                             const res = await toggleWishlist(wine)
-                            if (res.requiresAuth) {
+                            if (res?.requiresAuth) {
                                 router.push('/welcome?redirect=/discover/wines')
                             }
                         }}

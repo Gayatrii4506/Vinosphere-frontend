@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -24,6 +24,7 @@ import {
     Ticket,
 } from 'lucide-react'
 import { VinoSphereExperience } from '@/constants/events'
+import { useAnalytics } from '@/hooks/useAnalytics'
 
 interface ExperienceDetailDrawerProps {
     experience: VinoSphereExperience | null
@@ -38,6 +39,13 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
 }) => {
     const [selectedImage, setSelectedImage] = useState<string>('')
     const [guests, setGuests] = useState<number>(2)
+    const { trackEvent } = useAnalytics()
+
+    useEffect(() => {
+        if (experience?.id) {
+            trackEvent('event_view', { entity_id: experience.id, winery_id: experience.wineryId })
+        }
+    }, [experience?.id, experience?.wineryId, trackEvent])
 
     if (!experience) return null
 

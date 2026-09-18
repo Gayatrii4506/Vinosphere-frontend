@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,6 +10,7 @@ import {
     CheckCircle2
 } from 'lucide-react'
 import type { WineryDetails } from '@/constants/winery-details'
+import { useAnalytics } from '@/hooks/useAnalytics'
 
 // ─── Utility ──────────────────────────────────────────────────────────────────
 const fadeUp = {
@@ -1003,6 +1004,14 @@ function RelatedWineriesSection({ winery }: { winery: WineryDetails }) {
 
 // ─── Main Client Component ─────────────────────────────────────────────────────
 export function WineryDetailClient({ winery }: { winery: WineryDetails }) {
+    const { trackEvent } = useAnalytics()
+
+    useEffect(() => {
+        if (winery?.id) {
+            trackEvent('winery_view', { winery_id: winery.id })
+        }
+    }, [winery?.id, trackEvent])
+
     if (!winery) return null
 
     return (
