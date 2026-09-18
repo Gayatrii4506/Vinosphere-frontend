@@ -36,6 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
+            suppressHydrationWarning
             className={`
         font-medium rounded-sm transition-all duration-300 ease-out
         ${variants[variant]}

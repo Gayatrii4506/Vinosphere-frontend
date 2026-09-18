@@ -93,6 +93,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                     {/* Right Section */}
                     <div className="hidden lg:flex items-center gap-6">
                         <button
+                            suppressHydrationWarning
                             className={`${iconColor} transition-colors duration-300`}
                         >
                             <Search size={20} />
@@ -129,6 +130,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
 
                     {/* Mobile Button */}
                     <button
+                        suppressHydrationWarning
                         onClick={() =>
                             setIsMobileMenuOpen(!isMobileMenuOpen)
                         }

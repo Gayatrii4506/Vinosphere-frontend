@@ -137,6 +137,7 @@ export const Hero: React.FC = () => {
 
             {/* Scroll indicator */}
             <motion.button
+                suppressHydrationWarning
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, y: [0, 7, 0] }}
                 transition={{
