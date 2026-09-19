@@ -421,9 +421,6 @@ export default function FoodPairingApp() {
             {/* Header Hero Banner */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
                 <div className="bg-gradient-to-r from-[#7B1E3A] via-[#8B1E3F] to-[#5C1428] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
-                    <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
-                        <Wine size={320} />
-                    </div>
 
                     <div className="relative z-10 max-w-3xl">
                         <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider text-amber-200 mb-4 border border-white/20">
