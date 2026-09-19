@@ -56,58 +56,67 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-### 4. Running Locally
-Launch the Next.js development server:
-```bash
-npm run dev
-```
-The application will listen on **`http://localhost:3002`**.
+### 4. Running the Platform
 
+You can run the entire platform with **a single command** or run individual modules separately from the root directory:
+
+#### 🌟 1-Command Full Stack Startup (Recommended)
+Starts Backend API, Winery Dashboard, and Consumer Application simultaneously:
+```bash
+npm run dev:all
+```
+
+#### 📌 Run Individual Modules (From Root Directory)
+
+| Goal | Command | Local URL |
+| :--- | :--- | :--- |
+| **Entire Platform (All Services)** | `npm run dev:all` | All services below |
+| **Winery Management Dashboard** | `npm run dev:winery` | `http://localhost:3001` |
+| **Backend Express API** | `npm run dev:backend` | `http://localhost:5000` |
+| **Consumer Application** | `npm run dev` | `http://localhost:3002` |
+| **Wine Pairing Recommender** | `npm run dev:pairing` | `http://localhost:5173` |
+
+#### 🧪 Running Backend Analytics Unit & Integration Tests
+```bash
+cd vinosphere-backend
+npm test
+```
+*Runs all 118 analytics backend test suites across 7 test modules with `--runInBand` and `--forceExit`.*
 
 ---
 
-## 🌐 Overall Project Architecture & Run Guide
+## 🌐 Overall Project Architecture
 
-VinoSphere is structured as a multi-repository ecosystem composed of three independent applications:
+VinoSphere is structured as a unified ecosystem:
 
 ```
 VinoSphere/ (Project Root)
-├── vinosphere-backend/     # Express REST API Backend [Port 5000]
-├── winery_dashboard/       # Winery Manager Portal [Port 3001]
-└── Vinosphere-good-ui/     # Consumer Discovery & Booking App [Port 3002]
+├── vinosphere-backend/                 # Express REST API Backend [Port 5000]
+├── winery_dashboard/                   # Winery Manager Portal [Port 3001]
+├── Food_Recom/food_pairing_frontend/   # Food & Wine Pairing Recommender [Port 5173]
+└── (Root app)                          # Consumer Discovery & Booking App [Port 3002]
 ```
 
-### ⚡ Port & Technology Matrix
+### ⚡ Service Matrix
 
 | Service | Directory | Tech Stack | Port | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| **Backend API** | `vinosphere-backend` | Node.js, Express, TypeScript, Supabase, Nodemailer | `5000` | REST API endpoints, security auth middlewares, DB triggers & email generation. |
-| **Winery Portal** | `winery_dashboard` | Next.js (App Router), TypeScript, Tailwind CSS | `3001` | Management dashboard for wineries to post offerings & monitor reservations. |
-| **Consumer App** | `Vinosphere-good-ui` | Next.js (App Router), TypeScript, Vanilla CSS | `3002` | Public booking web portal for wine lovers to buy tickets & view offerings. |
+| **Backend API** | `vinosphere-backend` | Node.js, Express, TypeScript, Supabase | `5000` | REST API endpoints, analytics engine, security auth middlewares & DB triggers. |
+| **Winery Portal** | `winery_dashboard` | Next.js (App Router), TypeScript, Tailwind CSS | `3001` | Business intelligence dashboard for wineries to track KPIs, view automated recommendations & manage events. |
+| **Consumer App** | Root directory | Next.js (App Router), TypeScript, Vanilla CSS | `3002` | Public web app for wine enthusiasts to browse wineries, discover wines & book experiences. |
+| **Wine Pairing Engine** | `Food_Recom/food_pairing_frontend` | React, Vite, Tailwind CSS | `5173` | Interactive food and wine pairing recommendation interface. |
 
-### 🏃 How to Run the Entire Ecosystem Concurrently
+---
 
-To start the entire platform, open three terminal windows and run the setup/start commands in each corresponding directory:
+## 🏃 Quick Command Reference
 
-#### Terminal 1: Backend API
 ```bash
-cd vinosphere-backend
-npm run dev
-```
+# 1. Start everything together
+npm run dev:all
 
-#### Terminal 2: Winery Dashboard
-```bash
-cd winery_dashboard
-npm run dev
-```
+# 2. Start Winery Manager Portal only
+npm run dev:winery
 
-#### Terminal 3: Consumer Discovery Platform
-```bash
-cd Vinosphere-good-ui
-npm run dev
+# 3. Run Backend Analytics Test Suite
+cd vinosphere-backend && npm test
 ```
-
-Once running:
-* Browse catalog & book tickets: **`http://localhost:3002`**
-* Review reservations & add offerings: **`http://localhost:3001`**
-* Backend API endpoints: **`http://localhost:5000`**
