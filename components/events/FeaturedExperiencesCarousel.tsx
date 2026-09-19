@@ -20,6 +20,10 @@ export const FeaturedExperiencesCarousel: React.FC<FeaturedCarouselProps> = ({
         (exp) => exp.badge === 'Best Seller' || exp.badge === 'Exclusive' || exp.badge === 'Reserve Collection' || exp.badge === 'Featured'
     )
 
+    if (featuredList.length === 0) {
+        return null
+    }
+
     const scrollLeft = () => {
         if (scrollTrackRef.current) {
             scrollTrackRef.current.scrollBy({ left: -420, behavior: 'smooth' })

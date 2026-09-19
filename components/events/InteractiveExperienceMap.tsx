@@ -24,7 +24,7 @@ export const InteractiveExperienceMap: React.FC<MapProps> = ({ experiences, onSe
                             <span>Terroir Location Explorer</span>
                         </div>
                         <h2 className="font-serif text-3xl sm:text-4xl font-bold text-vino-darker">
-                            Nearby Vineyard Experiences
+                            Nearby Vineyard Journeys
                         </h2>
                     </div>
                     <p className="text-xs text-vino-dark/60 max-w-sm">
@@ -48,16 +48,22 @@ export const InteractiveExperienceMap: React.FC<MapProps> = ({ experiences, onSe
 
                     {/* Interactive Pins Positioned relative */}
                     <div className="relative w-full max-w-4xl h-full flex items-center justify-around">
-                        {experiences.map((exp, idx) => {
-                            // Custom relative offsets for visual simulation
-                            const positions = [
-                                { top: '35%', left: '25%' },
-                                { top: '55%', left: '45%' },
-                                { top: '70%', left: '75%' },
-                                { top: '25%', left: '65%' },
-                                { top: '45%', left: '80%' },
-                            ]
-                            const pos = positions[idx % positions.length]
+                        {experiences.length === 0 ? (
+                            <div className="text-center bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-[#E8D4A8]/70 shadow-sm z-10">
+                                <p className="text-xs font-semibold text-vino-darker">No vineyard locations found</p>
+                                <p className="text-[11px] text-vino-dark/60 mt-0.5">Locations will appear here once journeys are scheduled.</p>
+                            </div>
+                        ) : (
+                            experiences.map((exp, idx) => {
+                                // Custom relative offsets for visual simulation
+                                const positions = [
+                                    { top: '35%', left: '25%' },
+                                    { top: '55%', left: '45%' },
+                                    { top: '70%', left: '75%' },
+                                    { top: '25%', left: '65%' },
+                                    { top: '45%', left: '80%' },
+                                ]
+                                const pos = positions[idx % positions.length]
 
                             return (
                                 <div
@@ -103,7 +109,7 @@ export const InteractiveExperienceMap: React.FC<MapProps> = ({ experiences, onSe
                                     )}
                                 </div>
                             )
-                        })}
+                        }))}
                     </div>
 
                 </div>

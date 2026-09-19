@@ -44,19 +44,55 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                             {experience.category}
                         </span>
                         <span className={`px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-md border ${
-                            experience.type === 'event' 
-                                ? 'bg-[#8B1E3F] text-white border-white/20' 
-                                : 'bg-white/95 text-vino-accent border-[#E8D4A8]/80'
+                            experience.status === 'past' || experience.experienceStatus === 'past'
+                                ? 'bg-stone-900/90 text-amber-300 border-amber-500/40'
+                                : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0)
+                                    ? 'bg-rose-950/90 text-rose-200 border-rose-500/40'
+                                    : experience.bookingStatus === 'Closed'
+                                        ? 'bg-stone-800 text-stone-300 border-stone-600'
+                                        : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon'
+                                            ? 'bg-indigo-900/90 text-indigo-200 border-indigo-400/50'
+                                            : experience.status === 'ongoing'
+                                                ? 'bg-amber-800/90 text-amber-200 border-amber-400/50'
+                                                : experience.type === 'event' 
+                                                    ? 'bg-[#8B1E3F] text-white border-white/20' 
+                                                    : 'bg-white/95 text-vino-accent border-[#E8D4A8]/80'
                         }`}>
-                            {experience.type === 'event' ? 'Event' : 'Experience'}
+                            {experience.status === 'past' || experience.experienceStatus === 'past'
+                                ? (experience.type === 'event' ? 'Past Event' : 'Past Journey')
+                                : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0)
+                                    ? 'Sold Out'
+                                    : experience.bookingStatus === 'Closed'
+                                        ? 'Closed'
+                                        : experience.status === 'ongoing'
+                                            ? 'Ongoing'
+                                            : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon'
+                                                ? 'Coming Soon'
+                                                : (experience.type === 'event' ? 'Event' : 'Journey')}
                         </span>
                     </div>
 
-                    {experience.badge && (
+                    {experience.badge ? (
                         <span className="px-3 py-1 rounded-full bg-vino-gold text-vino-darker text-[11px] font-bold tracking-wider uppercase shadow-md">
                             {experience.badge}
                         </span>
-                    )}
+                    ) : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0) ? (
+                        <span className="px-3 py-1 rounded-full bg-rose-600 text-white text-[10px] font-bold tracking-wider uppercase shadow-md">
+                            Sold Out
+                        </span>
+                    ) : experience.bookingStatus === 'Closed' ? (
+                        <span className="px-3 py-1 rounded-full bg-stone-700 text-stone-200 text-[10px] font-bold tracking-wider uppercase shadow-md">
+                            Closed
+                        </span>
+                    ) : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon' ? (
+                        <span className="px-3 py-1 rounded-full bg-indigo-600 text-white text-[10px] font-bold tracking-wider uppercase shadow-md">
+                            Preview Only
+                        </span>
+                    ) : experience.status === 'past' || experience.experienceStatus === 'past' ? (
+                        <span className="px-3 py-1 rounded-full bg-stone-900/80 text-stone-200 border border-stone-700 text-[10px] font-bold tracking-wider uppercase shadow-md">
+                            Concluded
+                        </span>
+                    ) : null}
                 </div>
 
                 {/* Bottom Overlay Info */}
@@ -88,9 +124,9 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                         {experience.title}
                     </h3>
 
-                    {/* Tagline */}
+                    {/* Tagline / Short Description */}
                     <p className="text-xs text-vino-dark/70 mt-2 line-clamp-2 leading-relaxed">
-                        {experience.tagline}
+                        {experience.shortDescription || experience.tagline}
                     </p>
                 </div>
 
@@ -104,8 +140,24 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
 
                         <div className="flex items-center gap-1">
                             <Users size={13} className="text-vino-accent" />
-                            <span className={isSpotsLow ? 'text-rose-600 font-bold' : ''}>
-                                {experience.spotsLeft} spots left
+                            <span className={
+                                experience.status === 'past' || experience.experienceStatus === 'past' 
+                                    ? 'text-stone-800 font-bold' 
+                                    : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0)
+                                    ? 'text-rose-600 font-bold'
+                                    : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon'
+                                    ? 'text-indigo-600 font-bold'
+                                    : (isSpotsLow ? 'text-rose-600 font-bold' : '')
+                            }>
+                                {experience.status === 'past' || experience.experienceStatus === 'past'
+                                    ? `${experience.turnoutCount || 180} Guests Hosted` 
+                                    : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0)
+                                    ? 'Sold Out (0 spots)'
+                                    : experience.bookingStatus === 'Closed'
+                                    ? 'Closed'
+                                    : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon'
+                                    ? `Max ${experience.maxGuestsPerSlot || experience.totalSpots || 15}/slot`
+                                    : `${experience.spotsLeft} spots left`}
                             </span>
                         </div>
                     </div>
@@ -113,8 +165,16 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                     {/* Progress Bar */}
                     <div className="w-full h-1.5 bg-vino-dark/10 rounded-full overflow-hidden">
                         <div
-                            className={`h-full rounded-full transition-all duration-500 ${isSpotsLow ? 'bg-rose-500' : 'bg-vino-gold'}`}
-                            style={{ width: `${spotsPct}%` }}
+                            className={`h-full rounded-full transition-all duration-500 ${
+                                experience.status === 'past' || experience.experienceStatus === 'past' 
+                                    ? 'bg-amber-500' 
+                                    : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0)
+                                    ? 'bg-rose-500'
+                                    : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon'
+                                    ? 'bg-indigo-500'
+                                    : (isSpotsLow ? 'bg-rose-500' : 'bg-vino-gold')
+                            }`}
+                            style={{ width: `${experience.status === 'past' || experience.experienceStatus === 'past' ? 100 : spotsPct}%` }}
                         />
                     </div>
                 </div>
@@ -122,7 +182,13 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                 {/* Price & CTA Button */}
                 <div className="flex items-center justify-between pt-2">
                     <div>
-                        <span className="text-[10px] text-vino-dark/50 uppercase tracking-widest font-semibold block">Price per guest</span>
+                        <span className="text-[10px] text-vino-dark/50 uppercase tracking-widest font-semibold block">
+                            {experience.status === 'past' || experience.experienceStatus === 'past' 
+                                ? 'Past Edition' 
+                                : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon'
+                                ? 'Estimated Fare'
+                                : 'Price per guest'}
+                        </span>
                         <div className="flex items-baseline gap-1.5">
                             <span className="text-2xl font-serif font-bold text-vino-darker">
                                 {experience.currency}{experience.price.toLocaleString()}
@@ -135,9 +201,31 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
                         </div>
                     </div>
 
-                    <div className="w-10 h-10 rounded-full bg-vino-cream flex items-center justify-center text-vino-accent group-hover:bg-vino-accent group-hover:text-white transition-all duration-300 shadow-sm">
-                        <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
-                    </div>
+                    {experience.status === 'past' || experience.experienceStatus === 'past' ? (
+                        <div className="px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs group-hover:bg-amber-700 group-hover:text-white group-hover:border-amber-700 transition-all duration-300 flex items-center gap-1.5 shadow-sm">
+                            <span>View Showcase</span>
+                            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                    ) : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0) ? (
+                        <div className="px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-bold text-xs group-hover:bg-rose-600 group-hover:text-white transition-all duration-300 flex items-center gap-1.5 shadow-sm">
+                            <span>Sold Out</span>
+                            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                    ) : experience.bookingStatus === 'Closed' ? (
+                        <div className="px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-stone-600 font-bold text-xs group-hover:bg-stone-700 group-hover:text-white transition-all duration-300 flex items-center gap-1.5 shadow-sm">
+                            <span>Closed</span>
+                            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                    ) : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon' ? (
+                        <div className="px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-all duration-300 flex items-center gap-1.5 shadow-sm">
+                            <span>Coming Soon</span>
+                            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                    ) : (
+                        <div className="w-10 h-10 rounded-full bg-vino-cream flex items-center justify-center text-vino-accent group-hover:bg-vino-accent group-hover:text-white transition-all duration-300 shadow-sm">
+                            <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                    )}
                 </div>
             </div>
         </motion.article>

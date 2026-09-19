@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineEventsCatalog } from '@/components/events/WineEventsCatalog'
-import { VinoSphereExperience, EXPERIENCES } from '@/constants/events'
+import { VinoSphereExperience } from '@/constants/events'
 import { API_V1_URL } from '@/lib/api-config'
 
 export const metadata: Metadata = {
-    title: 'Wine Experiences & Masterclasses | VinoSphere',
+    title: 'Estate Journeys & Wine Masterclasses | VinoSphere',
     description: 'Discover and book exclusive grape harvest festivals, sommelier masterclasses, vineyard tours, and chef pairing dinners with VinoSphere.',
 }
 
@@ -127,34 +127,67 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                         : (item.start_time && item.end_time ? calculateDuration(item.start_time, item.end_time) : '2 Hours');
                 }
 
+                const eventStatus = item.event_status || (item.date && new Date(item.date) < new Date(new Date().toDateString()) ? 'past' : 'upcoming');
+                const turnoutCount = item.turnout_count ?? undefined;
+                const reviews = Array.isArray(item.reviews) && item.reviews.length > 0 
+                    ? item.reviews.map((r: any, idx: number) => ({
+                        id: r.id || `rev-${idx}`,
+                        author: r.author || 'Wine Enthusiast',
+                        avatar: r.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(r.author || 'Guest')}`,
+                        rating: r.rating || 5,
+                        date: r.date || 'Recent Event',
+                        comment: r.comment || ''
+                      }))
+                    : [];
+                const eventRating = item.rating || (reviews.length > 0 
+                    ? Number((reviews.reduce((acc: number, r: any) => acc + (r.rating || 5), 0) / reviews.length).toFixed(1)) 
+                    : 5.0);
+
+                const expStatus = item.experience_status || (eventStatus === 'past' ? 'past' : (item.booking_status === 'Coming Soon' || eventStatus === 'upcoming' ? 'upcoming' : 'active'));
+                const availableDays: string[] = item.available_days || item.host_info?.schedule?.available_days || [];
+                const timeSlots: string[] = item.time_slots || item.host_info?.schedule?.time_slots || [];
+
+                if (!isEvent) {
+                    if (availableDays.length > 0) {
+                        displayDate = availableDays.map(d => d.slice(0, 3)).join(', ');
+                    }
+                    if (timeSlots.length > 0) {
+                        displayTime = `${timeSlots.length} Slots (${timeSlots[0]}${timeSlots.length > 1 ? '...' : ''})`;
+                    }
+                }
+
                 return {
                     id: item.id || Math.random().toString(),
                     title: item.title || 'Untitled Event',
                     wineryId: item.winery_id || wineryObj.id || '',
-                    rating: 4.8,
-                    reviewCount: 15,
+                    rating: eventRating,
+                    reviewCount: reviews.length,
                     currency: '₹',
-                    spotsLeft: item.max_capacity || 12,
-                    totalSpots: item.max_capacity || 150,
+                    spotsLeft: item.available_slots !== undefined && item.available_slots !== null ? item.available_slots : (item.max_capacity || item.capacity || 12),
+                    totalSpots: item.capacity || item.max_capacity || 150,
                     coordinates: {
                         lat: parseFloat(wineryObj.latitude) || 19.9975,
                         lng: parseFloat(wineryObj.longitude) || 73.7898
                     },
                     overview: item.description || '',
+                    description: item.description || '',
+                    shortDescription: item.short_description || item.host_info?.short_description || '',
                     type: isEvent ? 'event' : 'experience',
-                    tagline: item.description?.substring(0, 50) || 'An unforgettable experience',
+                    tagline: item.short_description || item.description?.substring(0, 70) || 'An unforgettable experience',
                     category,
                     badge,
                     image: item.cover_image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb',
                     gallery,
                     winery: wineryObj.name || 'VinoSphere Partner',
-                    location: locationStr || 'Napa Valley, CA',
-                    region: wineryObj.country || 'USA',
+                    location: locationStr || 'Nashik Valley, India',
+                    region: wineryObj.country || 'India',
                     date: displayDate,
                     time: displayTime,
+                    endTime: item.end_time || null,
+                    bookingDeadline: item.booking_deadline || null,
                     duration: displayDuration,
                     price: item.price || 0,
-                                        host: {
+                    host: {
                         name: item.host_info?.name || 'VinoSphere Host',
                         title: item.host_info?.title || 'Expert Sommelier',
                         avatar: item.host_info?.avatar || 'https://ui-avatars.com/api/?name=' + (item.host_info?.name || 'Host'),
@@ -166,7 +199,24 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     itinerary: item.itinerary || [],
                     included,
                     featuredWines,
-                    reviews: [] // Reviews not stored in this payload yet
+                    reviews: reviews,
+                    status: eventStatus,
+                    experienceStatus: expStatus,
+                    startDate: item.start_date || item.host_info?.schedule?.start_date || null,
+                    endDate: item.end_date || item.host_info?.schedule?.end_date || null,
+                    availableDays: availableDays,
+                    timeSlots: timeSlots,
+                    maxGuestsPerSlot: item.max_guests_per_slot || item.host_info?.schedule?.max_guests_per_slot || item.capacity || 15,
+                    bookingStatus: item.booking_status || (isEvent ? (eventStatus === 'past' ? 'Closed' : 'Open') : (item.host_info?.booking?.booking_status || (expStatus === 'upcoming' ? 'Coming Soon' : 'Open for Booking'))),
+                    cancellationPolicy: item.cancellation_policy || item.host_info?.booking?.cancellation_policy || '',
+                    minAge: item.min_age || item.host_info?.booking?.min_age || '18+',
+                    meetingPoint: item.meeting_point || item.host_info?.location?.meeting_point || '',
+                    arrivalInstructions: item.arrival_instructions || item.host_info?.location?.arrival_instructions || '',
+                    parkingAvailable: item.parking_available ?? item.host_info?.location?.parking_available ?? true,
+                    exclusions: item.exclusions || item.host_info?.exclusions || [],
+                    editionDate: item.edition_date || item.host_info?.recap?.edition_date || null,
+                    turnoutCount: turnoutCount,
+                    recapNotes: item.recap_notes || ''
                 };
             });
         }
@@ -180,7 +230,7 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
 
 export default async function EventsPage() {
     const fetchedExperiences = await getExperiences();
-    const experiencesToDisplay = fetchedExperiences.length > 0 ? fetchedExperiences : EXPERIENCES;
+    const experiencesToDisplay = fetchedExperiences;
 
     return (
         <Suspense
@@ -189,7 +239,7 @@ export default async function EventsPage() {
                     <div className="flex flex-col items-center gap-3">
                         <div className="w-10 h-10 border-4 border-vino-accent border-t-transparent rounded-full animate-spin" />
                         <div className="text-vino-dark/60 text-sm font-semibold tracking-wider uppercase">
-                            Loading VinoSphere Experiences...
+                            Loading VinoSphere Estate Journeys...
                         </div>
                     </div>
                 </div>

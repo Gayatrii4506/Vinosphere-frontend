@@ -20,6 +20,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     onClose,
 }) => {
         const [guests, setGuests] = useState<number>(initialGuests || 2)
+    const [selectedSlot, setSelectedSlot] = useState<string>(experience?.timeSlots?.[0] || '')
     const [isConfirmed, setIsConfirmed] = useState<boolean>(false)
     const [ticketCode] = useState<string>(`VINO-${Math.floor(100000 + Math.random() * 900000)}`)
     const [isBookingInProgress, setIsBookingInProgress] = useState<boolean>(false)
@@ -62,6 +63,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 event_id: experience.type === 'event' ? experience.id : null,
                 winery_id: experience.wineryId || null,
                 booking_date: bookingDateStr,
+                booking_time: selectedSlot || null,
                 guests: guests,
                 total_amount: total,
                 booking_status: 'confirmed',
@@ -139,11 +141,37 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                             </div>
 
                             <form onSubmit={handleConfirmBooking} className="space-y-5">
+                                {/* Time Slot Selector (for configured journey departure slots) */}
+                                {experience.timeSlots && experience.timeSlots.length > 0 && (
+                                    <div className="space-y-1.5">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-vino-dark/70 flex items-center gap-1.5">
+                                            <Clock size={13} className="text-vino-accent" />
+                                            <span>Select Departure Time Slot</span>
+                                        </label>
+                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                            {experience.timeSlots.map((slot, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    type="button"
+                                                    onClick={() => setSelectedSlot(slot)}
+                                                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all border ${
+                                                        selectedSlot === slot
+                                                            ? 'bg-vino-accent text-white border-vino-accent shadow-sm'
+                                                            : 'bg-white border-vino-dark/15 text-vino-dark/80 hover:bg-vino-cream'
+                                                    }`}
+                                                >
+                                                    {slot}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Guest Selector */}
                                 <div className="p-4 rounded-2xl bg-vino-cream/50 border border-vino-dark/10 flex items-center justify-between">
                                     <div>
                                         <h4 className="font-bold text-sm text-vino-darker">Number of Guests</h4>
-                                        <p className="text-xs text-vino-dark/60">Maximum {experience.spotsLeft} seats available</p>
+                                        <p className="text-xs text-vino-dark/60">Maximum {experience.maxGuestsPerSlot || experience.spotsLeft} seats per slot</p>
                                     </div>
                                     <div className="flex items-center bg-white rounded-xl p-1 border border-vino-dark/10 shadow-sm">
                                         <button
@@ -156,7 +184,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                         <span className="px-4 text-sm font-bold text-vino-darker">{guests}</span>
                                         <button
                                             type="button"
-                                            onClick={() => setGuests(Math.min(experience.spotsLeft, guests + 1))}
+                                            onClick={() => setGuests(Math.min(experience.maxGuestsPerSlot || experience.spotsLeft, guests + 1))}
                                             className="w-8 h-8 rounded-lg bg-vino-cream font-bold text-vino-darker hover:bg-vino-accent hover:text-white transition-colors"
                                         >
                                             +
@@ -180,7 +208,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                     </div>
                                 </div>
 
-                                                                {/* Error message banner */}
+                                {/* Error message banner */}
                                 {errorMsg && (
                                     <div className="p-3 bg-red-50/10 text-red-400 rounded-xl text-xs font-semibold text-center border border-red-500/20 mb-4">
                                         {errorMsg}
@@ -239,8 +267,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                     <span className="font-bold">{experience.winery}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-vino-dark/60">Date & Time:</span>
-                                    <span className="font-bold">{experience.date} &bull; {experience.time}</span>
+                                    <span className="text-vino-dark/60">Date & Slot:</span>
+                                    <span className="font-bold">{experience.date} {selectedSlot ? `&bull; ${selectedSlot}` : `&bull; ${experience.time}`}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-vino-dark/60">Guests:</span>
