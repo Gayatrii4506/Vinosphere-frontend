@@ -70,6 +70,23 @@ export interface VinoSphereExperience {
     featuredWines: FeaturedWine[]
     reviews: Review[]
     status?: 'upcoming' | 'ongoing' | 'past'
+    experienceStatus?: 'active' | 'upcoming' | 'past'
+    shortDescription?: string
+    startDate?: string | null
+    endDate?: string | null
+    availableDays?: string[]
+    timeSlots?: string[]
+    maxGuestsPerSlot?: number
+    bookingStatus?: string
+    endTime?: string
+    bookingDeadline?: string | null
+    cancellationPolicy?: string
+    minAge?: string
+    meetingPoint?: string
+    arrivalInstructions?: string
+    parkingAvailable?: boolean
+    exclusions?: string[]
+    editionDate?: string | null
     turnoutCount?: number
     recapNotes?: string
 }

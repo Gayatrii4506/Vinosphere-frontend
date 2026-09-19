@@ -143,6 +143,19 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     ? Number((reviews.reduce((acc: number, r: any) => acc + (r.rating || 5), 0) / reviews.length).toFixed(1)) 
                     : 5.0);
 
+                const expStatus = item.experience_status || (eventStatus === 'past' ? 'past' : (item.booking_status === 'Coming Soon' || eventStatus === 'upcoming' ? 'upcoming' : 'active'));
+                const availableDays: string[] = item.available_days || item.host_info?.schedule?.available_days || [];
+                const timeSlots: string[] = item.time_slots || item.host_info?.schedule?.time_slots || [];
+
+                if (!isEvent) {
+                    if (availableDays.length > 0) {
+                        displayDate = availableDays.map(d => d.slice(0, 3)).join(', ');
+                    }
+                    if (timeSlots.length > 0) {
+                        displayTime = `${timeSlots.length} Slots (${timeSlots[0]}${timeSlots.length > 1 ? '...' : ''})`;
+                    }
+                }
+
                 return {
                     id: item.id || Math.random().toString(),
                     title: item.title || 'Untitled Event',
@@ -150,16 +163,17 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     rating: eventRating,
                     reviewCount: reviews.length,
                     currency: '₹',
-                    spotsLeft: item.max_capacity || 12,
-                    totalSpots: item.max_capacity || 150,
+                    spotsLeft: item.available_slots !== undefined && item.available_slots !== null ? item.available_slots : (item.max_capacity || item.capacity || 12),
+                    totalSpots: item.capacity || item.max_capacity || 150,
                     coordinates: {
                         lat: parseFloat(wineryObj.latitude) || 19.9975,
                         lng: parseFloat(wineryObj.longitude) || 73.7898
                     },
                     overview: item.description || '',
                     description: item.description || '',
+                    shortDescription: item.short_description || item.host_info?.short_description || '',
                     type: isEvent ? 'event' : 'experience',
-                    tagline: item.description?.substring(0, 50) || 'An unforgettable experience',
+                    tagline: item.short_description || item.description?.substring(0, 70) || 'An unforgettable experience',
                     category,
                     badge,
                     image: item.cover_image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb',
@@ -169,6 +183,8 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     region: wineryObj.country || 'India',
                     date: displayDate,
                     time: displayTime,
+                    endTime: item.end_time || null,
+                    bookingDeadline: item.booking_deadline || null,
                     duration: displayDuration,
                     price: item.price || 0,
                     host: {
@@ -185,6 +201,20 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     featuredWines,
                     reviews: reviews,
                     status: eventStatus,
+                    experienceStatus: expStatus,
+                    startDate: item.start_date || item.host_info?.schedule?.start_date || null,
+                    endDate: item.end_date || item.host_info?.schedule?.end_date || null,
+                    availableDays: availableDays,
+                    timeSlots: timeSlots,
+                    maxGuestsPerSlot: item.max_guests_per_slot || item.host_info?.schedule?.max_guests_per_slot || item.capacity || 15,
+                    bookingStatus: item.booking_status || (isEvent ? (eventStatus === 'past' ? 'Closed' : 'Open') : (item.host_info?.booking?.booking_status || (expStatus === 'upcoming' ? 'Coming Soon' : 'Open for Booking'))),
+                    cancellationPolicy: item.cancellation_policy || item.host_info?.booking?.cancellation_policy || '',
+                    minAge: item.min_age || item.host_info?.booking?.min_age || '18+',
+                    meetingPoint: item.meeting_point || item.host_info?.location?.meeting_point || '',
+                    arrivalInstructions: item.arrival_instructions || item.host_info?.location?.arrival_instructions || '',
+                    parkingAvailable: item.parking_available ?? item.host_info?.location?.parking_available ?? true,
+                    exclusions: item.exclusions || item.host_info?.exclusions || [],
+                    editionDate: item.edition_date || item.host_info?.recap?.edition_date || null,
                     turnoutCount: turnoutCount,
                     recapNotes: item.recap_notes || ''
                 };

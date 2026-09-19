@@ -22,6 +22,9 @@ import {
     ShieldCheck,
     Share2,
     Ticket,
+    XCircle,
+    Info,
+    AlertCircle,
 } from 'lucide-react'
 import { VinoSphereExperience } from '@/constants/events'
 
@@ -157,7 +160,14 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                                 {experience.title}
                             </h2>
 
-                            <div className="flex items-center gap-4 mt-3 text-xs sm:text-sm text-vino-dark/70 font-medium">
+                            {/* Short Description (Teaser) */}
+                            {experience.shortDescription && (
+                                <p className="text-sm font-medium text-vino-dark/80 italic mt-2.5 border-l-2 border-vino-accent pl-3.5 leading-relaxed bg-vino-cream/20 py-1 rounded-r-lg">
+                                    &ldquo;{experience.shortDescription}&rdquo;
+                                </p>
+                            )}
+
+                            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-3.5 text-xs sm:text-sm text-vino-dark/70 font-medium">
                                 <div className="flex items-center gap-1 bg-amber-50 text-amber-900 px-2.5 py-1 rounded-lg border border-amber-200">
                                     <Star size={14} className="fill-amber-400 text-amber-400" />
                                     <span className="font-bold">{experience.rating}</span>
@@ -173,22 +183,140 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                                     <Calendar size={14} className="text-vino-accent" />
                                     <span>{experience.date}</span>
                                 </div>
+
+                                {experience.time && experience.time !== 'Select Time Slot' && (
+                                    <div className="flex items-center gap-1 text-vino-accent font-semibold">
+                                        <Clock size={14} />
+                                        <span>{experience.time}</span>
+                                    </div>
+                                )}
                             </div>
+
+                            {experience.bookingDeadline && (
+                                <div className="text-xs text-amber-900 bg-amber-50 border border-amber-200 px-3.5 py-2 rounded-xl font-medium flex items-center gap-2 mt-3">
+                                    <Clock size={14} className="text-amber-700 shrink-0" />
+                                    <span>Registration Deadline: <strong>{new Date(experience.bookingDeadline).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</strong></span>
+                                </div>
+                            )}
                         </div>
 
-                        {/* Concluded Event Recap Callout */}
-                        {experience.status === 'past' && (
-                            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs space-y-1.5">
+                        {/* Past Edition Showcase Callout */}
+                        {(experience.status === 'past' || experience.experienceStatus === 'past') && (
+                            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-2">
                                 <div className="flex items-center justify-between font-bold text-amber-950">
                                     <span className="flex items-center gap-1.5">
-                                        <Award size={15} className="text-amber-700" />
-                                        <span>Concluded Event Showcase</span>
+                                        <Award size={16} className="text-amber-700" />
+                                        <span>Past Edition Showcase &bull; Concluded</span>
                                     </span>
-                                    <span>👥 {experience.turnoutCount || 180} Guests Attended</span>
+                                    <span>👥 {experience.turnoutCount || 180} Guests Hosted</span>
                                 </div>
+                                {experience.editionDate && (
+                                    <div className="text-[11px] font-semibold text-amber-800">
+                                        Edition Date: {experience.editionDate}
+                                    </div>
+                                )}
                                 <p className="text-stone-700 leading-relaxed">
-                                    {experience.recapNotes || `This event was successfully conducted on ${experience.date} at ${experience.winery}. Explore verified attendee feedback and ratings below.`}
+                                    {experience.recapNotes || `This journey edition was successfully held at ${experience.winery}. Explore verified guest feedback and photos below.`}
                                 </p>
+                            </div>
+                        )}
+
+                        {/* Upcoming / Coming Soon Callout */}
+                        {(experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon') && (
+                            <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-xs space-y-1.5">
+                                <div className="flex items-center justify-between font-bold text-indigo-950">
+                                    <span className="flex items-center gap-1.5">
+                                        <Clock size={15} className="text-indigo-600" />
+                                        <span>Upcoming Journey &bull; Coming Soon</span>
+                                    </span>
+                                    <span className="bg-indigo-600 text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Preview Only</span>
+                                </div>
+                                <p className="text-indigo-900/80 leading-relaxed">
+                                    This estate journey is currently in preparation and will open for reservations soon. Preview the itinerary, wine pairings, and schedule below.
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Schedule & Availability Section */}
+                        {(experience.timeSlots?.length || experience.availableDays?.length || experience.startDate || experience.endDate) && (
+                            <div className="p-5 rounded-2xl bg-vino-cream/30 border border-vino-dark/10 space-y-3.5">
+                                <div className="flex items-center gap-2">
+                                    <Calendar size={16} className="text-vino-accent" />
+                                    <h3 className="font-serif text-lg font-bold text-vino-darker">Schedule & Availability</h3>
+                                </div>
+
+                                {(experience.startDate || experience.endDate) && (
+                                    <div className="text-xs text-vino-dark/80 font-medium flex items-center gap-1.5">
+                                        <span className="font-bold text-vino-darker">Journey Season:</span>
+                                        <span>{experience.startDate || 'Current Season'} &rarr; {experience.endDate || 'Ongoing'}</span>
+                                    </div>
+                                )}
+
+                                {experience.availableDays && experience.availableDays.length > 0 && (
+                                    <div>
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-vino-dark/60 block mb-1.5">Available Days</span>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {experience.availableDays.map((day, dIdx) => (
+                                                <span key={dIdx} className="px-2.5 py-1 rounded-lg bg-white border border-vino-dark/15 text-xs font-semibold text-vino-darker shadow-sm">
+                                                    {day}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {experience.timeSlots && experience.timeSlots.length > 0 && (
+                                    <div>
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-vino-dark/60 block mb-1.5">Configured Time Slots</span>
+                                        <div className="flex flex-wrap gap-2">
+                                            {experience.timeSlots.map((slot, sIdx) => (
+                                                <span key={sIdx} className="px-3 py-1.5 rounded-xl bg-white border border-vino-accent/30 text-xs font-bold text-vino-accent shadow-sm flex items-center gap-1.5">
+                                                    <Clock size={12} />
+                                                    <span>{slot}</span>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {experience.maxGuestsPerSlot && (
+                                    <div className="text-xs text-vino-dark/70 flex items-center gap-1.5 pt-1 border-t border-vino-dark/5">
+                                        <Users size={14} className="text-vino-accent" />
+                                        <span>Maximum <strong>{experience.maxGuestsPerSlot} guests</strong> hosted per departure slot</span>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Location & Arrival Card */}
+                        {(experience.meetingPoint || experience.arrivalInstructions || experience.location) && (
+                            <div className="p-5 rounded-2xl bg-vino-cream/30 border border-vino-dark/10 space-y-3">
+                                <div className="flex items-center gap-2">
+                                    <MapPin size={16} className="text-vino-accent" />
+                                    <h3 className="font-serif text-lg font-bold text-vino-darker">Location & Arrival Details</h3>
+                                </div>
+                                <div className="text-xs text-vino-dark/80 space-y-2 leading-relaxed">
+                                    <div>
+                                        <span className="font-bold text-vino-darker block">Estate Address:</span>
+                                        <span>{experience.location}</span>
+                                    </div>
+                                    {experience.meetingPoint && (
+                                        <div>
+                                            <span className="font-bold text-vino-darker block">Meeting Point on Estate:</span>
+                                            <span>{experience.meetingPoint}</span>
+                                        </div>
+                                    )}
+                                    {experience.arrivalInstructions && (
+                                        <div>
+                                            <span className="font-bold text-vino-darker block">Arrival Instructions:</span>
+                                            <span>{experience.arrivalInstructions}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex items-center gap-2 pt-1 font-semibold text-vino-darker">
+                                        <Car size={14} className="text-vino-accent" />
+                                        <span>{experience.parkingAvailable !== false ? "Complimentary on-site guest parking available" : "Limited on-site parking"}</span>
+                                    </div>
+                                </div>
                             </div>
                         )}
 
@@ -202,7 +330,7 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <h4 className="font-bold text-vino-darker text-sm flex items-center gap-1.5">
-                                                Hosted by {experience.host.name}
+                                                Guided by {experience.host.name}
                                                 {experience.host.verified && (
                                                     <ShieldCheck size={16} className="text-vino-accent fill-vino-accent/10" />
                                                 )}
@@ -253,7 +381,7 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                                             </div>
                                             <div>
                                                 <span className="text-xs font-bold text-vino-accent uppercase tracking-wider">{step.time}</span>
-                                                <h4 className="font-serif font-bold text-vino-darker text-sm">{step.title}</h4>
+                                                <h4 className="font-serif font-bold text-vino-darker text-sm">{(step as any).activity || step.title}</h4>
                                                 <p className="text-xs text-vino-dark/70 mt-0.5">{step.description}</p>
                                             </div>
                                         </div>
@@ -275,10 +403,25 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                             </div>
                         </div>
 
-                        {/* Featured Wines List */}
-                        {experience.type === 'experience' && experience.featuredWines && experience.featuredWines.length > 0 && (
+                        {/* What's Not Included */}
+                        {experience.exclusions && experience.exclusions.length > 0 && (
                             <div>
-                                <h3 className="font-serif text-lg font-bold text-vino-darker mb-3">Featured Vintages Served</h3>
+                                <h3 className="font-serif text-lg font-bold text-vino-darker mb-3">What&apos;s Not Included</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                    {experience.exclusions.map((item, idx) => (
+                                        <div key={idx} className="flex items-center gap-2.5 p-3 rounded-xl bg-stone-50 border border-stone-200">
+                                            <XCircle size={15} className="text-stone-400 shrink-0" />
+                                            <span className="text-xs font-medium text-stone-600">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Featured Wines List */}
+                        {experience.featuredWines && experience.featuredWines.length > 0 && (
+                            <div>
+                                <h3 className="font-serif text-lg font-bold text-vino-darker mb-3">Featured Vintages Poured</h3>
                                 <div className="space-y-2.5">
                                     {experience.featuredWines.map((wine, idx) => (
                                         <div key={idx} className="p-3.5 rounded-2xl bg-white border border-[#E8D4A8]/70 shadow-sm flex items-center justify-between">
@@ -297,6 +440,36 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+                        )}
+
+                        {/* Booking Policies & Age Requirements */}
+                        {(experience.cancellationPolicy || experience.minAge) && (
+                            <div className="p-4 rounded-2xl bg-vino-cream/30 border border-vino-dark/10 text-xs space-y-2">
+                                <h4 className="font-bold text-vino-darker uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                                    <ShieldCheck size={14} className="text-vino-accent" />
+                                    <span>Booking & Guest Policies</span>
+                                </h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-vino-dark/80">
+                                    {experience.minAge && (
+                                        <div>
+                                            <span className="font-bold text-vino-darker">Minimum Age: </span>
+                                            <span>{experience.minAge}</span>
+                                        </div>
+                                    )}
+                                    {experience.bookingStatus && (
+                                        <div>
+                                            <span className="font-bold text-vino-darker">Status: </span>
+                                            <span className="font-semibold text-vino-accent">{experience.bookingStatus}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                {experience.cancellationPolicy && (
+                                    <p className="text-vino-dark/70 text-[11px] pt-1 border-t border-vino-dark/5 leading-relaxed">
+                                        <span className="font-bold">Cancellation Policy: </span>
+                                        {experience.cancellationPolicy}
+                                    </p>
+                                )}
                             </div>
                         )}
 
@@ -334,7 +507,7 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
 
                     {/* Fixed Bottom Booking / Archive Bar */}
                     <div className="absolute bottom-0 inset-x-0 bg-white border-t border-vino-dark/10 p-4 sm:p-5 flex items-center justify-between z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.08)]">
-                        {experience.status === 'past' ? (
+                        {experience.status === 'past' || experience.experienceStatus === 'past' ? (
                             <>
                                 <div>
                                     <span className="text-[10px] uppercase font-bold text-amber-700 tracking-wider">Archive Status</span>
@@ -353,8 +526,66 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
                                     onClick={onClose}
                                     className="px-6 py-3 bg-stone-900 hover:bg-stone-800 text-white font-semibold text-sm rounded-2xl flex items-center gap-2 shadow-lg transition-colors"
                                 >
-                                    <span>Browse Upcoming Events</span>
+                                    <span>Browse Upcoming Journeys</span>
                                 </motion.button>
+                            </>
+                        ) : experience.experienceStatus === 'upcoming' || experience.bookingStatus === 'Coming Soon' ? (
+                            <>
+                                <div>
+                                    <span className="text-[10px] uppercase font-bold text-indigo-700 tracking-wider">Booking Status</span>
+                                    <div className="flex items-baseline gap-1 mt-0.5">
+                                        <span className="font-serif text-xl font-bold text-indigo-950">
+                                            Coming Soon
+                                        </span>
+                                        <span className="text-xs text-indigo-600 font-medium ml-1">
+                                            ({experience.currency}{experience.price.toLocaleString()} / guest)
+                                        </span>
+                                    </div>
+                                </div>
+                                <button
+                                    disabled
+                                    className="px-6 py-3 bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-sm rounded-2xl flex items-center gap-2 cursor-not-allowed opacity-90"
+                                >
+                                    <Clock size={16} />
+                                    <span>Coming Soon</span>
+                                </button>
+                            </>
+                        ) : experience.bookingStatus === 'Sold Out' || (experience.spotsLeft !== undefined && experience.spotsLeft <= 0) ? (
+                            <>
+                                <div>
+                                    <span className="text-[10px] uppercase font-bold text-rose-700 tracking-wider">Booking Status</span>
+                                    <div className="flex items-baseline gap-1 mt-0.5">
+                                        <span className="font-serif text-xl font-bold text-rose-950">
+                                            Sold Out
+                                        </span>
+                                        <span className="text-xs text-rose-600 font-medium ml-1">
+                                            (All tickets allocated)
+                                        </span>
+                                    </div>
+                                </div>
+                                <button
+                                    disabled
+                                    className="px-6 py-3 bg-rose-100 text-rose-700 border border-rose-200 font-bold text-sm rounded-2xl flex items-center gap-2 cursor-not-allowed opacity-90"
+                                >
+                                    <span>Sold Out</span>
+                                </button>
+                            </>
+                        ) : experience.bookingStatus === 'Closed' ? (
+                            <>
+                                <div>
+                                    <span className="text-[10px] uppercase font-bold text-stone-700 tracking-wider">Booking Status</span>
+                                    <div className="flex items-baseline gap-1 mt-0.5">
+                                        <span className="font-serif text-xl font-bold text-stone-900">
+                                            Bookings Closed
+                                        </span>
+                                    </div>
+                                </div>
+                                <button
+                                    disabled
+                                    className="px-6 py-3 bg-stone-100 text-stone-600 border border-stone-200 font-bold text-sm rounded-2xl flex items-center gap-2 cursor-not-allowed opacity-90"
+                                >
+                                    <span>Closed</span>
+                                </button>
                             </>
                         ) : (
                             <>
