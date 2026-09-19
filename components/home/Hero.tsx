@@ -83,29 +83,6 @@ export const Hero: React.FC = () => {
                             and elevate every occasion.
                         </motion.p>
 
-                        {/* Stats */}
-                        <motion.div
-                            variants={itemVariants}
-                            className="flex items-center gap-4 sm:gap-7"
-                        >
-                            {[
-                                { value: '500+', label: 'Curated Wines' },
-                                { value: '40+', label: 'Regions' },
-                                { value: '12k+', label: 'Enthusiasts' },
-                            ].map((stat, i) => (
-                                <React.Fragment key={stat.label}>
-                                    <div className="flex flex-col">
-                                        <span className="font-serif text-base sm:text-lg font-bold text-vino-gold">
-                                            {stat.value}
-                                        </span>
-                                        <span className="text-[11px] sm:text-xs text-vino-gray-dark tracking-wide">
-                                            {stat.label}
-                                        </span>
-                                    </div>
-                                    {i < 2 && <div className="w-px h-7 bg-vino-accent/30" />}
-                                </React.Fragment>
-                            ))}
-                        </motion.div>
 
                         {/* CTAs */}
                         <motion.div
