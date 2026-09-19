@@ -78,7 +78,7 @@ export default function HeroLanding({ setShowCatalog }: HeroLandingProps) {
                         
                         <p className="text-vino-brown-light leading-relaxed">
                             Whether you are enjoying a rich Paneer Makhani or a fragrant Vegetable Biryani, the right wine elevates the entire culinary experience. 
-                            Our AI Sommelier analyzes flavor profiles, spice levels, and regional ingredients to recommend matches that bring out the best in both your glass and your plate.
+                            Our sommelier pairing engine evaluates flavor profiles, spice levels, and regional ingredients to recommend matches that bring out the best in both your glass and your plate.
                         </p>
                         
                         <Button 

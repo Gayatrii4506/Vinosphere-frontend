@@ -330,10 +330,10 @@ export const FoodPairingRecommender: React.FC = () => {
                         id="pairing-recommender-heading"
                         className="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-2"
                     >
-                        AI Pairing Recommender
+                        Wine & Food Pairing Recommender
                     </h2>
                     <p className="text-stone-500 text-sm sm:text-base max-w-md mx-auto">
-                        Enter a dish or wine and our sommelier AI will find the perfect match.
+                        Enter a dish or wine and our sommelier pairing engine will calculate compatibility.
                     </p>
                 </div>
 

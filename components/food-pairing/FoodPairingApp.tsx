@@ -110,7 +110,7 @@ function mapApiRec(rec: WineRecommendation, index: number, selectedDishName: str
             rec.body ? `Body: ${rec.body}` : '',
             rec.acidity ? `Acidity: ${rec.acidity}` : '',
             rec.tannin ? `Tannin: ${rec.tannin}` : '',
-        ].filter(Boolean).join(' · ') || 'Recommended by AI sommelier based on flavor affinity.',
+        ].filter(Boolean).join(' · ') || 'Recommended by sommelier pairing engine based on flavor affinity.',
         body: rec.body ? rec.body.charAt(0).toUpperCase() + rec.body.slice(1) : 'Medium',
         acidity: rec.acidity || 'Medium',
         tannin: rec.tannin || 'Medium',
@@ -428,15 +428,15 @@ export default function FoodPairingApp() {
                     <div className="relative z-10 max-w-3xl">
                         <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider text-amber-200 mb-4 border border-white/20">
                             <Sparkles size={14} className="text-amber-300 animate-pulse" />
-                            AI-POWERED SOMMELIER PAIRING ENGINE
+                            SOMMELIER-GUIDED PAIRING ENGINE
                         </div>
 
                         <h1 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight mb-4 leading-tight text-white">
-                            Intelligent Food & Wine Pairing
+                            Food & Wine Pairing
                         </h1>
 
                         <p className="text-white/85 text-sm sm:text-base leading-relaxed mb-6 font-normal">
-                            Compute real-time culinary compatibility scores with our dual semantic and attribute ML engine. Match complex spices, richness, acidity, and tannins perfectly.
+                            Compute culinary compatibility scores using structured taste attributes and sommelier pairing principles. Evaluate spices, richness, acidity, and tannins.
                         </p>
 
                         {/* Mode Switcher Tabs */}
@@ -864,7 +864,7 @@ export default function FoodPairingApp() {
                                     Analyzing Flavour Chemistry...
                                 </h3>
                                 <p className="text-xs text-stone-500 max-w-sm">
-                                    Evaluating acidity, spice thresholds, tannins, and aroma harmonies with our AI sommelier.
+                                    Evaluating acidity, spice thresholds, tannins, and aroma harmonies with our sommelier pairing engine.
                                 </p>
                             </div>
                         ) : sortedPairings.length === 0 ? (
@@ -1008,7 +1008,7 @@ export default function FoodPairingApp() {
                                 <div>
                                     <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#8B1E3F] bg-[#8B1E3F]/10 px-2.5 py-1 rounded-full uppercase tracking-wider mb-2">
                                         <Sparkles size={13} />
-                                        AI Sommelier Detailed Tasting Report
+                                        Sommelier Detailed Tasting Report
                                     </div>
                                     <h3 className="font-serif text-2xl font-bold text-stone-900">
                                         {sommelierModalWine.wineName}
