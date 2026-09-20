@@ -1,10 +1,9 @@
 import React from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { signOutAction } from '@/app/auth/actions'
-import { User, LogOut, Wine, Compass, Sparkles, Settings } from 'lucide-react'
-import { CloudinaryImage } from '@/components/ui/CloudinaryImage'
-import { images } from '@/constants/images'
+import { LuxuryUserProfile } from '@/components/profile/LuxuryUserProfile'
+import { WINES } from '@/constants/wines'
+import { isWineIdMatch } from '@/lib/utils/wine-id'
 
 export default async function ProfilePage() {
     const supabase = await createClient()
@@ -14,131 +13,200 @@ export default async function ProfilePage() {
         redirect('/welcome')
     }
 
-    const metadata = user.user_metadata
-    const preferences = metadata?.preferences || {}
+    const metadata = user.user_metadata || {}
+    const preferences = metadata.preferences || {}
+
+    // 1. Fetch live user details & preferences from database table
+    let dbUser: any = null
+    try {
+        const { data } = await supabase
+            .from('users')
+            .select('*')
+            .or(`auth_id.eq.${user.id},email.eq.${user.email}`)
+            .maybeSingle()
+        dbUser = data
+    } catch {}
+
+    // 2. Fetch real-time user wishlist IDs (direct table query without fragile FK joins)
+    let wishlistRows: any[] = []
+    try {
+        const { data, error } = await supabase
+            .from('wishlist')
+            .select('user_id, wine_id, created_at')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+
+        if (!error && data) {
+            wishlistRows = data
+        }
+    } catch {}
+
+    // 3. Fetch real-time user bookings & experiences
+    let bookingsData: any[] = []
+    try {
+        const { data } = await supabase
+            .from('bookings')
+            .select('*, winery_experiences(*)')
+            .eq('user_id', user.id)
+        bookingsData = data || []
+    } catch {}
+
+    // 4. Fetch real-time user interactions (views, likes, purchases)
+    let interactionsData: any[] = []
+    try {
+        const { data } = await supabase
+            .from('user_interactions')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(10)
+        interactionsData = data || []
+    } catch {
+        // Fallback to legacy interactions table name if needed
+        try {
+            const { data } = await supabase
+                .from('interactions')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false })
+                .limit(10)
+            interactionsData = data || []
+        } catch {}
+    }
+
+    // 5. Resolve Wishlist Wines
+    const wishlistedWineIds = wishlistRows.map(r => String(r.wine_id)).filter(Boolean)
+    const resolvedWishlist: any[] = []
+    const missingDbIds: string[] = []
+
+    wishlistedWineIds.forEach(id => {
+        const found = WINES.find(w => isWineIdMatch(w.id, id))
+        if (found) {
+            resolvedWishlist.push({
+                id: String(found.id),
+                name: found.name,
+                winery: found.origin || 'Nashik Valley',
+                price: `₹${Number(found.price).toLocaleString()}`,
+                image: found.imageUrl || '/bottle.png',
+                type: found.type || 'Red'
+            })
+        } else {
+            missingDbIds.push(id)
+        }
+    })
+
+    // Fetch any custom winery-added wines from DB table
+    if (missingDbIds.length > 0) {
+        try {
+            const { data: customWines } = await supabase
+                .from('wines')
+                .select('*, wineries(name, city, country), wine_inventory(price, stock_quantity), wine_images(image_url, is_primary)')
+                .in('id', missingDbIds)
+
+            if (customWines) {
+                customWines.forEach((cw: any) => {
+                    const inventory = Array.isArray(cw.wine_inventory) ? cw.wine_inventory[0] : cw.wine_inventory
+                    const images = cw.wine_images || []
+                    const primaryImage = images.find((img: any) => img.is_primary) || images[0]
+
+                    resolvedWishlist.push({
+                        id: String(cw.id),
+                        name: cw.name,
+                        winery: cw.wineries ? `${cw.wineries.city || ''}, ${cw.wineries.country || ''}`.replace(/^, /, '') : 'Nashik Valley',
+                        price: inventory?.price ? `₹${Number(inventory.price).toLocaleString()}` : '₹1,200',
+                        image: primaryImage?.image_url || '/bottle.png',
+                        type: cw.wine_type || 'Red'
+                    })
+                })
+            }
+        } catch {}
+    }
+
+    // Compute real-time user metrics
+    const distinctExploredWines = new Set(interactionsData.map((i: any) => i.wine_id).filter(Boolean))
+    const distinctVisitedWineries = new Set(bookingsData.map((b: any) => b.winery_id || b.winery_experiences?.winery_id).filter(Boolean))
+
+    const realMetrics = {
+        winesExplored: Math.max(distinctExploredWines.size, interactionsData.length),
+        winesSaved: wishlistRows.length,
+        wineriesVisited: distinctVisitedWineries.size,
+        experiences: bookingsData.length
+    }
+
+    // Format real experiences
+    const realExperiences = bookingsData.map((b: any) => {
+        const exp = b.winery_experiences || {}
+        return {
+            id: String(b.id),
+            title: exp.title || b.experience_type || 'Winery Tasting',
+            winery: exp.winery_name || b.winery_name || 'Artisanal Winery',
+            date: b.booking_date ? new Date(b.booking_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Upcoming',
+            image: exp.image_url || '/images/experience_bg.jpg'
+        }
+    })
+
+    // Format real journey events
+    const realJourney: Array<{ id: string; date: string; title: string; iconType: 'wishlist' | 'explored' | 'visited' | 'rated' }> = [];
+    
+    interactionsData.forEach((inter: any, idx: number) => {
+        const formattedDate = inter.created_at ? new Date(inter.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Recent'
+        const type = String(inter.interaction_type || '').toUpperCase()
+        if (type === 'WISHLIST') {
+            realJourney.push({
+                id: `journey-w-${idx}`,
+                date: formattedDate,
+                title: `Saved bottle to wishlist`,
+                iconType: 'wishlist'
+            })
+        } else if (type === 'PURCHASE') {
+            realJourney.push({
+                id: `journey-p-${idx}`,
+                date: formattedDate,
+                title: `Purchased estate bottle`,
+                iconType: 'rated'
+            })
+        } else {
+            realJourney.push({
+                id: `journey-v-${idx}`,
+                date: formattedDate,
+                title: `Explored artisanal vintage`,
+                iconType: 'explored'
+            })
+        }
+    })
+
+    const userProfileData = {
+        id: user.id,
+        email: user.email,
+        name: dbUser?.full_name || metadata?.full_name || (user.email ? user.email.split('@')[0].replace(/[0-9]/g, '') : 'Wine Connoisseur'),
+        phone: dbUser?.phone || metadata?.phone || '',
+        city: dbUser?.city || metadata?.city || '',
+        state: dbUser?.state || metadata?.state || '',
+        country: dbUser?.country || metadata?.country || 'India',
+        avatarUrl: metadata?.avatar_url,
+        createdAt: user.created_at
+    }
+
+    const mergedPreferences = {
+        experience_level: dbUser?.experience_level || preferences.experience_level || 'BEGINNER',
+        favorite_types: dbUser?.favorite_wine_types || preferences.favorite_types || [],
+        sweetness: dbUser?.preferred_sweetness || preferences.sweetness || '',
+        body_style: dbUser?.preferred_body || preferences.body_style || '',
+        flavors: dbUser?.preferred_flavors || preferences.flavors || [],
+        grapes: dbUser?.preferred_grapes || preferences.grapes || [],
+        budget_min: dbUser?.budget_min ?? preferences.budget_min,
+        budget_max: dbUser?.budget_max ?? preferences.budget_max ?? 2500,
+        taste_appealing: dbUser?.taste_appealing || preferences.taste_appealing || ''
+    }
 
     return (
-        <div className="min-h-screen bg-vino-dark pt-28 pb-20 relative">
-            {/* Ambient Background Elements */}
-            <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-vino-accent/10 to-transparent pointer-events-none" />
-            
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between bg-stone-900/40 border border-stone-800 rounded-3xl p-8 backdrop-blur-md mb-8">
-                    <div className="flex items-center gap-6">
-                        <div className="w-24 h-24 rounded-full bg-vino-accent/20 border-2 border-vino-accent/50 flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(139,30,63,0.3)]">
-                            <User size={40} className="text-vino-accent" />
-                        </div>
-                        <div>
-                            <h1 className="text-3xl font-serif text-white font-bold mb-2">My Profile</h1>
-                            <p className="text-vino-gray/70 flex items-center gap-2">
-                                <span className="inline-block w-2 h-2 rounded-full bg-green-500"></span>
-                                {user.email}
-                            </p>
-                        </div>
-                    </div>
-
-                    <form action={signOutAction}>
-                        <button type="submit" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-stone-800/80 hover:bg-red-500/10 text-stone-300 hover:text-red-400 border border-stone-700 hover:border-red-500/30 transition-all duration-300 font-semibold text-sm">
-                            <LogOut size={16} />
-                            Sign Out
-                        </button>
-                    </form>
-                </div>
-
-                {/* Grid Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* Preferences Column */}
-                    <div className="md:col-span-2 space-y-8">
-                        <div className="bg-stone-900/40 border border-stone-800 rounded-3xl p-8 backdrop-blur-md">
-                            <div className="flex items-center justify-between mb-8">
-                                <h2 className="text-xl font-serif text-white flex items-center gap-3">
-                                    <Sparkles size={20} className="text-vino-gold" />
-                                    Tasting Profile
-                                </h2>
-                                <button className="text-vino-gray/50 hover:text-vino-accent transition-colors">
-                                    <Settings size={20} />
-                                </button>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div className="p-5 rounded-2xl bg-stone-950/50 border border-stone-800/50">
-                                    <p className="text-xs text-vino-gray/50 uppercase tracking-widest mb-2">Experience Level</p>
-                                    <p className="text-lg text-white font-medium capitalize">
-                                        {preferences.experience_level || 'Not set'}
-                                    </p>
-                                </div>
-                                <div className="p-5 rounded-2xl bg-stone-950/50 border border-stone-800/50">
-                                    <p className="text-xs text-vino-gray/50 uppercase tracking-widest mb-2">Primary Interest</p>
-                                    <p className="text-lg text-white font-medium capitalize">
-                                        {preferences.primary_interest || 'Not set'}
-                                    </p>
-                                </div>
-                                <div className="p-5 rounded-2xl bg-stone-950/50 border border-stone-800/50 sm:col-span-2">
-                                    <p className="text-xs text-vino-gray/50 uppercase tracking-widest mb-3">Favorite Wines</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {preferences.favorite_types?.length > 0 ? (
-                                            preferences.favorite_types.map((type: string) => (
-                                                <span key={type} className="px-3 py-1.5 rounded-lg bg-vino-accent/10 border border-vino-accent/20 text-vino-accent-light text-sm capitalize">
-                                                    {type}
-                                                </span>
-                                            ))
-                                        ) : (
-                                            <p className="text-stone-500 text-sm">No preferences set.</p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Recent Activity / Reserved */}
-                        <div className="bg-stone-900/40 border border-stone-800 rounded-3xl p-8 backdrop-blur-md">
-                            <h2 className="text-xl font-serif text-white flex items-center gap-3 mb-6">
-                                <Wine size={20} className="text-vino-gold" />
-                                My Cellar
-                            </h2>
-                            <div className="flex flex-col items-center justify-center py-12 px-4 text-center border-2 border-dashed border-stone-800 rounded-2xl">
-                                <div className="w-16 h-16 rounded-full bg-stone-800/50 flex items-center justify-center mb-4">
-                                    <Wine size={24} className="text-stone-500" />
-                                </div>
-                                <h3 className="text-lg text-white font-medium mb-2">Your cellar is empty</h3>
-                                <p className="text-sm text-vino-gray/70 max-w-sm mb-6">
-                                    Start exploring our collection and adding your favorite wines to your personal cellar.
-                                </p>
-                                <a href="/discover/wines" className="px-6 py-2.5 rounded-xl bg-vino-accent hover:bg-vino-accent-light text-white font-semibold text-sm transition-colors">
-                                    Explore Wines
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Sidebar */}
-                    <div className="space-y-8">
-                        <div className="relative rounded-3xl overflow-hidden aspect-[3/4] group">
-                            <CloudinaryImage 
-                                src={images.hero.background} 
-                                alt="Premium Membership"
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-vino-dark via-vino-dark/50 to-transparent" />
-                            
-                            <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                                <div className="w-12 h-12 rounded-full bg-vino-gold/20 flex items-center justify-center mb-4 backdrop-blur-md border border-vino-gold/30">
-                                    <Compass size={24} className="text-vino-gold" />
-                                </div>
-                                <h3 className="text-xl font-serif text-white font-bold mb-2">Join The Club</h3>
-                                <p className="text-sm text-stone-300 mb-6 line-clamp-2">
-                                    Unlock exclusive access to limited-edition wines and private tasting events.
-                                </p>
-                                <button className="w-full py-3 rounded-xl bg-vino-gold hover:bg-white text-vino-darker font-bold text-sm transition-colors shadow-lg shadow-vino-gold/20">
-                                    Learn More
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <LuxuryUserProfile 
+            user={userProfileData} 
+            preferences={mergedPreferences} 
+            metrics={realMetrics}
+            wishlist={resolvedWishlist}
+            experiences={realExperiences}
+            journey={realJourney}
+        />
     )
 }

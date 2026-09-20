@@ -19,62 +19,74 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
     const [imgError, setImgError] = useState(false)
     const { trackEvent } = useAnalytics()
 
-    // Fallback image if custom Cloudinary URL fails to load
+    // Fallback image if custom URL fails to load
     const displayImg = imgError || !wine.imageUrl ? '/bottle.png' : wine.imageUrl
+
+    const rating = wine.rating || 85
+    const reviews = wine.reviews ?? 0
+    const price = wine.price ?? 0
+    const currency = wine.currency || '₹'
+    const name = wine.name || 'Artisanal Estate Selection'
+    const origin = wine.origin || 'Nashik Valley'
+    const volume = wine.volume || '750ml'
+    const year = wine.year || 'NV'
 
     return (
         <div 
             onClick={() => {
-                trackEvent?.('wine_view', { wine_id: wine.id, winery_id: wine.wineryId })
+                trackEvent?.('wine_view', { wine_id: wine.id, winery_id: (wine as any).wineryId })
                 onSelect?.(wine)
             }}
-            className="group relative flex flex-col justify-between rounded-xl bg-white border border-stone-200/90 p-3 shadow-sm hover:shadow-lg hover:border-vino-accent/50 cursor-pointer transition-all duration-300"
+            className="group relative flex flex-col justify-between rounded-xl bg-white border border-stone-200/90 p-3.5 shadow-sm hover:shadow-lg hover:border-vino-accent/40 cursor-pointer transition-all duration-300"
         >
-            {/* Direct Image - Compact Height */}
-            <div className="relative w-full h-40 sm:h-44 mb-2 flex items-center justify-center overflow-hidden">
+            {/* Wine Bottle Image */}
+            <div className="relative w-full h-44 sm:h-48 mb-3 flex items-center justify-center overflow-hidden rounded-lg bg-[#FAF8F5]">
                 <img
                     src={displayImg}
-                    alt={wine.name}
+                    alt={name}
                     onError={() => setImgError(true)}
                     className="object-contain h-full max-h-full w-auto group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
             </div>
 
-            {/* Metadata (Below Image) */}
+            {/* Wine Metadata */}
             <div className="flex flex-col justify-between flex-1">
                 <div>
-                    <h3 className="font-serif text-xs sm:text-sm font-bold text-vino-darker mb-0.5 line-clamp-1 group-hover:text-vino-accent transition-colors" title={wine.name}>
-                        {wine.name}
+                    <h3 className="font-serif text-sm font-bold text-vino-darker mb-1 line-clamp-1 group-hover:text-vino-accent transition-colors" title={name}>
+                        {name}
                     </h3>
-                    <p className="text-[9px] text-stone-500 tracking-wider uppercase font-medium mb-2">
-                        {wine.origin} &bull; {wine.volume} &bull; {wine.year}
+                    <p className="text-[10px] text-stone-500 tracking-wider uppercase font-medium mb-2">
+                        {origin} &bull; {volume} &bull; {year}
                     </p>
                 </div>
 
                 {/* Rating & Reviews */}
-                <div className="flex justify-between items-center mb-2 text-xs border-t border-b border-stone-100 py-1">
+                <div className="flex justify-between items-center mb-2.5 text-xs border-t border-b border-stone-100 py-1.5">
                     <div className="flex items-center gap-0.5 text-vino-accent">
                         {Array.from({ length: 5 }).map((_, i) => {
-                            const isFilled = wine.rating >= (i + 1) * 20 - 10
+                            const isFilled = rating >= (i + 1) * 20 - 10
                             return (
                                 <Star 
                                     key={i} 
-                                    size={9} 
-                                    className={isFilled ? "fill-vino-accent" : "fill-transparent opacity-30"} 
+                                    size={10} 
+                                    className={isFilled ? "fill-vino-accent" : "fill-transparent opacity-25"} 
                                 />
                             )
                         })}
                     </div>
-                    <span className="text-[9px] text-stone-500 font-medium">
-                        {wine.reviews} reviews
+                    <span className="text-[10px] text-stone-500 font-medium">
+                        {reviews} {reviews === 1 ? 'review' : 'reviews'}
                     </span>
                 </div>
 
+                {/* Price & Wishlist */}
                 <div className="flex items-center justify-between pt-0.5">
-                    <div className="text-sm sm:text-base font-bold text-vino-darker">
-                        <span className="text-vino-dark/50 text-xs mr-0.5">{wine.currency}</span>{wine.price.toLocaleString()}
+                    <div className="text-base font-bold text-vino-darker">
+                        <span className="text-vino-dark/50 text-xs mr-0.5">{currency}</span>
+                        {price.toLocaleString()}
                     </div>
                     <button 
+                        type="button"
                         onClick={async (e) => {
                             e.stopPropagation()
                             const res = await toggleWishlist(wine)
@@ -83,11 +95,11 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
                             }
                         }}
                         aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
-                        className="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center text-vino-accent hover:bg-vino-accent hover:text-white transition-colors group/btn"
+                        className="w-8 h-8 rounded-full bg-stone-50 border border-stone-200/60 flex items-center justify-center text-stone-400 hover:text-vino-accent hover:border-vino-accent/30 hover:bg-vino-accent/5 transition-all group/btn"
                     >
                         <Heart 
-                            size={12} 
-                            className={`group-hover/btn:scale-110 transition-all duration-300 ${isLiked ? 'fill-vino-accent text-vino-accent group-hover/btn:text-white' : ''}`} 
+                            size={14} 
+                            className={`group-hover/btn:scale-110 transition-transform ${isLiked ? 'fill-vino-accent text-vino-accent' : ''}`} 
                         />
                     </button>
                 </div>

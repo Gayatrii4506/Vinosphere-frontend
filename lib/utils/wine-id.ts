@@ -1,30 +1,25 @@
 /**
- * Normalizes wine IDs for database compatibility (Supabase UUID column requirement).
+ * Normalizes wine IDs for database and catalog consistency.
  */
 export function normalizeWineId(id: string | number): string {
   if (!id) return '';
-  const strId = String(id).trim();
-  
-  // If already a valid 36-char UUID format
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  if (uuidRegex.test(strId)) {
-    return strId.toLowerCase();
-  }
-
-  // For numeric or short IDs (e.g. demo wines '1', '2'), create a deterministic valid UUID:
-  // e.g. '1' -> '00000000-0000-0000-0000-000000000001'
-  const clean = strId.replace(/[^0-9a-f]/gi, '').toLowerCase();
-  const padded = clean.padStart(12, '0').slice(-12);
-  return `00000000-0000-0000-0000-${padded}`;
+  return String(id).trim();
 }
 
 /**
- * Checks if two wine IDs match, accounting for original vs UUID-normalized representation.
+ * Checks if two wine IDs match, safely handling string numbers, UUIDs, and slugs.
  */
-export function isWineIdMatch(id1: string | number, id2: string | number): boolean {
+export function isWineIdMatch(id1: string | number | undefined | null, id2: string | number | undefined | null): boolean {
   if (!id1 || !id2) return false;
-  const s1 = String(id1).trim();
-  const s2 = String(id2).trim();
+  const s1 = String(id1).trim().toLowerCase();
+  const s2 = String(id2).trim().toLowerCase();
+  
   if (s1 === s2) return true;
-  return normalizeWineId(s1) === normalizeWineId(s2);
+
+  // Check if one is a UUID with leading zeroes matching a numeric ID
+  const clean1 = s1.replace(/^0+/, '').replace(/-/g, '');
+  const clean2 = s2.replace(/^0+/, '').replace(/-/g, '');
+  if (clean1 && clean2 && clean1 === clean2) return true;
+
+  return false;
 }

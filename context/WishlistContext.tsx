@@ -31,16 +31,43 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     const fetchUserWishlist = useCallback(async (uid: string, token?: string) => {
         try {
-            // Check local cache first for instant UI response
+            // 1. Check local cache first for instant UI response
             try {
                 const cached = localStorage.getItem(`vinosphere_wishlist_${uid}`)
                 if (cached) {
-                    setWishlistIds(JSON.parse(cached))
+                    const parsed = JSON.parse(cached)
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        setWishlistIds(parsed)
+                    }
                 }
             } catch {}
 
-            // Try backend API first
-            if (token) {
+            const supabase = createClient()
+            let fetchedFromDb = false
+
+            // 2. Direct Supabase Query
+            try {
+                const { data, error } = await supabase
+                    .from('wishlist')
+                    .select('wine_id')
+                    .eq('user_id', uid)
+
+                if (!error && data) {
+                    const ids = data.map((item: any) => String(item.wine_id)).filter(Boolean)
+                    setWishlistIds(ids)
+                    fetchedFromDb = true
+                    try {
+                        localStorage.setItem(`vinosphere_wishlist_${uid}`, JSON.stringify(ids))
+                    } catch {}
+                } else if (error) {
+                    console.warn('Supabase wishlist read notice:', error.message)
+                }
+            } catch (err) {
+                console.warn('Direct Supabase fetch error:', err)
+            }
+
+            // 3. If Supabase had no data or errored, try backend API
+            if (!fetchedFromDb && token) {
                 try {
                     const res = await fetch(`${API_V1_URL}/wishlist`, {
                         headers: { 'Authorization': `Bearer ${token}` },
@@ -48,31 +75,17 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                     })
                     if (res.ok) {
                         const json = await res.json()
-                        const ids: string[] = (json.data || []).map((item: any) => item.wine_id).filter(Boolean)
-                        setWishlistIds(ids)
-                        try {
-                            localStorage.setItem(`vinosphere_wishlist_${uid}`, JSON.stringify(ids))
-                        } catch {}
-                        return
+                        const ids: string[] = (json.data || []).map((item: any) => String(item.wine_id || item.id)).filter(Boolean)
+                        if (ids.length > 0) {
+                            setWishlistIds(ids)
+                            try {
+                                localStorage.setItem(`vinosphere_wishlist_${uid}`, JSON.stringify(ids))
+                            } catch {}
+                        }
                     }
                 } catch (backendErr) {
-                    console.warn('Backend wishlist fetch failed, trying direct Supabase fallback:', backendErr)
+                    console.warn('Backend wishlist fetch failed:', backendErr)
                 }
-            }
-
-            // Direct Supabase fallback
-            const supabase = createClient()
-            const { data, error } = await supabase
-                .from('wishlist')
-                .select('wine_id')
-                .eq('user_id', uid)
-
-            if (!error && data) {
-                const ids = data.map(item => item.wine_id)
-                setWishlistIds(ids)
-                try {
-                    localStorage.setItem(`vinosphere_wishlist_${uid}`, JSON.stringify(ids))
-                } catch {}
             }
         } catch (err) {
             console.error('Failed to load wishlist:', err)
@@ -108,8 +121,18 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             }
         })
 
+        // Listen for live cross-component wishlist update events
+        const handleCustomUpdate = (e: any) => {
+            if (e.detail?.wishlistIds) {
+                setWishlistIds(e.detail.wishlistIds)
+            }
+        }
+
+        window.addEventListener('vinosphere_wishlist_updated', handleCustomUpdate)
+
         return () => {
             subscription.unsubscribe()
+            window.removeEventListener('vinosphere_wishlist_updated', handleCustomUpdate)
         }
     }, [fetchUserWishlist])
 
@@ -127,71 +150,96 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             return { success: false, requiresAuth: true }
         }
 
-        const normalizedId = normalizeWineId(wine.id)
+        const rawId = String(wine.id).trim()
         const currentlyLiked = wishlistIds.some(id => isWineIdMatch(id, wine.id))
         const newlyLiked = !currentlyLiked
 
         // Optimistic UI update
         const updatedIds = newlyLiked
-            ? [...wishlistIds, normalizedId, wine.id]
+            ? Array.from(new Set([...wishlistIds, rawId]))
             : wishlistIds.filter(id => !isWineIdMatch(id, wine.id))
 
         setWishlistIds(updatedIds)
+
+        // Save to local storage and broadcast to all components
         try {
             localStorage.setItem(`vinosphere_wishlist_${session.user.id}`, JSON.stringify(updatedIds))
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('vinosphere_wishlist_updated', { 
+                    detail: { wishlistIds: updatedIds, wineId: rawId, newlyLiked } 
+                }))
+            }
         } catch {}
 
+        // Perform Database operations asynchronously
         try {
             if (newlyLiked) {
-                // Try backend API
-                let apiSuccess = false
+                // 1. Direct Supabase insert / upsert
+                const { error: sbError } = await supabase
+                    .from('wishlist')
+                    .upsert({ user_id: session.user.id, wine_id: rawId }, { onConflict: 'user_id,wine_id' })
+
+                if (sbError) {
+                    console.warn('Supabase wishlist insert notice:', sbError.message)
+                    // If upsert failed, try plain insert
+                    try {
+                        await supabase
+                            .from('wishlist')
+                            .insert({ user_id: session.user.id, wine_id: rawId })
+                    } catch {}
+                }
+
+                // 2. Track interaction for ML recommender & user journey
                 try {
-                    const res = await fetch(`${API_V1_URL}/wishlist`, {
+                    await fetch(`${API_V1_URL}/wines/${encodeURIComponent(rawId)}/interactions`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${session.access_token}`
                         },
-                        body: JSON.stringify({ wineId: normalizedId })
+                        body: JSON.stringify({ interactionType: 'WISHLIST' })
                     })
-                    apiSuccess = res.ok
                 } catch {}
 
-                // If backend API wasn't successful, try direct Supabase insert
-                if (!apiSuccess) {
-                    await supabase
-                        .from('wishlist')
-                        .insert({ user_id: session.user.id, wine_id: normalizedId })
-                }
-            } else {
-                // Remove from wishlist
-                let apiSuccess = false
+                // 3. Optional backend API sync
                 try {
-                    const res = await fetch(`${API_V1_URL}/wishlist/${normalizedId}`, {
+                    await fetch(`${API_V1_URL}/wishlist`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${session.access_token}`
+                        },
+                        body: JSON.stringify({ wineId: rawId })
+                    })
+                } catch {}
+            } else {
+                // 1. Direct Supabase delete
+                const { error: sbDelError } = await supabase
+                    .from('wishlist')
+                    .delete()
+                    .eq('user_id', session.user.id)
+                    .eq('wine_id', rawId)
+
+                if (sbDelError) {
+                    console.warn('Supabase wishlist delete notice:', sbDelError.message)
+                }
+
+                // 2. Optional backend API sync
+                try {
+                    await fetch(`${API_V1_URL}/wishlist/${encodeURIComponent(rawId)}`, {
                         method: 'DELETE',
                         headers: {
                             'Authorization': `Bearer ${session.access_token}`
                         }
                     })
-                    apiSuccess = res.ok
                 } catch {}
-
-                // If backend API wasn't successful, try direct Supabase delete
-                if (!apiSuccess) {
-                    await supabase
-                        .from('wishlist')
-                        .delete()
-                        .eq('user_id', session.user.id)
-                        .eq('wine_id', normalizedId)
-                }
             }
 
             return { success: true, newlyLiked }
         } catch (error) {
-            console.error('Failed to sync wishlist with server:', error)
-            // Revert optimistic update
-            setWishlistIds(wishlistIds)
-            return { success: false, newlyLiked: currentlyLiked }
+            console.warn('Non-blocking server sync note:', error)
+            // Do not revert optimistic update - keep user's active state
+            return { success: true, newlyLiked }
         }
     }, [wishlistIds])
 

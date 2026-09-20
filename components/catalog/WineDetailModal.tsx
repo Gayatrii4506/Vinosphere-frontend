@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Star, Heart, Wine as WineIcon, Utensils, MapPin, Award, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react'
+import { X, Star, Heart, Wine as WineIcon, Utensils, MapPin, Award, CheckCircle2, ShieldCheck, Sparkles, ThumbsUp, ThumbsDown } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Wine } from '@/constants/wines'
 import { useWishlist } from '@/context/WishlistContext'
+import { trackWineInteraction, getLocalInteractionSummary } from '@/lib/interactions/trackInteraction'
 
 interface WineDetailModalProps {
     wine: Wine | null
@@ -14,9 +15,30 @@ interface WineDetailModalProps {
 
 export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose }) => {
     const { isWishlisted, toggleWishlist } = useWishlist()
-    const isLiked = wine ? isWishlisted(wine.id) : false
-    const [imgError, setImgError] = React.useState(false)
+    const isLikedWishlist = wine ? isWishlisted(wine.id) : false
+    const [imgError, setImgError] = useState(false)
+    const [userReaction, setUserReaction] = useState<'LIKE' | 'DISLIKE' | null>(null)
+    const [purchaseRequested, setPurchaseRequested] = useState(false)
     const router = useRouter()
+
+    // Sync initial reaction from local summary
+    useEffect(() => {
+        if (wine) {
+            const summary = getLocalInteractionSummary()
+            const idStr = String(wine.id)
+            if (summary.likedWineIds.includes(idStr)) {
+                setUserReaction('LIKE')
+            } else if (summary.dislikedWineIds.includes(idStr)) {
+                setUserReaction('DISLIKE')
+            } else {
+                setUserReaction(null)
+            }
+            setPurchaseRequested(summary.purchasedWineIds.includes(idStr))
+
+            // Record VIEW interaction
+            trackWineInteraction(idStr, 'VIEW', { wineName: wine.name, wineType: wine.type })
+        }
+    }, [wine])
 
     // Lock body scroll when modal is active
     useEffect(() => {
@@ -29,6 +51,23 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
             document.body.style.overflow = 'unset'
         }
     }, [wine])
+
+    const handleReaction = async (type: 'LIKE' | 'DISLIKE') => {
+        if (!wine) return
+        if (userReaction === type) {
+            setUserReaction(null)
+        } else {
+            setUserReaction(type)
+            await trackWineInteraction(String(wine.id), type, { wineName: wine.name })
+        }
+    }
+
+    const handlePurchaseIntent = async () => {
+        if (!wine) return
+        setPurchaseRequested(true)
+        await trackWineInteraction(String(wine.id), 'PURCHASE', { wineName: wine.name, price: wine.price })
+        router.push('/welcome')
+    }
 
     if (!wine) return null
 
@@ -214,6 +253,24 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
                                     </div>
                                 )}
 
+                                {/* Why this wine? (Explainable Recommendation) */}
+                                {wine.recommendationReasons && wine.recommendationReasons.length > 0 && (
+                                    <div className="mb-5 p-3.5 bg-amber-50/70 border border-amber-200/80 rounded-xl">
+                                        <h4 className="text-xs uppercase tracking-wider font-bold text-amber-950 mb-2 flex items-center gap-1.5">
+                                            <Award size={14} className="text-amber-700" />
+                                            <span>Why this wine?</span>
+                                        </h4>
+                                        <ul className="space-y-1">
+                                            {wine.recommendationReasons.map((reason, idx) => (
+                                                <li key={idx} className="flex items-start gap-1.5 text-xs text-stone-700 font-medium">
+                                                    <span className="text-emerald-700 font-bold shrink-0">✓</span>
+                                                    <span>{reason}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
                                 {/* Sommelier Notes / Description */}
                                 <div className="mb-5">
                                     <h4 className="text-xs uppercase tracking-wider font-bold text-stone-700 mb-2 flex items-center gap-1.5">
@@ -267,32 +324,70 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
                                 )}
                             </div>
 
-                            {/* Modal Action Buttons */}
-                            <div className="flex items-center gap-3 pt-4 border-t border-stone-200/80">
-                                <button 
-                                    onClick={() => router.push('/welcome')}
-                                    className="flex-1 bg-vino-accent hover:bg-vino-darker text-white font-bold py-3 px-6 rounded-xl transition-colors duration-300 shadow-md flex items-center justify-center gap-2 text-sm"
-                                >
-                                    <ShieldCheck size={16} />
-                                    <span>Reserve / Request Bottle</span>
-                                </button>
-                                <button
-                                    onClick={async () => {
-                                        if (!wine) return
-                                        const res = await toggleWishlist(wine)
-                                        if (res.requiresAuth) {
-                                            router.push('/welcome?redirect=/discover/wines')
-                                        }
-                                    }}
-                                    className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-300 ${
-                                        isLiked 
-                                            ? 'bg-vino-accent text-white border-vino-accent' 
-                                            : 'bg-white text-stone-600 border-stone-300 hover:border-vino-accent hover:text-vino-accent'
-                                    }`}
-                                    title={isLiked ? 'Remove from Wishlist' : 'Add to Wishlist'}
-                                >
-                                    <Heart size={18} className={isLiked ? 'fill-white' : ''} />
-                                </button>
+                            {/* Taste Reaction Feedback & Modal Action Buttons */}
+                            <div className="pt-4 border-t border-stone-200/80 space-y-3">
+                                <div className="flex items-center justify-between text-xs text-stone-600 bg-stone-100/60 p-2.5 rounded-xl border border-stone-200/70">
+                                    <span className="font-semibold text-stone-700 flex items-center gap-1.5">
+                                        <Sparkles size={13} className="text-amber-600" />
+                                        <span>Taste Feedback:</span>
+                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleReaction('LIKE')}
+                                            className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold transition-all shadow-sm ${
+                                                userReaction === 'LIKE'
+                                                    ? 'bg-emerald-600 text-white'
+                                                    : 'bg-white text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 border border-stone-200'
+                                            }`}
+                                        >
+                                            <ThumbsUp size={12} className={userReaction === 'LIKE' ? 'fill-white' : ''} />
+                                            <span>Like</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleReaction('DISLIKE')}
+                                            className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold transition-all shadow-sm ${
+                                                userReaction === 'DISLIKE'
+                                                    ? 'bg-rose-600 text-white'
+                                                    : 'bg-white text-stone-700 hover:bg-rose-50 hover:text-rose-700 border border-stone-200'
+                                            }`}
+                                        >
+                                            <ThumbsDown size={12} className={userReaction === 'DISLIKE' ? 'fill-white' : ''} />
+                                            <span>Not for me</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    <button 
+                                        onClick={handlePurchaseIntent}
+                                        className="flex-1 bg-vino-accent hover:bg-vino-darker text-white font-bold py-3 px-6 rounded-xl transition-colors duration-300 shadow-md flex items-center justify-center gap-2 text-sm"
+                                    >
+                                        <ShieldCheck size={16} />
+                                        <span>{purchaseRequested ? 'Order / Reservation Initiated ✓' : 'Reserve / Request Bottle'}</span>
+                                    </button>
+                                    <button
+                                        onClick={async () => {
+                                            if (!wine) return
+                                            const res = await toggleWishlist(wine)
+                                            if (res.newlyLiked) {
+                                                await trackWineInteraction(String(wine.id), 'WISHLIST', { wineName: wine.name })
+                                            }
+                                            if (res.requiresAuth) {
+                                                router.push('/welcome?redirect=/discover/wines')
+                                            }
+                                        }}
+                                        className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-300 ${
+                                            isLikedWishlist 
+                                                ? 'bg-vino-accent text-white border-vino-accent' 
+                                                : 'bg-white text-stone-600 border-stone-300 hover:border-vino-accent hover:text-vino-accent'
+                                        }`}
+                                        title={isLikedWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+                                    >
+                                        <Heart size={18} className={isLikedWishlist ? 'fill-white' : ''} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

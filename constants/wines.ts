@@ -22,6 +22,20 @@ export interface Wine {
     acidity?: string
     tannin?: string
     grapeVariety?: string
+    flavors?: string[]
+    occasions?: string[]
+    isBeginnerFriendly?: boolean
+    isAvailable?: boolean
+    normalizedType?: 'RED' | 'WHITE' | 'ROSE' | 'SPARKLING' | 'DESSERT'
+    normalizedSweetness?: 'DRY' | 'SEMI_DRY' | 'SWEET'
+    normalizedBody?: 'LIGHT' | 'MEDIUM' | 'FULL'
+    normalizedAcidity?: 'LOW' | 'MEDIUM' | 'HIGH'
+    normalizedTannin?: 'LOW' | 'MEDIUM' | 'HIGH'
+    recommendationBadge?: string
+    recommendationReasons?: string[]
+    isTrySomethingNew?: boolean
+    relevanceScore?: number
 }
 
 export const WINES: Wine[] = []
+

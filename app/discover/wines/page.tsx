@@ -89,7 +89,16 @@ async function getWines(): Promise<Wine[]> {
                 body: wine.body || undefined,
                 acidity: wine.acidity || undefined,
                 tannin: wine.tannin || undefined,
-                grapeVariety: wine.grape_variety || undefined
+                grapeVariety: wine.grape_variety || undefined,
+                flavors: wine.flavors || [],
+                occasions: wine.occasions || [],
+                isBeginnerFriendly: Boolean(wine.is_beginner_friendly),
+                isAvailable: wine.is_available !== false,
+                normalizedType: wine.normalized_type,
+                normalizedSweetness: wine.normalized_sweetness,
+                normalizedBody: wine.normalized_body,
+                normalizedAcidity: wine.normalized_acidity,
+                normalizedTannin: wine.normalized_tannin,
             };
         });
     } catch (error) {

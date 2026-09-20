@@ -23,9 +23,22 @@ export async function login(formData: FormData) {
     return redirect(errorUrl)
   }
   
-  // Check if onboarding is complete
+  // Check if onboarding is complete or if user already has profile details stored
   if (authData.user?.user_metadata?.onboarding_complete !== true) {
-    return redirect('/onboarding')
+    const { data: dbUser } = await supabase
+      .from('users')
+      .select('experience_level, full_name, role')
+      .or(`auth_id.eq.${authData.user.id},email.eq.${authData.user.email}`)
+      .maybeSingle()
+
+    if (dbUser && (dbUser.experience_level || dbUser.full_name || dbUser.role === 'winery_admin')) {
+      // Mark metadata as completed so it never asks again
+      await supabase.auth.updateUser({
+        data: { onboarding_complete: true }
+      }).catch(() => {})
+    } else {
+      return redirect('/onboarding')
+    }
   }
 
   revalidatePath('/', 'layout')
