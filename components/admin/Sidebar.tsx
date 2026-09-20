@@ -1,8 +1,8 @@
-﻿'use client'
+'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Wine, FileCheck, Users, LogOut, Calendar, Compass, Ticket, Star } from 'lucide-react'
+import { LayoutDashboard, Wine, FileCheck, Users, LogOut, Calendar, Compass, Ticket, Star, FlaskConical } from 'lucide-react'
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -13,6 +13,7 @@ export default function Sidebar() {
     { href: '/admin/wineries', label: 'Wineries', icon: StoreIcon },
     { href: '/admin/approvals', label: 'Approvals', icon: FileCheck },
     { href: '/admin/wines', label: 'Wines', icon: Wine },
+    { href: '/admin/wine-quality', label: 'AI Quality Lab', icon: FlaskConical },
     { href: '/admin/events', label: 'Events', icon: Calendar },
     { href: '/admin/experiences', label: 'Experiences', icon: Compass },
     { href: '/admin/bookings', label: 'Bookings', icon: Ticket },
