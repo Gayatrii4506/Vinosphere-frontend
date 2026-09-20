@@ -42,11 +42,16 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [] }) =
     const modeParam = searchParams ? searchParams.get('mode') : null
 
     const [selectedWine, setSelectedWine] = useState<Wine | null>(null)
+    const [isMounted, setIsMounted] = useState(false)
     const [userPreferences, setUserPreferences] = useState<UserPreferencesState | null>(null)
     const [hasPreferences, setHasPreferences] = useState(false)
     const [dismissedColdStartPrompt, setDismissedColdStartPrompt] = useState(false)
     const [dismissedInsufficientNotice, setDismissedInsufficientNotice] = useState(false)
     const [interactionSummary, setInteractionSummary] = useState<UserInteractionSummary>(getLocalInteractionSummary())
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
 
     // Initial Sort: 'Recommended' by default, or mapped from mode query param
     const [sortBy, setSortBy] = useState<string>(
@@ -676,22 +681,24 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [] }) =
                     </div>
 
                     <div className="relative z-10 flex items-center gap-3 text-xs text-white/80 shrink-0">
-                        {hasPreferences && !isPersonalizationInsufficient ? (
-                            <Link href="/profile" className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 rounded-full hover:bg-amber-500/30 transition-all font-semibold">
-                                <Sparkles size={12} />
-                                Taste Profile Active
-                            </Link>
-                        ) : (
-                            <Link href="/onboarding?mode=edit" className="flex items-center gap-1.5 px-3 py-1 bg-vino-accent text-white rounded-full hover:bg-vino-accent-light transition-all font-semibold shadow-sm">
-                                <Sparkles size={12} className="text-amber-300" />
-                                Take Taste Quiz
-                            </Link>
+                        {isMounted && (
+                            hasPreferences && !isPersonalizationInsufficient ? (
+                                <Link href="/profile" className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 rounded-full hover:bg-amber-500/30 transition-all font-semibold">
+                                    <Sparkles size={12} />
+                                    Taste Profile Active
+                                </Link>
+                            ) : (
+                                <Link href="/onboarding?mode=edit" className="flex items-center gap-1.5 px-3 py-1 bg-vino-accent text-white rounded-full hover:bg-vino-accent-light transition-all font-semibold shadow-sm">
+                                    <Sparkles size={12} className="text-amber-300" />
+                                    Take Taste Quiz
+                                </Link>
+                            )
                         )}
                     </div>
                 </div>
 
                 {/* Edge Case 1 & 3 & 4 Notice: Insufficient Data Alert Banner */}
-                {isPersonalizationInsufficient && sortBy === 'Recommended' && !dismissedInsufficientNotice && (
+                {isMounted && isPersonalizationInsufficient && sortBy === 'Recommended' && !dismissedInsufficientNotice && (
                     <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-400/30 text-stone-800 flex items-center justify-between gap-4 shadow-sm">
                         <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-700 flex items-center justify-center shrink-0">
@@ -724,7 +731,7 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [] }) =
                 )}
 
                 {/* Cold Start Discovery Prompt (Requirement 2 & Edge Case 18) */}
-                {!hasPreferences && !dismissedColdStartPrompt && (
+                {isMounted && !hasPreferences && !dismissedColdStartPrompt && (
                     <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-stone-900 to-stone-800 text-white border border-stone-700/80 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="space-y-1">
                             <div className="flex items-center gap-2">

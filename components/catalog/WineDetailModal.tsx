@@ -199,7 +199,7 @@ export const WineDetailModal: React.FC<WineDetailModalProps> = ({ wine, onClose 
                                     {/* Price */}
                                     <div className="text-2xl font-serif font-bold text-vino-darker">
                                         <span className="text-sm text-stone-500 mr-1">{wine.currency}</span>
-                                        {wine.price.toLocaleString()}
+                                        {(wine.price || 0).toLocaleString()}
                                     </div>
                                 </div>
 
