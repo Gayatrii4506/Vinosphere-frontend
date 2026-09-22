@@ -77,11 +77,18 @@ npm run dev:all
 | **Wine Pairing Recommender** | `npm run dev:pairing` | `http://localhost:5173` |
 
 #### 🧪 Running Backend Analytics Unit & Integration Tests
+
+From **root directory**:
+```bash
+npm run test:backend
+```
+
+Or from inside `vinosphere-backend` folder:
 ```bash
 cd vinosphere-backend
 npm test
 ```
-*Runs all 118 analytics backend test suites across 7 test modules with `--runInBand` and `--forceExit`.*
+*Runs all analytics backend test suites across 7 test modules with `--runInBand` and `--forceExit`.*
 
 ---
 
@@ -108,15 +115,33 @@ VinoSphere/ (Project Root)
 
 ---
 
-## 🏃 Quick Command Reference
+## 🏃 Quick Command Reference (Run from Root Directory)
 
 ```bash
-# 1. Start everything together
+# 1. Start everything together (Backend + Winery + Consumer App)
 npm run dev:all
 
 # 2. Start Winery Manager Portal only
 npm run dev:winery
 
-# 3. Run Backend Analytics Test Suite
-cd vinosphere-backend && npm test
+# 3. Start Backend API only
+npm run dev:backend
+
+# 4. Start Consumer App only
+npm run dev
+
+# 5. Run Backend Unit & Integration Tests
+npm run test:backend
 ```
+
+> ⚠️ **Note for Windows PowerShell Users**: In Windows PowerShell (5.1), chained commands with `&&` are not supported. Always run commands directly from the root project directory `good ui`, or execute `cd vinosphere-backend; npm test` using a semicolon `;`.
+
+---
+
+## 🛠️ Troubleshooting Common Errors
+
+* **Error `EADDRINUSE: address already in use :::3001` or `:::5000`**:
+  This happens if `npm run dev:all` or another dev server is already running in another terminal window or in the background. Close the other running server process or terminate active Node tasks in Task Manager before restarting.
+
+* **Error `ReferenceError: authRoutes is not defined`**:
+  This bug in `vinosphere-backend/src/routes/index.ts` has been fixed. Re-run `npm run dev:backend` or `npm run dev:all`.

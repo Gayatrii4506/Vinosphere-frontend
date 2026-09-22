@@ -8,6 +8,8 @@
         "dev:winery": "npm --prefix winery_dashboard run dev",
         "dev:pairing": "npm --prefix Food_Recom/food_pairing_frontend run dev",
         "dev:all": "npx concurrently -n \"BACKEND,WINERY,APP\" -c \"bgMaroon.bold,bgGold.bold,bgBlue.bold\" \"npm run dev:backend\" \"npm run dev:winery\" \"npm run dev\"",
+        "test:backend": "npm --prefix vinosphere-backend test",
+        "seed:sula": "npm --prefix vinosphere-backend run seed:sula",
         "build": "next build",
         "start": "next start",
         "lint": "next lint"
