@@ -318,20 +318,22 @@ export default function FoodPairingApp() {
         try {
             const recs = await fetchFoodRecommendations(dishName)
             setApiRecommendations(recs)
+            setSelectedDish(dishName)
         } catch (err: any) {
             const errMsg = err?.message || ''
-            if (errMsg.includes('Invalid food name')) {
-                setApiError(errMsg)
+            setSelectedDish('')
+            setApiRecommendations([])
+            if (errMsg.toLowerCase().includes('invalid food') || errMsg.toLowerCase().includes('invalid dish')) {
+                setApiError('Invalid food name. Please enter a valid dish name.')
             } else {
                 console.warn('Recommendation API notice:', errMsg)
                 setApiError('Unable to connect to recommendation engine. Displaying sommelier curated cellar matches.')
             }
-            setApiRecommendations([])
-        }
- finally {
+        } finally {
             setIsRecommending(false)
         }
     }
+
 
     // Helper: Trigger wine -> food recommendation
     async function loadFoodRecommendations(wineName: string) {
@@ -353,10 +355,10 @@ export default function FoodPairingApp() {
     // Dynamic pairings display
     const activePairings = useMemo(() => {
         if (pairingMode === 'foodToWine' && apiRecommendations.length > 0) {
-            return apiRecommendations.map((rec, i) => mapApiRec(rec, i, selectedDish || customDishInput || 'Culinary Dish'))
+            return apiRecommendations.map((rec, i) => mapApiRec(rec, i, selectedDish || 'Culinary Dish'))
         }
         return initialPairings
-    }, [pairingMode, apiRecommendations, selectedDish, customDishInput])
+    }, [pairingMode, apiRecommendations, selectedDish])
 
     // Filter & sort
     const filteredPairings = useMemo(() => {
@@ -493,9 +495,9 @@ export default function FoodPairingApp() {
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault()
-                                    if (customDishInput.trim()) {
-                                        setSelectedDish(customDishInput.trim())
-                                        loadWineRecommendations(customDishInput.trim())
+                                    const trimmed = customDishInput.trim()
+                                    if (trimmed) {
+                                        loadWineRecommendations(trimmed)
                                     }
                                 }}
                                 className="flex items-center gap-2 w-full md:w-80"
