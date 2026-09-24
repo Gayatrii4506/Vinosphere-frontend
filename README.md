@@ -1,39 +1,60 @@
-# VinoSphere Consumer Discovery Platform (`Vinosphere-good-ui`)
+# 🍇 VinoSphere Consumer Discovery Platform (`Vinosphere-good-ui`)
 
-VinoSphere Consumer Discovery Platform is a premium Next.js client application designed for wine enthusiasts to browse partner wineries, discover curated winery experiences, explore upcoming special events, and purchase bookings.
-
----
-
-## 🚀 Key Features
-
-* **Winery Catalog Browser**: Browse comprehensive partner winery feeds, filtered by location, type, or region.
-* **Curated Experiences & Events**: Special badges, localized dates, and structured itinerary timelines (for events) or featured vintages (for wine tastings).
-* **Secure Reservation System**: An interactive details-drawer and booking modal that pulls guest counts, aggregates totals, resolves winery ownership, and completes mock checkout.
-* **Authentication Integration**: Plugs directly into Supabase authentication to protect user booking sessions.
-* **Transaction Feedback**: Visual checkout loader and instant confirmation ticket code displays.
+The **VinoSphere Consumer Discovery Platform** is a luxury Next.js web application engineered for wine lovers, travelers, and connoisseurs. It integrates personalized AI recommendations, sensory taste onboarding, interactive enological laboratory quality audits, and seamless vineyard experience bookings.
 
 ---
 
-## 📁 Folder Structure
+## 🚀 Key Consumer Features
 
-```
+### 1. 👤 32D Personalized Palate Profiler & Recommendations
+* **Palate Discovery Quiz**: Multi-step interactive taste wizard capturing wine styles (Red, White, Rosé, Sparkling, Dessert), sweetness tolerance, body weight, acidity, tannin sensitivity, and flavor note affinities.
+* **Continuous Vector Space Model**: Vectorizes user taste profiles against catalog bottles in a 32-dimensional normalized latent space.
+* **Real-time Behavioral Drift**: Dynamically refines recommendations based on user interactions (+3.0 purchases, +2.0 wishlist, +1.8 likes, +0.3 views, -4.0 dislikes).
+* **Explainable Sommelier Notes**: Transparent feature attributions highlighting exact sensory matches (e.g., *"Features your preferred full-bodied dry profile with dark blackberry notes"*).
+
+### 2. 🧪 Consumer Wine Quality Lab
+* **Laboratory Assay Explorer**: Explore physicochemical parameters (Alcohol ABV, Volatile Acidity, Free $\text{SO}_2$, pH, Density) with real-time ML quality grading (**84.87% Accuracy**).
+* **Chemical Balance Index ($0-100\%$)**: Visual radar gauges showing how balanced each bottle is.
+
+### 3. 🍽️ Food & Wine Pairing Explorer
+* **Gastronomic Pairing Engine**: Browse pairings for 12 culinary categories across Indian cuisine (Butter Chicken, Biryani, Paneer Tikka) and global gastronomy (Seafood, Lamb, Pasta, Artisan Cheeses, Chocolate).
+
+### 4. 🎟️ Winery Discovery & Interactive Bookings
+* **Winery Catalog Browser**: Filter partner estates by region (Nashik, Nandi Hills, etc.), amenities, and terroir.
+* **Curated Experiences & Events**: Book vineyard tours, masterclass tastings, and harvest dinners with instant QR ticket confirmation.
+* **Wishlist & Tasting Journal**: Save favorite bottles and track personal tasting notes.
+
+---
+
+## 📁 Directory Structure
+
+```text
 Vinosphere-good-ui/
-├── app/                  # Next.js App Router Pages
-│   ├── events/           # Experiences & events discovery landing page
-│   ├── layout.tsx        # Base root layout wrapper
-│   └── page.tsx          # Consumer homepage
-├── components/           # Reusable Client/Server UI Components
-│   ├── events/           # BookingModal.tsx and detail card components
-│   ├── home/             # Homepage sections (Hero, sustainability, favorites)
-│   └── layout/           # Shared navigation bar and footer components
-├── constants/            # Client configuration parameters and type interfaces
-│   └── events.ts         # VinoSphereExperience definition
-├── lib/                  # Shared utility methods & client state helpers
-│   ├── supabase/         # Client-side Supabase initializer
-│   └── utils.ts          # Stylesheet merge helpers (cn)
-├── public/               # Asset folders (logos, SVG icons, images)
-├── package.json          # Project dependencies and script controls
-└── tsconfig.json         # TypeScript compiler configurations
+├── app/                      # Next.js App Router
+│   ├── discover/             # Wine catalog & winery directory
+│   ├── events/               # Vineyard tours & calendar events
+│   ├── lab/                  # Consumer Wine Quality Lab
+│   ├── pairing/              # Food & Wine Pairing Guide
+│   ├── profile/              # User account & taste preferences
+│   ├── wishlist/             # Saved bottles & wishlist
+│   ├── layout.tsx            # Base root layout wrapper
+│   └── page.tsx              # Luxury consumer homepage
+├── components/               # Reusable UI Components
+│   ├── catalog/              # Wine cards, filter bars & detail modals
+│   ├── events/               # Experience cards, map drawers & BookingModal
+│   ├── home/                 # Hero video banner, Sustainability, Occasions
+│   ├── lab/                  # Interactive Wine Quality Lab widgets
+│   ├── layout/               # Global Navbar & Newsletter footer
+│   └── profile/              # TasteProfileEditor & WinePreferencesWizard
+├── constants/                # Configuration & event types
+├── context/                  # WishlistContext & User session state
+├── lib/                      # Client utilities & recommendation connectors
+│   ├── api-config.ts         # REST API URL resolution (Port 5000)
+│   ├── recommendations/      # Client-side recommendation connectors
+│   └── supabase/             # Supabase client bindings
+├── public/                   # Media assets, photography & vector icons
+├── package.json
+└── tsconfig.json
 ```
 
 ---
@@ -41,107 +62,50 @@ Vinosphere-good-ui/
 ## 🛠️ Getting Started
 
 ### 1. Prerequisites
-Ensure you have **Node.js (v18+)** installed.
+Ensure you have **Node.js (v18+)** and **npm** installed.
 
 ### 2. Installation
-Run the following command in the project root:
 ```bash
 npm install
 ```
 
-### 3. Environment Setup
-Create a `.env.local` file in the root folder and configure:
+### 3. Environment Setup (`.env.local`)
+Create a `.env.local` file in the `Vinosphere-good-ui` root directory:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
 
 ### 4. Running the Platform
 
-You can run the entire platform with **a single command** or run individual modules separately from the root directory:
-
 #### 🌟 1-Command Full Stack Startup (Recommended)
-Starts Backend API, Winery Dashboard, and Consumer Application simultaneously:
+Starts Backend API (Port 5000), Winery Portal (Port 3001), and Consumer App (Port 3002) simultaneously:
 ```bash
 npm run dev:all
 ```
 
-#### 📌 Run Individual Modules (From Root Directory)
+#### 📌 Starting Individual Services
 
 | Goal | Command | Local URL |
 | :--- | :--- | :--- |
 | **Entire Platform (All Services)** | `npm run dev:all` | All services below |
-| **Winery Management Dashboard** | `npm run dev:winery` | `http://localhost:3001` |
-| **Backend Express API** | `npm run dev:backend` | `http://localhost:5000` |
 | **Consumer Application** | `npm run dev` | `http://localhost:3002` |
-| **Wine Pairing Recommender** | `npm run dev:pairing` | `http://localhost:5173` |
+| **Winery Management Dashboard** | `npm run dev:winery` | `http://localhost:3001` |
+| **Backend Express REST API** | `npm run dev:backend` | `http://localhost:5000` |
+| **Food Pairing Recommender** | `npm run dev:pairing` | `http://localhost:5173` |
 
-#### 🧪 Running Backend Analytics Unit & Integration Tests
+---
 
-From **root directory**:
+## 🧪 Testing
+
+Run backend unit and integration test suites:
 ```bash
 npm run test:backend
 ```
 
-Or from inside `vinosphere-backend` folder:
-```bash
-cd vinosphere-backend
-npm test
-```
-*Runs all analytics backend test suites across 7 test modules with `--runInBand` and `--forceExit`.*
-
 ---
 
-## 🌐 Overall Project Architecture
-
-VinoSphere is structured as a unified ecosystem:
-
-```
-VinoSphere/ (Project Root)
-├── vinosphere-backend/                 # Express REST API Backend [Port 5000]
-├── winery_dashboard/                   # Winery Manager Portal [Port 3001]
-├── Food_Recom/food_pairing_frontend/   # Food & Wine Pairing Recommender [Port 5173]
-└── (Root app)                          # Consumer Discovery & Booking App [Port 3002]
-```
-
-### ⚡ Service Matrix
-
-| Service | Directory | Tech Stack | Port | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| **Backend API** | `vinosphere-backend` | Node.js, Express, TypeScript, Supabase | `5000` | REST API endpoints, analytics engine, security auth middlewares & DB triggers. |
-| **Winery Portal** | `winery_dashboard` | Next.js (App Router), TypeScript, Tailwind CSS | `3001` | Business intelligence dashboard for wineries to track KPIs, view automated recommendations & manage events. |
-| **Consumer App** | Root directory | Next.js (App Router), TypeScript, Vanilla CSS | `3002` | Public web app for wine enthusiasts to browse wineries, discover wines & book experiences. |
-| **Wine Pairing Engine** | `Food_Recom/food_pairing_frontend` | React, Vite, Tailwind CSS | `5173` | Interactive food and wine pairing recommendation interface. |
-
----
-
-## 🏃 Quick Command Reference (Run from Root Directory)
-
-```bash
-# 1. Start everything together (Backend + Winery + Consumer App)
-npm run dev:all
-
-# 2. Start Winery Manager Portal only
-npm run dev:winery
-
-# 3. Start Backend API only
-npm run dev:backend
-
-# 4. Start Consumer App only
-npm run dev
-
-# 5. Run Backend Unit & Integration Tests
-npm run test:backend
-```
-
-> ⚠️ **Note for Windows PowerShell Users**: In Windows PowerShell (5.1), chained commands with `&&` are not supported. Always run commands directly from the root project directory `good ui`, or execute `cd vinosphere-backend; npm test` using a semicolon `;`.
-
----
-
-## 🛠️ Troubleshooting Common Errors
-
-* **Error `EADDRINUSE: address already in use :::3001` or `:::5000`**:
-  This happens if `npm run dev:all` or another dev server is already running in another terminal window or in the background. Close the other running server process or terminate active Node tasks in Task Manager before restarting.
-
-* **Error `ReferenceError: authRoutes is not defined`**:
-  This bug in `vinosphere-backend/src/routes/index.ts` has been fixed. Re-run `npm run dev:backend` or `npm run dev:all`.
+## 🔗 Platform Integration
+* Consumes **Backend API** (`http://localhost:5000`) for 32D vectorized recommendations, ML quality assays, and reservation transactions.
+* Reflects live updates published from the **Winery Management Dashboard** (`http://localhost:3001`).
