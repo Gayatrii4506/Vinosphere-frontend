@@ -72,8 +72,26 @@ export default async function WineryDetailPage({ params }: Props) {
             ])
             if (winesRes.status === 'fulfilled' && winesRes.value.ok) {
                 const winesJson = await winesRes.value.json()
-                const allWines = winesJson.data || []
-                dbWines = allWines.filter((w: any) => w.winery_id === dbWinery.id)
+                const rawList = Array.isArray(winesJson.data)
+                    ? winesJson.data
+                    : (winesJson.data?.wines || [])
+                const normalized = rawList.map((item: any) => item.wine ? { ...item.wine, ...item } : item)
+                dbWines = normalized.filter((w: any) => w.winery_id === dbWinery.id)
+            }
+            if (dbWines.length === 0) {
+                try {
+                    const discRes = await fetch(`${API_V1_URL}/discovery/wines`, { next: { revalidate: 0 } })
+                    if (discRes.ok) {
+                        const discJson = await discRes.json()
+                        const discList = discJson.data || []
+                        dbWines = discList.filter((w: any) => 
+                            w.winery_id === dbWinery.id || 
+                            w.winery?.name?.toLowerCase() === dbWinery.name?.toLowerCase()
+                        )
+                    }
+                } catch {
+                    // Fallback
+                }
             }
             if (expRes.status === 'fulfilled' && expRes.value.ok) {
                 const expJson = await expRes.value.json()
@@ -157,10 +175,10 @@ export default async function WineryDetailPage({ params }: Props) {
                 type: w.wine_type || 'Red Wine',
                 vintage: w.vintage || 2022,
                 rating: 92,
-                price: Number(w.wine_inventory?.[0]?.price) || 1250,
+                price: Number(w.wine_inventory?.[0]?.price) || Number(w.price) || 1250,
                 currency: '₹',
-                image: w.wine_images?.[0]?.image_url || 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80',
-                notes: w.description || 'Elegant balance of fruit purity, gentle oak integration, and a persistent finish.',
+                image: w.wine_images?.[0]?.image_url || w.image_url || 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80',
+                notes: w.description || w.taste_notes || 'Elegant balance of fruit purity, gentle oak integration, and a persistent finish.',
                 grapes: w.grape_variety || 'Estate Blend',
                 region: `${wineryCity} Valley`
             }))
