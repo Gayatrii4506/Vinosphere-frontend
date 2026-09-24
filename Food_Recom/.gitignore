@@ -1,0 +1,81 @@
+# ────────────────────────────────────────────────
+# Python
+# ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env
+*.env
+!.env.example
+
+# ────────────────────────────────────────────────
+# Node / Frontend
+# ────────────────────────────────────────────────
+food_pairing_frontend/node_modules/
+food_pairing_frontend/dist/
+food_pairing_frontend/.vite/
+food_pairing_frontend/.DS_Store
+
+# ────────────────────────────────────────────────
+# ML model cache & large binary files
+# ────────────────────────────────────────────────
+# FAISS index files (can be regenerated)
+faiss_index/
+
+# Pre-computed embeddings (large NumPy arrays)
+embeddings/
+
+# Sentence-Transformers model cache
+models/
+
+# ────────────────────────────────────────────────
+# Data files — keep CSVs, ignore raw uploads
+# ────────────────────────────────────────────────
+# Uncomment below if you want to exclude large CSVs from the repo:
+# datasets/
+# processed_data/
+
+# ────────────────────────────────────────────────
+# Secrets & config
+# ────────────────────────────────────────────────
+.env
+*.env
+# config.py
+
+# ────────────────────────────────────────────────
+# IDE / OS
+# ────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ────────────────────────────────────────────────
+# Logs & temp
+# ────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak

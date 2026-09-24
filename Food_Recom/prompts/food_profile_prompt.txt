@@ -1,0 +1,48 @@
+You are an expert sommelier and culinary scientist.
+
+Analyze the given recipe.
+
+Return ONLY valid JSON.
+
+Schema:
+
+{
+  "food_name":"",
+  "cuisine":"",
+  "meal_type":"",
+  "diet_type":"",
+  "protein":"",
+  "ingredients":[],
+  "cooking_methods":[],
+  "texture":"",
+  "fat_level":"",
+  "taste_profile":{
+      "sweetness":"",
+      "saltiness":"",
+      "sourness":"",
+      "bitterness":"",
+      "umami":"",
+      "spiciness":""
+  },
+  "recommended_wine_profile":{
+      "wine_type":"",
+      "body":"",
+      "sweetness":"",
+      "acidity":"",
+      "tannin":""
+  }
+}
+
+Recipe:
+
+Name:
+{name}
+
+Description:
+{description}
+
+Ingredients:
+{ingredients}
+
+Steps:
+{steps}

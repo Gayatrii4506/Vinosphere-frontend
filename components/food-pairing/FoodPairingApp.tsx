@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
     Search,
     ChevronDown,
+    ChevronUp,
     X,
     Heart,
     Wine,
@@ -33,6 +34,7 @@ import {
     FoodCategoryItem,
     WineRecommendation,
     FoodRecommendation,
+    resolveWineCloudinaryImage,
 } from '@/lib/food-pairing/recommendationApi'
 import HeroLanding from './HeroLanding'
 import { Button } from '@/components/ui/Button'
@@ -69,7 +71,7 @@ const initialPairings = staticWines.map((wine, index) => {
         servingTemp: wine.servingTemp,
         country: wine.country,
         flag: wine.flag,
-        wineImg: wine.wineImg || `/images/${wine.id}.png`,
+        wineImg: wine.wineImg && !wine.wineImg.includes('wine_isolated') ? wine.wineImg : resolveWineCloudinaryImage(wine.name, wine.type),
         dishName: food.name,
         dishImg: food.dishImg || FALLBACK_DISH_IMG,
         foodTags: [food.cookingMethod, food.richness + ' richness'],
@@ -97,7 +99,7 @@ function mapApiRec(rec: WineRecommendation, index: number, selectedDishName: str
         sweetnessStr === 'medium' ? 1 : 0
 
     const matchPct = Math.min(99, Math.round((rec.score || 0.85) * 100))
-    const wineImg = rec.image_url && rec.image_url.trim() ? rec.image_url.trim() : FALLBACK_WINE_IMG
+    const wineImg = rec.image_url && rec.image_url.trim() && !rec.image_url.includes('wine_isolated') ? rec.image_url.trim() : resolveWineCloudinaryImage(rec.wine_name || '', rec.wine_type || '')
 
     return {
         id: `api-${index}`,
@@ -316,14 +318,22 @@ export default function FoodPairingApp() {
         try {
             const recs = await fetchFoodRecommendations(dishName)
             setApiRecommendations(recs)
+            setSelectedDish(dishName)
         } catch (err: any) {
-            console.error('Failed to get wine recommendations:', err)
-            setApiError('Unable to connect to recommendation engine. Displaying sommelier curated cellar matches.')
+            const errMsg = err?.message || ''
+            setSelectedDish('')
             setApiRecommendations([])
+            if (errMsg.toLowerCase().includes('invalid food') || errMsg.toLowerCase().includes('invalid dish')) {
+                setApiError('Invalid food name. Please enter a valid dish name.')
+            } else {
+                console.warn('Recommendation API notice:', errMsg)
+                setApiError('Unable to connect to recommendation engine. Displaying sommelier curated cellar matches.')
+            }
         } finally {
             setIsRecommending(false)
         }
     }
+
 
     // Helper: Trigger wine -> food recommendation
     async function loadFoodRecommendations(wineName: string) {
@@ -345,10 +355,10 @@ export default function FoodPairingApp() {
     // Dynamic pairings display
     const activePairings = useMemo(() => {
         if (pairingMode === 'foodToWine' && apiRecommendations.length > 0) {
-            return apiRecommendations.map((rec, i) => mapApiRec(rec, i, selectedDish || customDishInput || 'Culinary Dish'))
+            return apiRecommendations.map((rec, i) => mapApiRec(rec, i, selectedDish || 'Culinary Dish'))
         }
         return initialPairings
-    }, [pairingMode, apiRecommendations, selectedDish, customDishInput])
+    }, [pairingMode, apiRecommendations, selectedDish])
 
     // Filter & sort
     const filteredPairings = useMemo(() => {
@@ -485,9 +495,9 @@ export default function FoodPairingApp() {
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault()
-                                    if (customDishInput.trim()) {
-                                        setSelectedDish(customDishInput.trim())
-                                        loadWineRecommendations(customDishInput.trim())
+                                    const trimmed = customDishInput.trim()
+                                    if (trimmed) {
+                                        loadWineRecommendations(trimmed)
                                     }
                                 }}
                                 className="flex items-center gap-2 w-full md:w-80"
@@ -587,13 +597,22 @@ export default function FoodPairingApp() {
                                 )}
                                 {!loadingDishes && dishes.length > 6 && (
                                     <div className="mt-6 flex justify-center">
-                                        <Button
-                                            variant="outline"
+                                        <button
                                             onClick={() => setShowAllDishes(!showAllDishes)}
-                                            className="text-xs text-[#8B1E3F] border-[#8B1E3F] hover:bg-[#8B1E3F] hover:text-white transition-colors px-6 py-2.5 rounded-xl font-bold tracking-wider"
+                                            className="inline-flex items-center gap-2 text-xs font-bold text-[#8B1E3F] border border-[#8B1E3F]/40 hover:border-[#8B1E3F] bg-[#8B1E3F]/5 hover:bg-[#8B1E3F] hover:text-white transition-all duration-200 px-6 py-2.5 rounded-xl shadow-xs group"
                                         >
-                                            {showAllDishes ? 'Show Less' : `Show All ${dishes.length} Dishes`}
-                                        </Button>
+                                            {showAllDishes ? (
+                                                <>
+                                                    <ChevronUp size={15} className="group-hover:-translate-y-0.5 transition-transform" />
+                                                    Show Less Dishes
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <ChevronDown size={15} className="group-hover:translate-y-0.5 transition-transform" />
+                                                    Show More Dishes ({dishes.length - 6} more)
+                                                </>
+                                            )}
+                                        </button>
                                     </div>
                                 )}
                             </div>
