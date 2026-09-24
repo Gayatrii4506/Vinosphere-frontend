@@ -83,7 +83,7 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
                 <div className="flex items-center justify-between pt-0.5">
                     <div className="text-base font-bold text-vino-darker">
                         <span className="text-vino-dark/50 text-xs mr-0.5">{currency}</span>
-                        {price.toLocaleString()}
+                        {(price || 0).toLocaleString()}
                     </div>
                     <button 
                         type="button"

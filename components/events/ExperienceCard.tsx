@@ -14,6 +14,7 @@ interface ExperienceCardProps {
 export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSelect }) => {
     const isSpotsLow = experience.spotsLeft <= 8
     const spotsPct = Math.round(((experience.totalSpots - experience.spotsLeft) / experience.totalSpots) * 100)
+    const cardImage = experience.image || (experience as any).imageUrl || (experience as any).image_url || 'https://images.unsplash.com/photo-1543418219-44e2bf85a630?w=800&q=80'
 
     return (
         <motion.article
@@ -28,8 +29,8 @@ export const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onSe
             {/* Image Header */}
             <div className="relative h-60 w-full overflow-hidden bg-[#1A0810]">
                 <Image
-                    src={experience.image}
-                    alt={experience.title}
+                    src={cardImage}
+                    alt={experience.title || 'Estate Experience'}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"

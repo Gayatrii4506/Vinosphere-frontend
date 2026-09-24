@@ -41,7 +41,7 @@ export const FeaturedCategories: React.FC = () => {
                     </div>
 
                     {/* ── Right Column: Editorial Details & Specs ── */}
-                    <div className="lg:col-span-6 relative flex flex-col justify-between space-y-3 sm:space-y-4 lg:pl-2">
+                    <div className="lg:col-span-6 relative flex flex-col justify-between space-y-3 sm:space-y-4 lg:pl-2 pt-6 sm:pt-8 lg:pt-10">
 
                         {/* Grape Vine Branch Accent (Straight, Transparent Background) */}
                         <motion.div
@@ -49,9 +49,9 @@ export const FeaturedCategories: React.FC = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="absolute -top-10 right-0 sm:right-2 pointer-events-none z-20"
+                            className="absolute -top-12 sm:-top-16 lg:-top-20 -right-2 sm:-right-6 lg:-right-8 pointer-events-none z-20"
                         >
-                            <div className="relative w-44 sm:w-60 md:w-64 aspect-[4/3]">
+                            <div className="relative w-36 sm:w-48 md:w-52 aspect-[4/3]">
                                 <Image
                                     src="/images/grape_vine_branch.png"
                                     alt="Straight grape vine branch with leaves and grapes"
@@ -68,40 +68,39 @@ export const FeaturedCategories: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="space-y-1"
+                            className="space-y-1 pr-12 sm:pr-16 lg:pr-20"
                         >
                             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#2A2A2A] leading-[1.12] tracking-tight">
-                                A Fragrant
-                                <br />
-                                Combination.
+                                A New Era of 
+                                Wine Discovery.
                             </h2>
                         </motion.div>
 
-                        {/* Wine Technical Metrics Grid */}
+                        {/* Wine Technical & Industry Metrics Grid */}
                         <motion.div
                             initial={{ opacity: 0, y: 15 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="grid grid-cols-2 gap-6 max-w-sm pt-1"
+                            className="grid grid-cols-2 gap-4 sm:gap-6 max-w-lg pt-1"
                         >
-                            {/* Stat 1: Alcohol Level */}
+                            {/* Stat 1: Maharashtra Wine Production */}
                             <div className="space-y-0.5">
                                 <div className="font-serif text-2xl sm:text-3xl font-bold text-[#A33845] tracking-tight">
-                                    16.5 %
+                                    90%
                                 </div>
-                                <div className="text-[11px] font-semibold text-[#7A7A7A] uppercase tracking-wider">
-                                    Alcohol Level
+                                <div className="text-[10px] sm:text-[11px] font-semibold text-[#7A7A7A] uppercase tracking-wider leading-snug">
+                                    Maharashtra&apos;s Share of India&apos;s Wine Production
                                 </div>
                             </div>
 
-                            {/* Stat 2: Total Acidity */}
+                            {/* Stat 2: Annual Wine-Tourism Visitors */}
                             <div className="space-y-0.5">
                                 <div className="font-serif text-2xl sm:text-3xl font-bold text-[#A33845] tracking-tight">
-                                    6 g/L
+                                    3.5 LAKH+
                                 </div>
-                                <div className="text-[11px] font-semibold text-[#7A7A7A] uppercase tracking-wider">
-                                    Total Acidity
+                                <div className="text-[10px] sm:text-[11px] font-semibold text-[#7A7A7A] uppercase tracking-wider leading-snug">
+                                    Annual Wine-Tourism Visitors to Nashik
                                 </div>
                             </div>
                         </motion.div>
@@ -114,7 +113,7 @@ export const FeaturedCategories: React.FC = () => {
                             transition={{ duration: 0.5, delay: 0.2 }}
                             className="text-xs sm:text-sm text-[#666666] leading-relaxed max-w-md font-sans"
                         >
-                            Crafted from hand-selected grapes grown in rich volcanic soil. A harmonious interplay of deep berry notes, velvety tannins, and subtle oak undertones that lingers gracefully on the palate.
+                            Discover India&apos;s wine ecosystem through Nashik&apos;s vineyards, wineries, wine tourism, and personalized experiences — all connected through one intelligent digital platform.
                         </motion.p>
 
                         {/* Bottom Actions Row: BUY NOW + EXPLORE WINERIES */}
@@ -140,6 +139,43 @@ export const FeaturedCategories: React.FC = () => {
                                 Explore Wineries
                                 <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
                             </Link>
+                        </motion.div>
+
+                        {/* Source / Reference Citation */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                            className="text-[10px] sm:text-[11px] text-[#8A8A8A] pt-3 border-t border-black/5 max-w-md font-sans"
+                        >
+                            <span className="font-semibold text-[#666666]">Sources:</span>{' '}
+                            <a
+                                href="https://www.hindustantimes.com/cities/pune-news/maharashtra-produces-90-of-india-s-wine-report-101697740245801.html"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline hover:text-[#A33845] transition-colors"
+                            >
+                                ISWAI report (2023)
+                            </a>
+                            {'; '}
+                            <a
+                                href="https://nashik.gov.in/en/about-district/economy/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline hover:text-[#A33845] transition-colors"
+                            >
+                                Nashik District Administration
+                            </a>
+                            {'; '}
+                            <a
+                                href="https://maharashtratourism.gov.in/districts/nashik/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline hover:text-[#A33845] transition-colors"
+                            >
+                                Maharashtra Tourism
+                            </a>
                         </motion.div>
 
                     </div>
