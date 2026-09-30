@@ -85,6 +85,7 @@ function HeroSection({ winery }: { winery: WineryDetails }) {
                     src={heroImage}
                     alt={winery?.name || 'Winery'}
                     fill
+                    unoptimized
                     className="object-cover"
                     priority
                     sizes="100vw"
@@ -274,6 +275,7 @@ function StorySection({ winery }: { winery: WineryDetails }) {
                                             src={item.image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80'}
                                             alt={item.title || 'Heritage'}
                                             fill
+                                            unoptimized
                                             className="object-cover"
                                             sizes="(max-width: 768px) 100vw, 45vw"
                                         />
@@ -327,6 +329,7 @@ function EstateSection({ winery }: { winery: WineryDetails }) {
                                         src={exp.image || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80'}
                                         alt={exp.title || 'Estate Experience'}
                                         fill
+                                        unoptimized
                                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                                         sizes="(max-width: 1024px) 100vw, 50vw"
                                     />
@@ -405,6 +408,7 @@ function WineCollectionSection({ winery }: { winery: WineryDetails }) {
                                         src={wine.image || 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80'}
                                         alt={wine.name}
                                         fill
+                                        unoptimized
                                         className="object-cover"
                                         sizes="320px"
                                     />
@@ -477,7 +481,7 @@ function WineCollectionSection({ winery }: { winery: WineryDetails }) {
                                     }`}
                             >
                                 <div className="relative w-8 h-10 rounded-lg overflow-hidden shrink-0">
-                                    <Image src={w.image || 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80'} alt={w.name} fill className="object-cover" sizes="32px" />
+                                    <Image src={w.image || 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80'} alt={w.name} fill unoptimized className="object-cover" sizes="32px" />
                                 </div>
                                 <div className="text-left">
                                     <p className={`text-xs font-bold leading-tight ${safeActive === i ? 'text-white' : 'text-[#1A0A10]'}`}>{w.name}</p>
@@ -537,6 +541,7 @@ function VirtualTourSection() {
                         src="https://res.cloudinary.com/xfklkvdc/image/upload/v1784636572/wineries_siqmmn.webp"
                         alt="Estate map"
                         fill
+                        unoptimized
                         className="object-cover"
                         sizes="100vw"
                     />
@@ -779,6 +784,7 @@ function GallerySection({ winery }: { winery: WineryDetails }) {
                                 src={img.src || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80'}
                                 alt={img.alt || 'Gallery photo'}
                                 fill
+                                unoptimized
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                                 sizes="(max-width: 768px) 50vw, 33vw"
                             />
@@ -810,7 +816,7 @@ function GallerySection({ winery }: { winery: WineryDetails }) {
                             className="relative max-w-4xl w-full max-h-[80vh] aspect-video rounded-3xl overflow-hidden"
                             onClick={e => e.stopPropagation()}
                         >
-                            <Image src={lightbox} alt="Gallery" fill className="object-cover" sizes="100vw" />
+                            <Image src={lightbox} alt="Gallery" fill unoptimized className="object-cover" sizes="100vw" />
                         </motion.div>
                         <button
                             onClick={() => setLightbox(null)}
@@ -879,6 +885,7 @@ function ReviewsSection({ winery }: { winery: WineryDetails }) {
                                     src={activeReview.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=80'}
                                     alt={activeReview.author || 'Guest'}
                                     width={64} height={64}
+                                    unoptimized
                                     className="object-cover w-full h-full"
                                 />
                             </div>
@@ -978,6 +985,7 @@ function RelatedWineriesSection({ winery }: { winery: WineryDetails }) {
                                         src={rel.image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80'}
                                         alt={rel.name}
                                         fill
+                                        unoptimized
                                         className="object-cover transition-transform duration-500 group-hover:scale-108"
                                         sizes="(max-width: 768px) 100vw, 33vw"
                                     />

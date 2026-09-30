@@ -64,6 +64,7 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
             blurDataURL={blurDataURL}
             quality={quality}
             sizes={sizes}
+            unoptimized={!isCloudinary ? true : rest.unoptimized}
             {...rest}
         />
     )

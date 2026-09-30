@@ -8,13 +8,12 @@ const nextConfig: NextConfig = {
         qualities: [25, 50, 60, 70, 75, 80, 85, 88, 90, 95, 100],
         remotePatterns: [
             /**
-             * Cloudinary CDN – all VinoSphere assets are served from here.
-             * Cloud name: xfklkvdc
-             */
+              * Cloudinary CDN – all VinoSphere assets are served from here.
+              */
             {
                 protocol: 'https',
                 hostname: 'res.cloudinary.com',
-                pathname: '/xfklkvdc/**',
+                pathname: '/**',
             },
             {
                 protocol: 'https',
@@ -23,17 +22,72 @@ const nextConfig: NextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: 'plus.unsplash.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
                 hostname: 'ui-avatars.com',
                 pathname: '/**',
             },
-            /**
-             * Unsplash Plus CDN – used for high-resolution images from Unsplash API.
-             * Food and wine images enriched via the image_service.py Unsplash integration.
-             * License: Unsplash License (free for product use; attribution encouraged)
-             */
             {
                 protocol: 'https',
-                hostname: 'plus.unsplash.com',
+                hostname: 'encrypted-tbn0.gstatic.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.gstatic.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.googleusercontent.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'upload.wikimedia.org',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'storage.ghost.io',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.ghost.io',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.ghost.org',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.depositphotos.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.pinimg.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.wp.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.wordpress.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.imgur.com',
                 pathname: '/**',
             },
         ],
