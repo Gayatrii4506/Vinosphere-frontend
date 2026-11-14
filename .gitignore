@@ -8,11 +8,14 @@ node_modules/
 /coverage
 
 # next.js
-/.next/
-/out/
+.next/
+**/.next/
+out/
+**/out/
 
 # production
-/build
+build/
+dist/
 
 # misc
 .DS_Store
@@ -41,6 +44,14 @@ next-env.d.ts
 venv/
 __pycache__/
 *.pyc
+catboost_info/
+**/catboost_info/
+
+# model artifacts & large experiment outputs
+backend/ml-services/wine-quality/wine_quality_model/outputs/experiments/**/*.pkl
+backend/ml-services/wine-quality/wine_quality_model/models/candidate_improved_model.pkl
+backend/ml-services/wine-quality/wine_quality_model/data/external/winemag*.csv
+*.zip
 
 # sub-repos
 vinosphere-backend/

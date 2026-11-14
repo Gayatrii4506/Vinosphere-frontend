@@ -1,0 +1,5995 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "title": "standard public schema",
+    "version": "14.15"
+  },
+  "host": "erhrrlykjaubbjkgzuac.supabase.co:443",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "produces": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "produces": [
+          "application/openapi+json",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "summary": "OpenAPI description (this document)",
+        "tags": [
+          "Introspection"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.users.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.auth_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.full_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.avatar_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.city"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.state"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.country"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.updated_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.experience_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.favorite_wine_types"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.primary_interest"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/users"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.users"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.users.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.auth_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.full_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.avatar_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.city"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.state"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.country"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.updated_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.experience_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.favorite_wine_types"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.primary_interest"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.users.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.auth_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.full_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.avatar_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.city"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.state"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.country"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.updated_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.experience_level"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.favorite_wine_types"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.users.primary_interest"
+          },
+          {
+            "$ref": "#/parameters/body.users"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/wineries": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wineries.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.slug"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.established_year"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.website"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.address"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.city"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.state"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.country"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.latitude"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.longitude"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.logo_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.banner_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.opening_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.closing_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.verified"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.updated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/wineries"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "wineries"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.wineries"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "wineries"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wineries.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.slug"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.established_year"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.website"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.address"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.city"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.state"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.country"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.latitude"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.longitude"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.logo_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.banner_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.opening_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.closing_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.verified"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.updated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wineries"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wineries.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.slug"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.established_year"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.website"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.address"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.city"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.state"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.country"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.latitude"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.longitude"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.logo_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.banner_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.opening_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.closing_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.verified"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wineries.updated_at"
+          },
+          {
+            "$ref": "#/parameters/body.wineries"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wineries"
+        ]
+      }
+    },
+    "/wines": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wines.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.slug"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.wine_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.grape_variety"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.vintage"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.alcohol_percentage"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.body"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.sweetness"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.acidity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.tannin"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.serving_temperature"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.updated_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.food_pairings"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.taste_notes"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/wines"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "wines"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.wines"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "wines"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wines.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.slug"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.wine_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.grape_variety"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.vintage"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.alcohol_percentage"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.body"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.sweetness"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.acidity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.tannin"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.serving_temperature"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.updated_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.food_pairings"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.taste_notes"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wines"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wines.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.slug"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.wine_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.grape_variety"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.vintage"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.alcohol_percentage"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.body"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.sweetness"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.acidity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.tannin"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.serving_temperature"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.updated_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.food_pairings"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wines.taste_notes"
+          },
+          {
+            "$ref": "#/parameters/body.wines"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wines"
+        ]
+      }
+    },
+    "/Profile": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.Profile.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.fullName"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.role"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.createdAt"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Profile"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "Profile"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.Profile"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "Profile"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.Profile.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.fullName"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.role"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.createdAt"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "Profile"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.Profile.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.fullName"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.role"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.Profile.createdAt"
+          },
+          {
+            "$ref": "#/parameters/body.Profile"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "Profile"
+        ]
+      }
+    },
+    "/corporate_leads": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.company_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.contact_person"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.event_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.expected_guests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.updated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/corporate_leads"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "corporate_leads"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.corporate_leads"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "corporate_leads"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.company_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.contact_person"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.event_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.expected_guests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.updated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "corporate_leads"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.company_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.contact_person"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.email"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.phone"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.event_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.expected_guests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.message"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.corporate_leads.updated_at"
+          },
+          {
+            "$ref": "#/parameters/body.corporate_leads"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "corporate_leads"
+        ]
+      }
+    },
+    "/publish_queue": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.entity_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.entity_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.action"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.submitted_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.approved_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.approved_by"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/publish_queue"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "publish_queue"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.publish_queue"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "publish_queue"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.entity_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.entity_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.action"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.submitted_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.approved_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.approved_by"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "publish_queue"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.entity_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.entity_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.action"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.submitted_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.approved_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.publish_queue.approved_by"
+          },
+          {
+            "$ref": "#/parameters/body.publish_queue"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "publish_queue"
+        ]
+      }
+    },
+    "/analytics_daily": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.analytics_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.profile_views"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.wine_views"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.bookings"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.revenue"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/analytics_daily"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "analytics_daily"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.analytics_daily"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "analytics_daily"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.analytics_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.profile_views"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.wine_views"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.bookings"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.revenue"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "analytics_daily"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.analytics_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.profile_views"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.wine_views"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.bookings"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.revenue"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.analytics_daily.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.analytics_daily"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "analytics_daily"
+        ]
+      }
+    },
+    "/audit_logs": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.entity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.entity_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.action"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.actor_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.actor_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.old_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.new_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.ip_address"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/audit_logs"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "audit_logs"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.audit_logs"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "audit_logs"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.entity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.entity_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.action"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.actor_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.actor_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.old_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.new_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.ip_address"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "audit_logs"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.entity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.entity_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.action"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.actor_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.actor_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.old_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.new_value"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.ip_address"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.audit_logs.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.audit_logs"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "audit_logs"
+        ]
+      }
+    },
+    "/documents": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.documents.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.verification_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.remarks"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.uploaded_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.verified_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/documents"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.documents"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.documents.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.verification_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.remarks"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.uploaded_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.verified_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.documents.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.document_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.verification_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.remarks"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.uploaded_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.documents.verified_at"
+          },
+          {
+            "$ref": "#/parameters/body.documents"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/wishlist": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/wishlist"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "wishlist"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.wishlist"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "wishlist"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wishlist"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wishlist.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.wishlist"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wishlist"
+        ]
+      }
+    },
+    "/reviews": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.reviews.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.experience_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.event_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.rating"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.review"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.updated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/reviews"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "reviews"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.reviews"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "reviews"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.reviews.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.experience_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.event_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.rating"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.review"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.updated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "reviews"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.reviews.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.experience_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.event_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.rating"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.review"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.reviews.updated_at"
+          },
+          {
+            "$ref": "#/parameters/body.reviews"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "reviews"
+        ]
+      }
+    },
+    "/wine_images": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.image_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.public_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.display_order"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.is_primary"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/wine_images"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "wine_images"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.wine_images"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "wine_images"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.image_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.public_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.display_order"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.is_primary"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wine_images"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.image_url"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.public_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.display_order"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.is_primary"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_images.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.wine_images"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wine_images"
+        ]
+      }
+    },
+    "/events": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.events.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.event_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.start_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.end_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.capacity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.available_slots"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.banner_image"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.updated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/events"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "events"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.events"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "events"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.events.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.event_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.start_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.end_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.capacity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.available_slots"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.banner_image"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.updated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "events"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.events.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.event_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.start_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.end_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.capacity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.available_slots"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.banner_image"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.events.updated_at"
+          },
+          {
+            "$ref": "#/parameters/body.events"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "events"
+        ]
+      }
+    },
+    "/food_pairings": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.food_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.food_category"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.pairing_score"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.explanation"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/food_pairings"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "food_pairings"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.food_pairings"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "food_pairings"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.food_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.food_category"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.pairing_score"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.explanation"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "food_pairings"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.food_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.food_category"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.pairing_score"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.explanation"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.food_pairings.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.food_pairings"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "food_pairings"
+        ]
+      }
+    },
+    "/experiences": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.experiences.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.experience_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.duration_minutes"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.capacity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.cover_image"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.updated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/experiences"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "experiences"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.experiences"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "experiences"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.experiences.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.experience_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.duration_minutes"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.capacity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.cover_image"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.updated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "experiences"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.experiences.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.title"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.experience_type"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.duration_minutes"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.capacity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.cover_image"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.experiences.updated_at"
+          },
+          {
+            "$ref": "#/parameters/body.experiences"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "experiences"
+        ]
+      }
+    },
+    "/bookings": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.bookings.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.event_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.experience_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.guests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.total_amount"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.payment_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.special_requests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.updated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/bookings"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "bookings"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.bookings"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "bookings"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.bookings.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.event_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.experience_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.guests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.total_amount"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.payment_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.special_requests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.updated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "bookings"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.bookings.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.event_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.experience_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_date"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_time"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.guests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.total_amount"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.payment_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.booking_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.special_requests"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.bookings.updated_at"
+          },
+          {
+            "$ref": "#/parameters/body.bookings"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "bookings"
+        ]
+      }
+    },
+    "/wine_inventory": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.sku"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.stock_quantity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.featured"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.updated_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/wine_inventory"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "wine_inventory"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.wine_inventory"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "wine_inventory"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.sku"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.stock_quantity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.featured"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.updated_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wine_inventory"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.wine_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.sku"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.price"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.stock_quantity"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.featured"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.publish_status"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.created_at"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.wine_inventory.updated_at"
+          },
+          {
+            "$ref": "#/parameters/body.wine_inventory"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "wine_inventory"
+        ]
+      }
+    },
+    "/favorite_wineries": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.created_at"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/favorite_wineries"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "tags": [
+          "favorite_wineries"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.favorite_wineries"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "favorite_wineries"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.created_at"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "favorite_wineries"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.user_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.winery_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.favorite_wineries.created_at"
+          },
+          {
+            "$ref": "#/parameters/body.favorite_wineries"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "favorite_wineries"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "users": {
+      "required": [
+        "id",
+        "email"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "auth_id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "full_name": {
+          "format": "character varying",
+          "maxLength": 150,
+          "type": "string"
+        },
+        "email": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "phone": {
+          "format": "character varying",
+          "maxLength": 20,
+          "type": "string"
+        },
+        "avatar_url": {
+          "format": "text",
+          "type": "string"
+        },
+        "city": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "state": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "country": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "created_at": {
+          "default": "timezone('utc'::text, now())",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "timezone('utc'::text, now())",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "experience_level": {
+          "format": "text",
+          "type": "string"
+        },
+        "favorite_wine_types": {
+          "format": "text[]",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "primary_interest": {
+          "format": "text",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "wineries": {
+      "required": [
+        "id",
+        "name",
+        "slug"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "slug": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "description": {
+          "format": "text",
+          "type": "string"
+        },
+        "established_year": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "email": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "phone": {
+          "format": "character varying",
+          "maxLength": 20,
+          "type": "string"
+        },
+        "website": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "address": {
+          "format": "text",
+          "type": "string"
+        },
+        "city": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "state": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "country": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "latitude": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "longitude": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "logo_url": {
+          "format": "text",
+          "type": "string"
+        },
+        "banner_url": {
+          "format": "text",
+          "type": "string"
+        },
+        "opening_time": {
+          "format": "time without time zone",
+          "type": "string"
+        },
+        "closing_time": {
+          "format": "time without time zone",
+          "type": "string"
+        },
+        "verified": {
+          "default": false,
+          "format": "boolean",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "published",
+            "archived"
+          ],
+          "format": "public.winery_status",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "wines": {
+      "required": [
+        "id",
+        "winery_id",
+        "name",
+        "slug",
+        "wine_type",
+        "grape_variety"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "slug": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "wine_type": {
+          "enum": [
+            "Red",
+            "White",
+            "Rose",
+            "Sparkling",
+            "Dessert",
+            "Fortified"
+          ],
+          "format": "public.wine_type",
+          "type": "string"
+        },
+        "grape_variety": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "vintage": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "alcohol_percentage": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "body": {
+          "enum": [
+            "Light",
+            "Medium",
+            "Full"
+          ],
+          "format": "public.body_type",
+          "type": "string"
+        },
+        "sweetness": {
+          "enum": [
+            "Dry",
+            "Off Dry",
+            "Sweet"
+          ],
+          "format": "public.sweetness_type",
+          "type": "string"
+        },
+        "acidity": {
+          "enum": [
+            "Low",
+            "Medium",
+            "High"
+          ],
+          "format": "public.acidity_type",
+          "type": "string"
+        },
+        "tannin": {
+          "enum": [
+            "Low",
+            "Medium",
+            "High"
+          ],
+          "format": "public.tannin_type",
+          "type": "string"
+        },
+        "serving_temperature": {
+          "format": "character varying",
+          "maxLength": 50,
+          "type": "string"
+        },
+        "description": {
+          "format": "text",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "food_pairings": {
+          "format": "text",
+          "type": "string"
+        },
+        "taste_notes": {
+          "format": "text",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Profile": {
+      "required": [
+        "id",
+        "email",
+        "role",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "text",
+          "type": "string"
+        },
+        "email": {
+          "format": "text",
+          "type": "string"
+        },
+        "fullName": {
+          "format": "text",
+          "type": "string"
+        },
+        "role": {
+          "default": "USER",
+          "enum": [
+            "USER",
+            "WINERY",
+            "CORPORATE",
+            "ADMIN"
+          ],
+          "format": "public.\"Role\"",
+          "type": "string"
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "corporate_leads": {
+      "required": [
+        "id",
+        "winery_id"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "company_name": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "contact_person": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "email": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "phone": {
+          "format": "character varying",
+          "maxLength": 20,
+          "type": "string"
+        },
+        "event_type": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "expected_guests": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "message": {
+          "format": "text",
+          "type": "string"
+        },
+        "status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "approved",
+            "rejected"
+          ],
+          "format": "public.verification_status",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "publish_queue": {
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "entity_type": {
+          "format": "character varying",
+          "maxLength": 50,
+          "type": "string"
+        },
+        "entity_id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "action": {
+          "format": "character varying",
+          "maxLength": 30,
+          "type": "string"
+        },
+        "status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "published",
+            "archived"
+          ],
+          "format": "public.publish_status",
+          "type": "string"
+        },
+        "submitted_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "approved_at": {
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "approved_by": {
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "analytics_daily": {
+      "required": [
+        "id",
+        "winery_id",
+        "analytics_date"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "analytics_date": {
+          "format": "date",
+          "type": "string"
+        },
+        "profile_views": {
+          "default": 0,
+          "format": "int32",
+          "type": "integer"
+        },
+        "wine_views": {
+          "default": 0,
+          "format": "int32",
+          "type": "integer"
+        },
+        "bookings": {
+          "default": 0,
+          "format": "int32",
+          "type": "integer"
+        },
+        "revenue": {
+          "default": 0,
+          "format": "numeric",
+          "type": "number"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "audit_logs": {
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "entity": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "entity_id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "action": {
+          "format": "character varying",
+          "maxLength": 50,
+          "type": "string"
+        },
+        "actor_id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "actor_type": {
+          "format": "character varying",
+          "maxLength": 30,
+          "type": "string"
+        },
+        "old_value": {
+          "format": "jsonb"
+        },
+        "new_value": {
+          "format": "jsonb"
+        },
+        "ip_address": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "documents": {
+      "required": [
+        "id",
+        "winery_id",
+        "document_type",
+        "document_url"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "document_name": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "document_type": {
+          "enum": [
+            "GST",
+            "FSSAI",
+            "PAN",
+            "Trade License",
+            "Wine License",
+            "Business Registration",
+            "Other"
+          ],
+          "format": "public.document_type",
+          "type": "string"
+        },
+        "document_url": {
+          "format": "text",
+          "type": "string"
+        },
+        "verification_status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "approved",
+            "rejected"
+          ],
+          "format": "public.verification_status",
+          "type": "string"
+        },
+        "remarks": {
+          "format": "text",
+          "type": "string"
+        },
+        "uploaded_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "verified_at": {
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "wishlist": {
+      "required": [
+        "user_id",
+        "wine_id"
+      ],
+      "properties": {
+        "user_id": {
+          "description": "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `users.id`.<fk table='users' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "wine_id": {
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "timezone('utc'::text, now())",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "reviews": {
+      "required": [
+        "id",
+        "user_id",
+        "winery_id",
+        "rating"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "Note:\nThis is a Foreign Key to `users.id`.<fk table='users' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "wine_id": {
+          "description": "Note:\nThis is a Foreign Key to `wines.id`.<fk table='wines' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "experience_id": {
+          "description": "Note:\nThis is a Foreign Key to `experiences.id`.<fk table='experiences' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "event_id": {
+          "description": "Note:\nThis is a Foreign Key to `events.id`.<fk table='events' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "rating": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "review": {
+          "format": "text",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "wine_images": {
+      "required": [
+        "id",
+        "wine_id",
+        "image_url",
+        "public_id"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "wine_id": {
+          "description": "Note:\nThis is a Foreign Key to `wines.id`.<fk table='wines' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "image_url": {
+          "format": "text",
+          "type": "string"
+        },
+        "public_id": {
+          "format": "text",
+          "type": "string"
+        },
+        "display_order": {
+          "default": 1,
+          "format": "int32",
+          "type": "integer"
+        },
+        "is_primary": {
+          "default": false,
+          "format": "boolean",
+          "type": "boolean"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "events": {
+      "required": [
+        "id",
+        "winery_id",
+        "title",
+        "event_date"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "title": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "description": {
+          "format": "text",
+          "type": "string"
+        },
+        "event_date": {
+          "format": "date",
+          "type": "string"
+        },
+        "start_time": {
+          "format": "time without time zone",
+          "type": "string"
+        },
+        "end_time": {
+          "format": "time without time zone",
+          "type": "string"
+        },
+        "capacity": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "available_slots": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "price": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "banner_image": {
+          "format": "text",
+          "type": "string"
+        },
+        "publish_status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "published",
+            "archived"
+          ],
+          "format": "public.publish_status",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "food_pairings": {
+      "required": [
+        "id",
+        "wine_id",
+        "food_name"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "wine_id": {
+          "description": "Note:\nThis is a Foreign Key to `wines.id`.<fk table='wines' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "food_name": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "food_category": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "pairing_score": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "explanation": {
+          "format": "text",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "experiences": {
+      "required": [
+        "id",
+        "winery_id",
+        "title",
+        "capacity",
+        "price"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "title": {
+          "format": "character varying",
+          "maxLength": 255,
+          "type": "string"
+        },
+        "description": {
+          "format": "text",
+          "type": "string"
+        },
+        "experience_type": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "duration_minutes": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "capacity": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "price": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "cover_image": {
+          "format": "text",
+          "type": "string"
+        },
+        "publish_status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "published",
+            "archived"
+          ],
+          "format": "public.publish_status",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "bookings": {
+      "required": [
+        "id",
+        "user_id",
+        "winery_id",
+        "booking_date"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "user_id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Foreign Key to `wineries.id`.<fk table='wineries' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "event_id": {
+          "description": "Note:\nThis is a Foreign Key to `events.id`.<fk table='events' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "experience_id": {
+          "description": "Note:\nThis is a Foreign Key to `experiences.id`.<fk table='experiences' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "booking_date": {
+          "format": "date",
+          "type": "string"
+        },
+        "booking_time": {
+          "format": "time without time zone",
+          "type": "string"
+        },
+        "guests": {
+          "default": 1,
+          "format": "int32",
+          "type": "integer"
+        },
+        "total_amount": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "payment_status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "paid",
+            "failed",
+            "refunded"
+          ],
+          "format": "public.payment_status",
+          "type": "string"
+        },
+        "booking_status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "confirmed",
+            "cancelled",
+            "completed"
+          ],
+          "format": "public.booking_status",
+          "type": "string"
+        },
+        "special_requests": {
+          "format": "text",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "wine_inventory": {
+      "required": [
+        "id",
+        "wine_id",
+        "price"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "wine_id": {
+          "description": "Note:\nThis is a Foreign Key to `wines.id`.<fk table='wines' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "sku": {
+          "format": "character varying",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "price": {
+          "format": "numeric",
+          "type": "number"
+        },
+        "stock_quantity": {
+          "default": 0,
+          "format": "int32",
+          "type": "integer"
+        },
+        "featured": {
+          "default": false,
+          "format": "boolean",
+          "type": "boolean"
+        },
+        "publish_status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "published",
+            "archived"
+          ],
+          "format": "public.publish_status",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp without time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "favorite_wineries": {
+      "required": [
+        "user_id",
+        "winery_id"
+      ],
+      "properties": {
+        "user_id": {
+          "description": "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `users.id`.<fk table='users' column='id'/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "winery_id": {
+          "description": "Note:\nThis is a Primary Key.<pk/>",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "timezone('utc'::text, now())",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "parameters": {
+    "preferParams": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "in": "header",
+      "type": "string"
+    },
+    "preferReturn": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "return=representation",
+        "return=minimal",
+        "return=none"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "preferCount": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "count=none"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "preferPost": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "return=representation",
+        "return=minimal",
+        "return=none",
+        "resolution=ignore-duplicates",
+        "resolution=merge-duplicates"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "select": {
+      "name": "select",
+      "description": "Filtering Columns",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "on_conflict": {
+      "name": "on_conflict",
+      "description": "On Conflict",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "order": {
+      "name": "order",
+      "description": "Ordering",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "range": {
+      "name": "Range",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "header",
+      "type": "string"
+    },
+    "rangeUnit": {
+      "name": "Range-Unit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "default": "items",
+      "in": "header",
+      "type": "string"
+    },
+    "offset": {
+      "name": "offset",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "limit": {
+      "name": "limit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.users": {
+      "name": "users",
+      "description": "users",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/users"
+      }
+    },
+    "rowFilter.users.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.auth_id": {
+      "name": "auth_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.full_name": {
+      "name": "full_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.email": {
+      "name": "email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.phone": {
+      "name": "phone",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.avatar_url": {
+      "name": "avatar_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.city": {
+      "name": "city",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.state": {
+      "name": "state",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.country": {
+      "name": "country",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.experience_level": {
+      "name": "experience_level",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.favorite_wine_types": {
+      "name": "favorite_wine_types",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.users.primary_interest": {
+      "name": "primary_interest",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.wineries": {
+      "name": "wineries",
+      "description": "wineries",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/wineries"
+      }
+    },
+    "rowFilter.wineries.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.slug": {
+      "name": "slug",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.established_year": {
+      "name": "established_year",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.email": {
+      "name": "email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.phone": {
+      "name": "phone",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.website": {
+      "name": "website",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.address": {
+      "name": "address",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.city": {
+      "name": "city",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.state": {
+      "name": "state",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.country": {
+      "name": "country",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.latitude": {
+      "name": "latitude",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.longitude": {
+      "name": "longitude",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.logo_url": {
+      "name": "logo_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.banner_url": {
+      "name": "banner_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.opening_time": {
+      "name": "opening_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.closing_time": {
+      "name": "closing_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.verified": {
+      "name": "verified",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wineries.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.wines": {
+      "name": "wines",
+      "description": "wines",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/wines"
+      }
+    },
+    "rowFilter.wines.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.slug": {
+      "name": "slug",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.wine_type": {
+      "name": "wine_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.grape_variety": {
+      "name": "grape_variety",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.vintage": {
+      "name": "vintage",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.alcohol_percentage": {
+      "name": "alcohol_percentage",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.body": {
+      "name": "body",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.sweetness": {
+      "name": "sweetness",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.acidity": {
+      "name": "acidity",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.tannin": {
+      "name": "tannin",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.serving_temperature": {
+      "name": "serving_temperature",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.food_pairings": {
+      "name": "food_pairings",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wines.taste_notes": {
+      "name": "taste_notes",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.Profile": {
+      "name": "Profile",
+      "description": "Profile",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/Profile"
+      }
+    },
+    "rowFilter.Profile.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.Profile.email": {
+      "name": "email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.Profile.fullName": {
+      "name": "fullName",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.Profile.role": {
+      "name": "role",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.Profile.createdAt": {
+      "name": "createdAt",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.corporate_leads": {
+      "name": "corporate_leads",
+      "description": "corporate_leads",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/corporate_leads"
+      }
+    },
+    "rowFilter.corporate_leads.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.company_name": {
+      "name": "company_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.contact_person": {
+      "name": "contact_person",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.email": {
+      "name": "email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.phone": {
+      "name": "phone",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.event_type": {
+      "name": "event_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.expected_guests": {
+      "name": "expected_guests",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.message": {
+      "name": "message",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.corporate_leads.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.publish_queue": {
+      "name": "publish_queue",
+      "description": "publish_queue",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/publish_queue"
+      }
+    },
+    "rowFilter.publish_queue.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.publish_queue.entity_type": {
+      "name": "entity_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.publish_queue.entity_id": {
+      "name": "entity_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.publish_queue.action": {
+      "name": "action",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.publish_queue.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.publish_queue.submitted_at": {
+      "name": "submitted_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.publish_queue.approved_at": {
+      "name": "approved_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.publish_queue.approved_by": {
+      "name": "approved_by",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.analytics_daily": {
+      "name": "analytics_daily",
+      "description": "analytics_daily",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/analytics_daily"
+      }
+    },
+    "rowFilter.analytics_daily.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.analytics_daily.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.analytics_daily.analytics_date": {
+      "name": "analytics_date",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.analytics_daily.profile_views": {
+      "name": "profile_views",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.analytics_daily.wine_views": {
+      "name": "wine_views",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.analytics_daily.bookings": {
+      "name": "bookings",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.analytics_daily.revenue": {
+      "name": "revenue",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.analytics_daily.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.audit_logs": {
+      "name": "audit_logs",
+      "description": "audit_logs",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/audit_logs"
+      }
+    },
+    "rowFilter.audit_logs.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.entity": {
+      "name": "entity",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.entity_id": {
+      "name": "entity_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.action": {
+      "name": "action",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.actor_id": {
+      "name": "actor_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.actor_type": {
+      "name": "actor_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.old_value": {
+      "name": "old_value",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.new_value": {
+      "name": "new_value",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.ip_address": {
+      "name": "ip_address",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.audit_logs.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.documents": {
+      "name": "documents",
+      "description": "documents",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/documents"
+      }
+    },
+    "rowFilter.documents.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.document_name": {
+      "name": "document_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.document_type": {
+      "name": "document_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.document_url": {
+      "name": "document_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.verification_status": {
+      "name": "verification_status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.remarks": {
+      "name": "remarks",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.uploaded_at": {
+      "name": "uploaded_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.documents.verified_at": {
+      "name": "verified_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.wishlist": {
+      "name": "wishlist",
+      "description": "wishlist",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/wishlist"
+      }
+    },
+    "rowFilter.wishlist.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wishlist.wine_id": {
+      "name": "wine_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wishlist.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.reviews": {
+      "name": "reviews",
+      "description": "reviews",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/reviews"
+      }
+    },
+    "rowFilter.reviews.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.wine_id": {
+      "name": "wine_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.experience_id": {
+      "name": "experience_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.event_id": {
+      "name": "event_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.rating": {
+      "name": "rating",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.review": {
+      "name": "review",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reviews.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.wine_images": {
+      "name": "wine_images",
+      "description": "wine_images",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/wine_images"
+      }
+    },
+    "rowFilter.wine_images.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_images.wine_id": {
+      "name": "wine_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_images.image_url": {
+      "name": "image_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_images.public_id": {
+      "name": "public_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_images.display_order": {
+      "name": "display_order",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_images.is_primary": {
+      "name": "is_primary",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_images.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.events": {
+      "name": "events",
+      "description": "events",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/events"
+      }
+    },
+    "rowFilter.events.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.title": {
+      "name": "title",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.event_date": {
+      "name": "event_date",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.start_time": {
+      "name": "start_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.end_time": {
+      "name": "end_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.capacity": {
+      "name": "capacity",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.available_slots": {
+      "name": "available_slots",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.price": {
+      "name": "price",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.banner_image": {
+      "name": "banner_image",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.publish_status": {
+      "name": "publish_status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.events.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.food_pairings": {
+      "name": "food_pairings",
+      "description": "food_pairings",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/food_pairings"
+      }
+    },
+    "rowFilter.food_pairings.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.food_pairings.wine_id": {
+      "name": "wine_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.food_pairings.food_name": {
+      "name": "food_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.food_pairings.food_category": {
+      "name": "food_category",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.food_pairings.pairing_score": {
+      "name": "pairing_score",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.food_pairings.explanation": {
+      "name": "explanation",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.food_pairings.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.experiences": {
+      "name": "experiences",
+      "description": "experiences",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/experiences"
+      }
+    },
+    "rowFilter.experiences.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.title": {
+      "name": "title",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.experience_type": {
+      "name": "experience_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.duration_minutes": {
+      "name": "duration_minutes",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.capacity": {
+      "name": "capacity",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.price": {
+      "name": "price",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.cover_image": {
+      "name": "cover_image",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.publish_status": {
+      "name": "publish_status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.experiences.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.bookings": {
+      "name": "bookings",
+      "description": "bookings",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/bookings"
+      }
+    },
+    "rowFilter.bookings.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.event_id": {
+      "name": "event_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.experience_id": {
+      "name": "experience_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.booking_date": {
+      "name": "booking_date",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.booking_time": {
+      "name": "booking_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.guests": {
+      "name": "guests",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.total_amount": {
+      "name": "total_amount",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.payment_status": {
+      "name": "payment_status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.booking_status": {
+      "name": "booking_status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.special_requests": {
+      "name": "special_requests",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.wine_inventory": {
+      "name": "wine_inventory",
+      "description": "wine_inventory",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/wine_inventory"
+      }
+    },
+    "rowFilter.wine_inventory.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.wine_id": {
+      "name": "wine_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.sku": {
+      "name": "sku",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.price": {
+      "name": "price",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.stock_quantity": {
+      "name": "stock_quantity",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.featured": {
+      "name": "featured",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.publish_status": {
+      "name": "publish_status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.wine_inventory.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.favorite_wineries": {
+      "name": "favorite_wineries",
+      "description": "favorite_wineries",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/favorite_wineries"
+      }
+    },
+    "rowFilter.favorite_wineries.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.favorite_wineries.winery_id": {
+      "name": "winery_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.favorite_wineries.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    }
+  },
+  "externalDocs": {
+    "description": "PostgREST Documentation",
+    "url": "https://postgrest.org/en/v14/references/api.html"
+  }
+}
