@@ -11,7 +11,6 @@ import { useWishlist } from '@/context/WishlistContext'
 
 export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
     const { wishlistCount } = useWishlist()
-    const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isDiscoverOpen, setIsDiscoverOpen] = useState(false)
     const [isMobileDiscoverOpen, setIsMobileDiscoverOpen] = useState(true)
@@ -20,20 +19,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
     const triggerRef = useRef<HTMLButtonElement>(null)
 
     const pathname = usePathname()
-    if (pathname && pathname.startsWith('/admin')) {
-        return null
-    }
-
-    const isHome = pathname === '/'
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 30)
-        }
-
-        window.addEventListener('scroll', handleScroll, { passive: true })
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+    const isAdminPath = pathname && pathname.startsWith('/admin')
 
     // Close dropdown on outside click
     useEffect(() => {
@@ -71,54 +57,32 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
         setIsMobileMenuOpen(false)
     }, [pathname])
 
-    // Home page before scroll has transparent header over dark hero
-    const isTransparent = isHome && !isScrolled
+    if (isAdminPath) {
+        return null
+    }
 
-    // Navigation Text Colors
-    const navText = isTransparent
-        ? 'text-white/90 hover:text-vino-gold'
-        : 'text-stone-700 hover:text-vino-accent'
-
-    const iconColor = isTransparent
-        ? 'text-white/90 hover:text-vino-gold'
-        : 'text-stone-700 hover:text-vino-accent'
-
-    const logoText = isTransparent
-        ? 'text-white'
-        : 'text-vino-darker'
+    // Navigation Text & Icon Colors (Navbar is clean white to match logo background)
+    const navText = 'text-stone-700 hover:text-vino-accent'
+    const iconColor = 'text-stone-700 hover:text-vino-accent'
 
     return (
         <motion.header
             initial={{ y: 0 }}
             animate={{ y: 0 }}
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-                isTransparent
-                    ? 'bg-transparent py-2'
-                    : 'bg-white/92 backdrop-blur-md shadow-[0_1px_16px_rgba(44,24,16,0.06)] border-b border-[#EDE5D8]/80 py-0'
-            }`}
+            className="fixed top-0 left-0 w-full z-50 bg-white border-b border-[#ECECEC] shadow-[0_2px_12px_rgba(0,0,0,0.04)]"
         >
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-20">
+                <div className="flex items-center justify-between h-14 sm:h-[58px]">
                     {/* Logo */}
                     <Link
                         href="/"
-                        className="flex items-center gap-3 hover:opacity-95 transition-opacity group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-gold rounded-lg p-1"
+                        className="flex items-center gap-3 hover:opacity-95 transition-opacity group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent rounded-lg py-1"
                     >
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-vino-gold via-[#A8304F] to-vino-accent flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
-                            <span className="text-white font-serif font-bold text-lg tracking-wider">
-                                V
-                            </span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span
-                                className={`hidden sm:block font-serif text-2xl font-bold tracking-tight transition-colors ${logoText}`}
-                            >
-                                VinoSphere
-                            </span>
-                            <span className={`hidden sm:block text-[9px] uppercase tracking-[0.2em] font-semibold transition-colors ${isTransparent ? 'text-vino-gold-light/80' : 'text-[#8B6E5A]'}`}>
-                                Fine Wine Concierge
-                            </span>
-                        </div>
+                        <img
+                            src="/vinosphere-logo.png"
+                            alt="VinoSphere Logo"
+                            className="h-10 sm:h-[42px] w-auto object-contain transition-transform group-hover:scale-105"
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -142,7 +106,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                                             onClick={() => setIsDiscoverOpen((prev) => !prev)}
                                             className={`relative inline-flex items-center gap-1.5 text-sm font-semibold tracking-wide transition-colors duration-200 py-1 ${
                                                 isChildActive || isDiscoverOpen
-                                                    ? (isTransparent ? 'text-vino-gold font-bold' : 'text-vino-accent font-bold')
+                                                    ? 'text-vino-accent font-bold'
                                                     : navText
                                             } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent rounded-sm`}
                                         >
@@ -156,7 +120,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                                             {isChildActive && (
                                                 <motion.div
                                                     layoutId="activeNavIndicator"
-                                                    className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full ${isTransparent ? 'bg-vino-gold' : 'bg-vino-accent'}`}
+                                                    className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-vino-accent"
                                                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                                                 />
                                             )}
@@ -230,7 +194,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                                     href={item.href || '/'}
                                     className={`relative text-sm font-semibold tracking-wide transition-colors duration-200 py-1 ${
                                         isActive 
-                                            ? (isTransparent ? 'text-vino-gold font-bold' : 'text-vino-accent font-bold') 
+                                            ? 'text-vino-accent font-bold' 
                                             : navText
                                     } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent rounded-sm`}
                                 >
@@ -238,7 +202,7 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                                     {isActive && (
                                         <motion.div
                                             layoutId="activeNavIndicator"
-                                            className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full ${isTransparent ? 'bg-vino-gold' : 'bg-vino-accent'}`}
+                                            className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-vino-accent"
                                             transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                                         />
                                     )}
@@ -271,30 +235,22 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                             )}
                         </Link>
 
-                        <div className={`h-5 w-px ${isTransparent ? 'bg-white/20' : 'bg-[#EDE5D8]'}`} />
+                        <div className="h-5 w-px bg-[#ECECEC]" />
 
                         {user ? (
                             <Link 
                                 href="/profile" 
-                                className={`flex items-center gap-2.5 px-3 py-1.5 rounded-full border transition-all duration-200 ${
-                                    isTransparent 
-                                        ? 'border-white/20 hover:bg-white/10 text-white' 
-                                        : 'border-[#EDE5D8] hover:border-vino-accent/40 bg-[#FAF7F2] text-stone-800'
-                                } text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent`}
+                                className="flex items-center gap-2.5 px-3 py-1 rounded-full border border-[#ECECEC] hover:border-vino-accent/40 bg-[#FAF7F2] text-stone-800 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent transition-all duration-200"
                             >
-                                <div className="w-6 h-6 rounded-full bg-vino-accent/15 flex items-center justify-center border border-vino-accent/30 text-vino-accent">
-                                    <User size={13} />
+                                <div className="w-5 h-5 rounded-full bg-vino-accent/15 flex items-center justify-center border border-vino-accent/30 text-vino-accent">
+                                    <User size={12} />
                                 </div>
                                 <span className="max-w-[100px] truncate">{user.email?.split('@')[0] || 'My Account'}</span>
                             </Link>
                         ) : (
                             <Link 
                                 href="/welcome" 
-                                className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                                    isTransparent
-                                        ? 'bg-vino-gold hover:bg-vino-gold-light text-vino-darker shadow-sm'
-                                        : 'bg-vino-accent hover:bg-vino-accent-light text-white shadow-sm'
-                                } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-vino-accent active:scale-95`}
+                                className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-vino-accent hover:bg-vino-accent-light text-white shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-vino-accent active:scale-95 transition-all duration-200"
                             >
                                 Sign In
                             </Link>
@@ -322,6 +278,16 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
                         className="lg:hidden bg-white rounded-2xl mt-2 shadow-xl border border-[#EDE5D8] overflow-hidden"
                     >
                         <div className="py-3 px-3 space-y-1">
+                            <div className="px-3 py-2 pb-3 mb-2 border-b border-[#F2ECE1] flex items-center justify-between">
+                                <img
+                                    src="/vinosphere-logo.png"
+                                    alt="VinoSphere"
+                                    className="h-10 w-auto object-contain"
+                                />
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-[#8B6E5A] font-mono">
+                                    Concierge
+                                </span>
+                            </div>
                             {NAVIGATION_ITEMS.map((item) => {
                                 if (item.items) {
                                     return (
@@ -425,4 +391,4 @@ export const Navbar: React.FC<{ user?: any }> = ({ user }) => {
             </nav>
         </motion.header>
     )
-}
+}

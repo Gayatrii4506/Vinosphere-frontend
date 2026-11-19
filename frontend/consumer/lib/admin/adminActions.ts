@@ -1,4 +1,4 @@
-﻿'use server'
+'use server'
 
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
@@ -48,7 +48,7 @@ export async function updateWineryStatus(wineryId: string, status: 'approved' | 
   // 2. Also ensure Supabase state is updated directly
   try {
     const supabaseAdmin = await getAdminClient();
-    const dbStatus = status === 'approved' ? 'published' : status;
+    const dbStatus = status === 'approved' ? 'published' : (status === 'rejected' ? 'archived' : 'draft');
     const { error } = await supabaseAdmin
       .from('wineries')
       .update({ status: dbStatus, verified: status === 'approved' })

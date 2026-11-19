@@ -1,12 +1,65 @@
 import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { WineEventsCatalog } from '@/components/events/WineEventsCatalog'
-import { VinoSphereExperience } from '@/constants/events'
+import { VinoSphereExperience, EXPERIENCES } from '@/constants/events'
 import { API_V1_URL } from '@/lib/api-config'
 
 export const metadata: Metadata = {
     title: 'Estate Journeys & Wine Masterclasses | VinoSphere',
     description: 'Discover and book exclusive grape harvest festivals, sommelier masterclasses, vineyard tours, and chef pairing dinners with VinoSphere.',
+}
+
+function getEventImage(item: any): string {
+    // 1. Direct cover_image or banner_image from the event record
+    const directImage = item.cover_image || item.banner_image || item.image
+    if (directImage && !directImage.includes('photo-1506377247377-2a5b3b417ebb')) {
+        return directImage
+    }
+
+    // 2. Direct gallery images from the event
+    const galleryFirst = (item.gallery_images && item.gallery_images.length > 0) ? item.gallery_images[0] : null
+    if (galleryFirst && !galleryFirst.includes('photo-1506377247377-2a5b3b417ebb')) {
+        return galleryFirst
+    }
+
+    // 3. Match from the official curated EXPERIENCES list in events.ts
+    const matchingExp = EXPERIENCES.find(e => 
+        e.id === item.id || 
+        e.title.toLowerCase().trim() === String(item.title || '').toLowerCase().trim() ||
+        String(item.title || '').toLowerCase().includes(e.title.toLowerCase().slice(0, 15))
+    )
+    if (matchingExp && matchingExp.image) {
+        return matchingExp.image
+    }
+
+    // 4. Deterministic match by event title
+    const titleLower = String(item.title || '').toLowerCase()
+    if (titleLower.includes('vip barrel') || titleLower.includes('barrel tasting')) {
+        return 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80'
+    }
+    if (titleLower.includes('sunset jazz') || titleLower.includes('pinot evening')) {
+        return 'https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1200&q=80'
+    }
+    if (titleLower.includes('sulafest') || titleLower.includes('music festival')) {
+        return 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784629410/sula_fest_tvurpq.png'
+    }
+    if (titleLower.includes('harvest') || titleLower.includes('stomping')) {
+        return 'https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=1200&q=80'
+    }
+    if (titleLower.includes('sunset acoustic') || titleLower.includes('lounge')) {
+        return 'https://images.unsplash.com/photo-1507034589631-9433cc6bc453?auto=format&fit=crop&w=1200&q=80'
+    }
+    if (titleLower.includes('cheese') || titleLower.includes('pairing')) {
+        return 'https://images.unsplash.com/photo-1505253758473-96b3015f21c9?auto=format&fit=crop&w=1200&q=80'
+    }
+    if (titleLower.includes('cellar') || titleLower.includes('masterclass')) {
+        return 'https://images.unsplash.com/photo-1558001373-7b93ee48ffa0?auto=format&fit=crop&w=1200&q=80'
+    }
+    if (titleLower.includes('tour') || titleLower.includes('walk') || titleLower.includes('picnic')) {
+        return 'https://images.unsplash.com/photo-1543418219-44e2bf85a630?auto=format&fit=crop&w=1200&q=80'
+    }
+
+    return directImage || 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80'
 }
 
 async function getExperiences(): Promise<VinoSphereExperience[]> {
@@ -23,14 +76,17 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
         const data = await res.json();
         
         if (data.status === 'success' && data.data) {
-            return data.data.map((item: any): VinoSphereExperience => {
+            return data.data.map((item: any, index: number): VinoSphereExperience => {
                 const wineryObj = item.winery || {};
                 const locationStr = [wineryObj.city, wineryObj.state].filter(Boolean).join(', ');
                 
+                // Take authentic image directly from event record
+                const resolvedCover = getEventImage(item);
+
                 // Construct gallery
                 const gallery = item.gallery_images || [];
-                if (item.cover_image && !gallery.includes(item.cover_image)) {
-                    gallery.unshift(item.cover_image);
+                if (resolvedCover && !gallery.includes(resolvedCover)) {
+                    gallery.unshift(resolvedCover);
                 }
 
                 // Map included strings to IncludedItem format expected by the frontend
@@ -176,7 +232,7 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
                     tagline: item.short_description || item.description?.substring(0, 70) || 'An unforgettable experience',
                     category,
                     badge,
-                    image: item.cover_image || 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb',
+                    image: resolvedCover,
                     gallery,
                     winery: wineryObj.name || 'VinoSphere Partner',
                     location: locationStr || 'Nashik Valley, India',
@@ -233,7 +289,7 @@ async function getExperiences(): Promise<VinoSphereExperience[]> {
 
 export default async function EventsPage() {
     const fetchedExperiences = await getExperiences();
-    const experiencesToDisplay = fetchedExperiences;
+    const experiencesToDisplay = fetchedExperiences.length > 0 ? fetchedExperiences : EXPERIENCES;
 
     return (
         <Suspense

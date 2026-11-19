@@ -54,6 +54,11 @@ export const WineCard: React.FC<WineCardProps> = ({ wine, onSelect }) => {
         >
             {/* Wine Bottle Image Stage */}
             <div className="relative w-full h-44 sm:h-52 mb-3 flex items-center justify-center overflow-hidden rounded-xl bg-[#FAF8F5] border border-[#F2ECE1]/60">
+                {(wine as any).recommendationBadge && (
+                    <div className="absolute top-2 left-2 z-10 max-w-[85%] truncate px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide bg-white/95 backdrop-blur-md text-[#8B1E3F] border border-[#8B1E3F]/20 shadow-xs">
+                        {(wine as any).recommendationBadge}
+                    </div>
+                )}
                 <img
                     src={displayImg}
                     alt={name}

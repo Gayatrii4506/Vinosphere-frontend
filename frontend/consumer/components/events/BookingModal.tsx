@@ -26,6 +26,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const [isBookingInProgress, setIsBookingInProgress] = useState<boolean>(false)
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
+    React.useEffect(() => {
+        if (!experience) return
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose()
+        }
+        document.body.style.overflow = 'hidden'
+        window.addEventListener('keydown', handleKeyDown)
+        return () => {
+            document.body.style.overflow = 'unset'
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [experience, onClose])
+
     if (!experience) return null
 
     const subtotal = experience.price * guests

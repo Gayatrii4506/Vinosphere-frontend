@@ -17,6 +17,7 @@ import {
 
 interface WineCatalogProps {
     initialWines: Wine[]
+    hideHeaderBanner?: boolean
 }
 
 interface UserPreferencesState {
@@ -36,7 +37,7 @@ interface UserPreferencesState {
     budget_max?: number | null
 }
 
-export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [] }) => {
+export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [], hideHeaderBanner = false }) => {
     const searchParams = useSearchParams()
     const typeParam = searchParams ? searchParams.get('type') : null
     const modeParam = searchParams ? searchParams.get('mode') : null
@@ -657,45 +658,47 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [] }) =
     }, [initialWines, filters, sortBy, hasPreferences, userPreferences, behavioralWeights, isPersonalizationInsufficient])
 
     return (
-        <section className="bg-[#F8F5EF] min-h-screen pt-20 sm:pt-24 pb-16">
+        <section className={`bg-[#F8F5EF] min-h-screen ${hideHeaderBanner ? 'pt-6 pb-16' : 'pt-20 sm:pt-24 pb-16'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Wine Catalog Header Banner Box */}
-                <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-[#3d0b1d] via-[#63142e] to-[#290613] py-4 px-6 sm:px-8 mb-6 shadow-md border border-[#8B1E3F]/40 flex items-center justify-between gap-4">
-                    <div
-                        aria-hidden="true"
-                        className="absolute inset-0 opacity-[0.45] bg-cover bg-center pointer-events-none mix-blend-overlay"
-                        style={{
-                            backgroundImage: 'url(/images/catalog_wine_bg.png)',
-                        }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30 pointer-events-none" />
+                {!hideHeaderBanner && (
+                    <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-[#3d0b1d] via-[#63142e] to-[#290613] py-4 px-6 sm:px-8 mb-6 shadow-md border border-[#8B1E3F]/40 flex items-center justify-between gap-4">
+                        <div
+                            aria-hidden="true"
+                            className="absolute inset-0 opacity-[0.45] bg-cover bg-center pointer-events-none mix-blend-overlay"
+                            style={{
+                                backgroundImage: 'url(/images/catalog_wine_bg.png)',
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30 pointer-events-none" />
 
-                    <div className="relative z-10 flex items-center gap-4 sm:gap-6">
-                        <h1 className="font-serif text-xl sm:text-2xl lg:text-3xl text-white font-bold tracking-tight">
-                            Wine Catalog
-                        </h1>
-                        <div className="hidden sm:block w-px h-5 bg-white/25" />
-                        <p className="hidden md:block text-amber-100/80 text-xs font-light">
-                            Explore rare vintages, artisanal cellars, and recommendation-curated estate reserves.
-                        </p>
-                    </div>
+                        <div className="relative z-10 flex items-center gap-4 sm:gap-6">
+                            <h1 className="font-serif text-xl sm:text-2xl lg:text-3xl text-white font-bold tracking-tight">
+                                Wine Catalog
+                            </h1>
+                            <div className="hidden sm:block w-px h-5 bg-white/25" />
+                            <p className="hidden md:block text-amber-100/80 text-xs font-light">
+                                Explore rare vintages, artisanal cellars, and recommendation-curated estate reserves.
+                            </p>
+                        </div>
 
-                    <div className="relative z-10 flex items-center gap-3 text-xs text-white/80 shrink-0">
-                        {isMounted && (
-                            hasPreferences && !isPersonalizationInsufficient ? (
-                                <Link href="/profile" className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 rounded-full hover:bg-amber-500/30 transition-all font-semibold">
-                                    <Sparkles size={12} />
-                                    Taste Profile Active
-                                </Link>
-                            ) : (
-                                <Link href="/onboarding?mode=edit" className="flex items-center gap-1.5 px-3 py-1 bg-vino-accent text-white rounded-full hover:bg-vino-accent-light transition-all font-semibold shadow-sm">
-                                    <Sparkles size={12} className="text-amber-300" />
-                                    Take Taste Quiz
-                                </Link>
-                            )
-                        )}
+                        <div className="relative z-10 flex items-center gap-3 text-xs text-white/80 shrink-0">
+                            {isMounted && (
+                                hasPreferences && !isPersonalizationInsufficient ? (
+                                    <Link href="/profile" className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border border-amber-400/40 text-amber-300 rounded-full hover:bg-amber-500/30 transition-all font-semibold">
+                                        <Sparkles size={12} />
+                                        Taste Profile Active
+                                    </Link>
+                                ) : (
+                                    <Link href="/onboarding?mode=edit" className="flex items-center gap-1.5 px-3 py-1 bg-vino-accent text-white rounded-full hover:bg-vino-accent-light transition-all font-semibold shadow-sm">
+                                        <Sparkles size={12} className="text-amber-300" />
+                                        Take Taste Quiz
+                                    </Link>
+                                )
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Edge Case 1 & 3 & 4 Notice: Insufficient Data Alert Banner */}
                 {isMounted && isPersonalizationInsufficient && sortBy === 'Recommended' && !dismissedInsufficientNotice && (

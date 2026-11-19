@@ -40,7 +40,14 @@ export default function WelcomePage() {
                 </div>
 
                 <div className="max-w-md w-full mx-auto">
-                    <div className="mb-10 text-center lg:text-left mt-8 lg:mt-0">
+                    <div className="mb-8 text-center lg:text-left mt-8 lg:mt-0">
+                        <div className="inline-block p-2.5 rounded-2xl bg-white/95 shadow-lg mb-4">
+                            <img
+                                src="/vinosphere-logo.png"
+                                alt="VinoSphere"
+                                className="h-14 w-auto object-contain"
+                            />
+                        </div>
                         <h1 className="text-3xl sm:text-4xl font-serif text-white mb-3">
                             Welcome to VinoSphere
                         </h1>
@@ -54,7 +61,7 @@ export default function WelcomePage() {
                     </Suspense>
                     
                     <p className="mt-8 text-center text-xs text-vino-gray/50 max-w-sm mx-auto lg:mx-0">
-                        By continuing, you agree to VinoSphere's Terms of Service and Privacy Policy.
+                        By continuing, you agree to VinoSphere&apos;s Terms of Service and Privacy Policy.
                     </p>
                 </div>
             </div>

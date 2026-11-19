@@ -582,7 +582,7 @@ export const FoodPairingRecommender: React.FC = () => {
                             <Wine size={28} className="text-vino-gold mx-auto mb-2 opacity-80" />
                             <h4 className="font-serif font-bold text-base text-vino-darker">No Exact Flavor Matches Found</h4>
                             <p className="text-stone-500 text-xs mt-1 max-w-xs mx-auto">
-                                Try searching for another popular dish (e.g. "Butter Chicken", "Grilled Salmon") or a varietal ("Shiraz", "Sauvignon Blanc").
+                                Try searching for another popular dish (e.g. &quot;Butter Chicken&quot;, &quot;Grilled Salmon&quot;) or a varietal (&quot;Shiraz&quot;, &quot;Sauvignon Blanc&quot;).
                             </p>
                         </motion.div>
                     )}

@@ -126,7 +126,7 @@ export const FeaturedCategories: React.FC = () => {
                         >
                             <Link
                                 href="/discover/wines"
-                                className="px-6 py-2.5 rounded bg-[#A33845] hover:bg-[#8B2B37] text-white text-xs font-bold tracking-[0.2em] uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A33845] focus-visible:ring-offset-2 inline-block"
+                                className="px-6 py-2.5 rounded-full bg-vino-accent hover:bg-vino-accent-light text-white text-xs font-bold tracking-[0.2em] uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent focus-visible:ring-offset-2 inline-block"
                             >
                                 BUY NOW
                             </Link>
@@ -134,7 +134,7 @@ export const FeaturedCategories: React.FC = () => {
                             {/* Red / Burgundy Explore Wineries Pill Button */}
                             <Link
                                 href="/wineries"
-                                className="px-5 py-2 rounded-full border border-[#A33845] text-[#A33845] hover:bg-[#A33845] hover:text-white text-xs font-bold tracking-widest uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A33845] focus-visible:ring-offset-2 flex items-center gap-2 group inline-flex"
+                                className="px-5 py-2.5 rounded-full border border-vino-accent text-vino-accent hover:bg-vino-accent hover:text-white text-xs font-bold tracking-widest uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent focus-visible:ring-offset-2 flex items-center gap-2 group inline-flex"
                             >
                                 Explore Wineries
                                 <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />

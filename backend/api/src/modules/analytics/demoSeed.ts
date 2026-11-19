@@ -96,7 +96,7 @@ export async function seedDemoDataset(): Promise<void> {
   ], { onConflict: 'id' });
   if (r2.error) throw new Error(`Failed to seed wines: ${r2.error.message}`);
 
-  // 3. Seed Events (2 published events)
+  // 3. Seed Events (2 published events with authentic event banner images)
   const r3 = await supabase.from('events').upsert([
     {
       id: DEMO_EVENT_1_ID,
@@ -105,6 +105,7 @@ export async function seedDemoDataset(): Promise<void> {
       event_date: getDateStr(-5), // Upcoming event
       capacity: 40,
       price: 2500,
+      banner_image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80',
       publish_status: 'published'
     },
     {
@@ -114,12 +115,13 @@ export async function seedDemoDataset(): Promise<void> {
       event_date: getDateStr(-10),
       capacity: 35,
       price: 1800,
+      banner_image: 'https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=1200&q=80',
       publish_status: 'published'
     }
   ], { onConflict: 'id' });
   if (r3.error) throw new Error(`Failed to seed events: ${r3.error.message}`);
 
-  // 4. Seed Experiences (2 published experiences)
+  // 4. Seed Experiences (2 published experiences with authentic cover images)
   const r4 = await supabase.from('experiences').upsert([
     {
       id: DEMO_EXPERIENCE_1_ID,
@@ -127,6 +129,7 @@ export async function seedDemoDataset(): Promise<void> {
       title: 'Private Winemaker Estate Tour',
       capacity: 20,
       price: 3000,
+      cover_image: 'https://images.unsplash.com/photo-1543418219-44e2bf85a630?auto=format&fit=crop&w=1200&q=80',
       publish_status: 'published'
     },
     {
@@ -135,6 +138,7 @@ export async function seedDemoDataset(): Promise<void> {
       title: 'Cheese & Vintage Wine Pairing',
       capacity: 15,
       price: 2000,
+      cover_image: 'https://images.unsplash.com/photo-1505253758473-96b3015f21c9?auto=format&fit=crop&w=1200&q=80',
       publish_status: 'published'
     }
   ], { onConflict: 'id' });

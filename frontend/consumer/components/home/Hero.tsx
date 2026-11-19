@@ -99,7 +99,7 @@ export const Hero: React.FC = () => {
                             </Button>
                             <Button
                                 size="lg"
-                                variant="outline"
+                                variant="outline-light"
                                 className="tracking-wide text-sm sm:text-base w-full sm:w-auto active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-gold transition-all duration-200"
                                 onClick={() => router.push('/discover/wines')}
                             >

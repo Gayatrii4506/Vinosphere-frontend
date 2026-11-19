@@ -1520,13 +1520,24 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
         
 
         {/* Branding header above card */}
-        <div className="relative z-10 flex flex-col items-center gap-2 mb-6">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl font-bold font-serif text-white tracking-wide">
-              VinoSphere <span className="text-[#D4AF37] font-sans text-xs uppercase ml-1 tracking-widest font-semibold">Business</span>
-            </span>
+        <div className="relative z-10 flex flex-col items-center gap-3 mb-6">
+          <div className="bg-white/95 backdrop-blur-md px-5 py-2.5 rounded-2xl shadow-xl border border-white/20 flex items-center gap-3">
+            <img
+              src="/vinosphere-logo.png"
+              alt="VinoSphere"
+              className="h-12 w-auto object-contain"
+            />
+            <div className="h-6 w-px bg-[#ECECEC]" />
+            <div className="flex flex-col text-left">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] font-mono leading-none">
+                Business Suite
+              </span>
+              <span className="text-xs font-semibold text-[#6D071A] leading-tight">
+                Estate Portal
+              </span>
+            </div>
           </div>
-          <p className="text-white/60 text-xs font-medium tracking-wide">Nashik Estate Suite Portal</p>
+          <p className="text-white/80 text-xs font-medium tracking-wide">Nashik Estate Suite Portal</p>
         </div>
 
         {/* Central card */}
@@ -2009,11 +2020,17 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
       <aside className="w-[260px] bg-white border-r border-[#ECECEC] flex flex-col justify-between shrink-0 h-screen sticky top-0 z-30">
         <div>
           {/* Logo Brand Header */}
-          <div className="p-6 border-b border-[#ECECEC] flex items-center gap-3">
-            <div>
-              <h1 className="text-xl font-bold font-serif text-[#222222] leading-tight">VinoSphere</h1>
-              <span className="text-[10px] uppercase font-bold text-[#D4AF37] tracking-widest">Business Suite</span>
+          <div className="p-5 border-b border-[#ECECEC] flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <img
+                src="/vinosphere-logo.png"
+                alt="VinoSphere"
+                className="h-12 w-auto object-contain"
+              />
             </div>
+            <span className="px-2 py-0.5 text-[9px] font-bold bg-[#FAF5D3] text-[#936F18] border border-[#D4AF37]/30 rounded uppercase tracking-wider font-mono">
+              Winery
+            </span>
           </div>
 
           {/* Navigation Links */}
@@ -2068,7 +2085,18 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
         {/* User profile footer */}
         <div className="p-4 border-t border-[#ECECEC] space-y-2">
           <div className="flex items-center gap-3 p-2 bg-[#F8F9FB] rounded-xl">
-            <img src={currentWinery.logo} alt="winery logo" className="w-10 h-10 rounded-lg object-cover bg-white" />
+            {currentWinery.logo ? (
+              <img 
+                src={currentWinery.logo} 
+                alt="winery logo" 
+                onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} 
+                className="w-10 h-10 rounded-lg object-cover bg-white" 
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-lg bg-[#6D071A]/10 text-[#6D071A] font-bold flex items-center justify-center text-sm font-serif">
+                {currentWinery.name?.[0] || 'W'}
+              </div>
+            )}
             <div className="min-w-0 flex-1">
               <p className="text-xs font-bold text-[#222222] truncate">{currentWinery.name}</p>
               <div className="flex items-center gap-1">
@@ -2170,7 +2198,18 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center gap-2 p-1.5 hover:bg-[#F8F9FB] rounded-xl transition"
               >
-                <img src={currentWinery.logo} alt="avatar" className="w-7 h-7 rounded-lg object-cover" />
+                {currentWinery.logo ? (
+                  <img 
+                    src={currentWinery.logo} 
+                    alt="avatar" 
+                    onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} 
+                    className="w-7 h-7 rounded-lg object-cover" 
+                  />
+                ) : (
+                  <div className="w-7 h-7 rounded-lg bg-[#6D071A]/10 text-[#6D071A] font-bold flex items-center justify-center text-xs font-serif">
+                    {currentWinery.name?.[0] || 'W'}
+                  </div>
+                )}
                 <ChevronDown className="w-3.5 h-3.5 text-charcoal-400" />
               </button>
 
@@ -2340,7 +2379,7 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
                           </div>
                         </div>
                       </div>
-                      <DollarSign className="w-4 h-4 text-emerald-600" />
+                      <DollarSign className="w-4 h-4 text-[#D4AF37]" />
                     </div>
                     <p className="text-2xl font-bold font-serif text-[#222222] mt-1">
                       {analyticsLoading ? "..." : formatCurrency(businessAnalytics?.totalGrossBookingValue?.current ?? 0)}
@@ -4375,7 +4414,7 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
                         </div>
                       </div>
                     </div>
-                    <DollarSign className="w-4 h-4 text-emerald-600" />
+                    <DollarSign className="w-4 h-4 text-[#D4AF37]" />
                   </div>
                   <p className="text-2xl font-bold font-serif text-[#222222] mt-1">
                     {analyticsLoading ? "..." : formatCurrency(businessAnalytics?.totalGrossBookingValue?.current ?? 0)}

@@ -50,6 +50,20 @@ export const ExperienceDetailDrawer: React.FC<ExperienceDetailDrawerProps> = ({
         }
     }, [experience?.id, experience?.wineryId, trackEvent])
 
+    useEffect(() => {
+        if (!experience) return
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose()
+        }
+        document.body.style.overflow = 'hidden'
+        window.addEventListener('keydown', handleKeyDown)
+        return () => {
+            document.body.style.overflow = 'unset'
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [experience, onClose])
+
     if (!experience) return null
 
     const activeImage = selectedImage || experience.image

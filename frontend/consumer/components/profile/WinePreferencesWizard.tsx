@@ -528,7 +528,7 @@ export const WinePreferencesWizard: React.FC<WinePreferencesWizardProps> = ({
                                         <div className="space-y-4 animate-fadeIn">
                                             <div className="space-y-1">
                                                 <h2 className="font-serif text-xl sm:text-2xl font-bold text-white">
-                                                    What's your usual budget?
+                                                    What&apos;s your usual budget?
                                                 </h2>
                                                 <p className="text-xs text-stone-400">
                                                     We will prioritize bottles in your comfortable price range.

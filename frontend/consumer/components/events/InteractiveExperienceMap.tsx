@@ -172,7 +172,7 @@ export const InteractiveExperienceMap: React.FC<MapProps> = ({ experiences = [],
                             The Nashik Wine Trail
                         </h2>
                         <p className="text-xs sm:text-sm text-[#6C5B52] mt-1 max-w-xl">
-                            Explore premier estates, tastings, vineyard stays, and cellar journeys connected along Nashik's sun-drenched valley.
+                            Explore premier estates, tastings, vineyard stays, and cellar journeys connected along Nashik&apos;s sun-drenched valley.
                         </p>
                     </div>
 

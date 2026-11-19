@@ -167,7 +167,7 @@ const EventCard: React.FC<{ event: EventItem }> = ({ event }) => {
 
             {/* CTA */}
             <Link
-                href="/welcome"
+                href="/events"
                 className="
                     mt-1 w-full flex items-center justify-center gap-1.5
                     bg-vino-accent hover:bg-vino-accent-light

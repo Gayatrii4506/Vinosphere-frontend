@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { FileCheck, Check, X, Eye, Building2, Mail, Phone, MapPin, Calendar, ShieldCheck, RefreshCw } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -17,11 +17,11 @@ export default function ApprovalsPage() {
   async function fetchPending() {
     setLoading(true)
     try {
-      // 1. Query Supabase
+      // 1. Query Supabase for pending draft wineries
       const { data, error } = await supabase
         .from('wineries')
         .select('*')
-        .or('status.eq.DRAFT,status.eq.pending,status.eq.draft')
+        .eq('status', 'draft')
         .eq('verified', false)
         .order('created_at', { ascending: false })
 

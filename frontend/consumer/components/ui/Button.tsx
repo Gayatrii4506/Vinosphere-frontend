@@ -4,7 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
+    variant?: 'primary' | 'secondary' | 'outline' | 'outline-light' | 'ghost'
     size?: 'sm' | 'md' | 'lg'
     children: React.ReactNode
     href?: string
@@ -15,6 +15,7 @@ const variants = {
     primary: 'bg-vino-accent text-white hover:bg-vino-accent/90',
     secondary: 'bg-vino-gold text-vino-dark hover:bg-vino-gold-light',
     outline: 'border border-vino-accent text-vino-accent hover:bg-vino-accent/10',
+    'outline-light': 'border border-white/60 text-white hover:bg-white/10 hover:border-white shadow-sm',
     ghost: 'text-vino-gold hover:text-vino-gold-light',
 }
 

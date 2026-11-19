@@ -61,6 +61,7 @@ export const WineFilterSidebar: React.FC<WineFilterSidebarProps> = ({ filters, s
                                 key={option.value} 
                                 tabIndex={0}
                                 role="button"
+                                aria-pressed={isActive}
                                 className="flex items-center gap-3 cursor-pointer group rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent" 
                                 onClick={() => toggleFilter('priceRange', option.value)}
                                 onKeyDown={(e) => {
@@ -94,6 +95,7 @@ export const WineFilterSidebar: React.FC<WineFilterSidebarProps> = ({ filters, s
                                 key={type} 
                                 tabIndex={0}
                                 role="button"
+                                aria-pressed={isActive}
                                 className="flex items-center gap-3 cursor-pointer group rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent" 
                                 onClick={() => toggleFilter('selectedType', type)}
                                 onKeyDown={(e) => {
@@ -127,6 +129,7 @@ export const WineFilterSidebar: React.FC<WineFilterSidebarProps> = ({ filters, s
                                 key={option.value} 
                                 tabIndex={0}
                                 role="button"
+                                aria-pressed={isActive}
                                 className="flex items-center gap-3 cursor-pointer group rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent" 
                                 onClick={() => toggleFilter('selectedRating', option.value)}
                                 onKeyDown={(e) => {
@@ -160,6 +163,7 @@ export const WineFilterSidebar: React.FC<WineFilterSidebarProps> = ({ filters, s
                                 key={option.value} 
                                 tabIndex={0}
                                 role="button"
+                                aria-pressed={isActive}
                                 className="flex items-center gap-3 cursor-pointer group rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent" 
                                 onClick={() => toggleFilter('selectedVintage', option.value)}
                                 onKeyDown={(e) => {

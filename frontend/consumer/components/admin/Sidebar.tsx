@@ -22,9 +22,15 @@ export default function Sidebar() {
 
   return (
     <div className="w-64 bg-white border-r border-slate-200 flex flex-col min-h-screen relative shadow-sm shrink-0">
-      <div className="p-8">
-        <h1 className="text-xl font-bold font-serif text-slate-900">VinoSphere</h1>
-        <p className="text-xs text-slate-400 font-bold tracking-widest uppercase mt-0.5">Platform Control</p>
+      <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
+          <img
+            src="/vinosphere-logo.png"
+            alt="VinoSphere"
+            className="h-9 w-auto object-contain"
+          />
+        </Link>
+        <span className="text-[10px] text-slate-400 font-bold tracking-widest uppercase font-mono">Control</span>
       </div>
       
       <nav className="flex-1 px-4 space-y-1.5 mt-2 overflow-y-auto">
@@ -44,7 +50,7 @@ export default function Sidebar() {
                   : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <Icon size={20} className={isActive ? 'text-purple-600' : 'text-slate-500 group-hover:scale-110 transition-transform duration-200'} />
+              <Icon size={20} className={isActive ? 'text-[#6D071A]' : 'text-slate-500 group-hover:scale-110 transition-transform duration-200'} />
               <span className="font-medium text-sm">{item.label}</span>
             </Link>
           )

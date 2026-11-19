@@ -163,7 +163,7 @@ export default function CellarView() {
             </div>
 
             {/* Cellar Wine Grid */}
-            <WineCatalog initialWines={cellarWines} />
+            <WineCatalog initialWines={cellarWines} hideHeaderBanner={true} />
         </div>
     )
 }

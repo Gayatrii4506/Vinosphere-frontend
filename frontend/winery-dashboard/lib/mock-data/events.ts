@@ -42,9 +42,9 @@ export const events: Event[] = [
     type: "Festival",
     description: "Asia's premier wine & music festival returns for its 19th edition with world-class artists, gourmet food, and unlimited wine.",
     longDescription: "SulaFest is the wine world's most anticipated annual gathering in India. Set against the breathtaking backdrop of Sula Vineyards' rolling hills and dam views, this 2-day extravaganza brings together international and Indian musicians, celebrity chefs, craft beer, artisan food stalls, wine masterclasses, and of course — unlimited wine from Sula's world-class cellar. From sunrise yoga sessions in the vineyard to late-night DJ sets under the stars, SulaFest is unlike any festival experience in the world.",
-    coverImage: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=1400&q=80",
+    coverImage: "https://res.cloudinary.com/xfklkvdc/image/upload/v1784629410/sula_fest_tvurpq.png",
     images: [
-      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80",
+      "https://res.cloudinary.com/xfklkvdc/image/upload/v1784629410/sula_fest_tvurpq.png",
       "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80",
       "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=800&q=80",
     ],

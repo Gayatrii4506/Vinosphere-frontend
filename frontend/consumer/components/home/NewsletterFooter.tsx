@@ -56,10 +56,12 @@ const socialLinks = [
 // ─── VinoSphere Logo Mark ─────────────────────────────────────────────────────
 
 const VinoSphereLogo: React.FC = () => (
-    <div className="flex items-center gap-2">
-        <span className="font-serif font-bold text-xl tracking-tight text-[#2C1810]">
-            Vino<span className="text-[#8B1E3F]">Sphere</span>
-        </span>
+    <div className="flex items-center gap-3">
+        <img
+            src="/vinosphere-logo.png"
+            alt="VinoSphere Logo"
+            className="h-14 sm:h-16 w-auto object-contain"
+        />
     </div>
 )
 

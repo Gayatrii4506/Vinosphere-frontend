@@ -448,7 +448,7 @@ export const EXPERIENCES: VinoSphereExperience[] = [
         image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=1200',
         gallery: [
             'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=1200',
-            'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1558001373-7b93ee48ffa0?auto=format&fit=crop&q=80&w=1200',
         ],
         winery: 'York Winery & Tasting Room',
         location: 'Gangapur Dam, Nashik',

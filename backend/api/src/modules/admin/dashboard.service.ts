@@ -1,5 +1,6 @@
 import { db } from '../../adapters/database';
 import { cacheService } from '../../shared/cache.service';
+import { AppError } from '../../shared/errors/AppError';
 
 export class DashboardService {
   /**
@@ -28,23 +29,50 @@ export class DashboardService {
    * Useful for loading the entire dashboard state efficiently.
    */
   async getOverview(wineryId: string) {
-    const effectiveWineryId = wineryId === '11111111-1111-1111-1111-111111111111'
-      ? 'b40a83dd-ee61-43df-bf79-caf3b2a190de'
-      : wineryId;
+    const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    let effectiveWineryId = wineryId;
 
-    // Run all queries concurrently using Promise.all
+    // Handle common demo, mock, and slug aliases
+    if (
+      wineryId === '11111111-1111-1111-1111-111111111111' ||
+      wineryId === 'winery_1' ||
+      wineryId === 'w1' ||
+      wineryId === 'sula-vineyards'
+    ) {
+      effectiveWineryId = 'b40a83dd-ee61-43df-bf79-caf3b2a190de';
+    } else if (wineryId === 'w2' || wineryId === 'york-winery') {
+      effectiveWineryId = '4fcb0319-c7b9-4eb6-84be-00717adeab3a';
+    } else if (!UUID_REGEX.test(wineryId)) {
+      try {
+        const found = await db.findOne('wineries', { slug: wineryId }).catch(() => null);
+        if (found?.id) {
+          effectiveWineryId = found.id;
+        } else {
+          throw new AppError(`Winery with ID or slug '${wineryId}' not found`, 404);
+        }
+      } catch (err) {
+        if (err instanceof AppError) throw err;
+        throw new AppError(`Winery with ID or slug '${wineryId}' not found`, 404);
+      }
+    }
+
+    // Run all queries concurrently using Promise.all with defensive catch fallbacks
     const [winery, rawWines, experiences, events, rawBookings, leads, reviews, documents, inventories, images] = await Promise.all([
-      db.findOne('wineries', { id: effectiveWineryId }),
-      db.find('wines', { winery_id: effectiveWineryId }),
-      db.find('experiences', { winery_id: effectiveWineryId }),
-      db.find('events', { winery_id: effectiveWineryId }),
-      db.find('bookings', { winery_id: effectiveWineryId }),
-      db.find('corporate_leads', { winery_id: effectiveWineryId }),
-      db.find('reviews', { winery_id: effectiveWineryId }),
-      db.find('documents', { winery_id: effectiveWineryId }),
-      db.find('wine_inventory'),
-      db.find('wine_images'),
+      db.findOne('wineries', { id: effectiveWineryId }).catch(() => null),
+      db.find('wines', { winery_id: effectiveWineryId }).catch(() => []),
+      db.find('experiences', { winery_id: effectiveWineryId }).catch(() => []),
+      db.find('events', { winery_id: effectiveWineryId }).catch(() => []),
+      db.find('bookings', { winery_id: effectiveWineryId }).catch(() => []),
+      db.find('corporate_leads', { winery_id: effectiveWineryId }).catch(() => []),
+      db.find('reviews', { winery_id: effectiveWineryId }).catch(() => []),
+      db.find('documents', { winery_id: effectiveWineryId }).catch(() => []),
+      db.find('wine_inventory').catch(() => []),
+      db.find('wine_images').catch(() => []),
     ]);
+
+    if (!winery) {
+      throw new AppError(`Winery with ID '${wineryId}' not found`, 404);
+    }
 
     // Map inventory and images locally to each wine
     const wines = rawWines.map((wine: any) => {
