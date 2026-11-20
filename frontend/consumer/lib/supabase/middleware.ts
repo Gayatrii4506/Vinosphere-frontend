@@ -37,13 +37,67 @@ export async function updateSession(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser()
 
-    if (
-      !user &&
-      request.nextUrl.pathname.startsWith('/profile')
-    ) {
+    const pathname = request.nextUrl.pathname
+
+    // 1. Guard /profile for authenticated users
+    if (!user && pathname.startsWith('/profile')) {
       const url = request.nextUrl.clone()
       url.pathname = '/welcome'
-      return NextResponse.redirect(url)
+      url.searchParams.set('redirect', pathname)
+      const redirectResponse = NextResponse.redirect(url)
+      supabaseResponse.cookies.getAll().forEach((cookie) => {
+        redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+      })
+      return redirectResponse
+    }
+
+    // 2. Guard /admin routes — require authenticated user with verified admin role
+    if (pathname.startsWith('/admin')) {
+      if (!user) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/welcome'
+        url.searchParams.set('redirect', pathname)
+        url.searchParams.set('error', 'Administrator login required')
+        const redirectResponse = NextResponse.redirect(url)
+        supabaseResponse.cookies.getAll().forEach((cookie) => {
+          redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+        })
+        return redirectResponse
+      }
+
+      // Check trusted admin role from immutable app_metadata
+      const appRole = (user.app_metadata?.role || user.app_metadata?.user_role || '').toLowerCase()
+      let isAdmin = appRole === 'admin' || appRole === 'superadmin'
+
+      // Fallback: check database public.users table if app_metadata not populated
+      if (!isAdmin) {
+        try {
+          const { data: dbUser } = await supabase
+            .from('users')
+            .select('role')
+            .or(`auth_id.eq.${user.id},email.eq.${user.email}`)
+            .maybeSingle()
+
+          const dbRole = (dbUser?.role || '').toLowerCase()
+          if (dbRole === 'admin' || dbRole === 'superadmin') {
+            isAdmin = true
+          }
+        } catch {
+          // Fallback to appRole
+        }
+      }
+
+      if (!isAdmin) {
+        // Authenticated non-admin: redirect away from admin zone
+        const url = request.nextUrl.clone()
+        url.pathname = '/'
+        url.searchParams.set('error', 'Unauthorized: Admin privileges required')
+        const redirectResponse = NextResponse.redirect(url)
+        supabaseResponse.cookies.getAll().forEach((cookie) => {
+          redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+        })
+        return redirectResponse
+      }
     }
   } catch (err) {
     console.error('Middleware session update warning:', err)

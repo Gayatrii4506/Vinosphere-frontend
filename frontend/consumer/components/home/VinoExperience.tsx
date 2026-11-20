@@ -72,16 +72,16 @@ export const VinoExperience: React.FC = () => {
                         <div className="h-[2px] w-8 sm:w-12 bg-vino-accent hidden lg:block" />
                     </motion.div>
 
-                    {/* Main Heading - Larger & Bolder */}
+                    {/* Main Heading */}
                     <motion.h2
                         id="vino-experience-heading"
                         variants={fadeRight}
                         className="font-serif font-bold text-[#1e1610] text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight max-w-xl"
                     >
-                        More Than Wine. A Journey of Discovery.
+                        Estate Cellars, Guided Tastings &amp; Culinary Pairings
                     </motion.h2>
 
-                    {/* ── Two Featured Cards with Dark Burgundy Border & Visible Soft Pink Interior ── */}
+                    {/* ── Two Featured Cards with Refined Neutral Styling & Subtle Accent ── */}
                     <motion.div
                         variants={stagger}
                         className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full text-left pt-1"
@@ -89,15 +89,14 @@ export const VinoExperience: React.FC = () => {
                         {/* Box 1: Food Pairing Recommendations */}
                         <motion.div
                             variants={fadeUp}
-                            whileHover={{ y: -3, boxShadow: '0 16px 36px rgba(139,30,63,0.2)' }}
+                            whileHover={{ y: -3, boxShadow: '0 12px 28px rgba(139,30,63,0.12)' }}
                             transition={{ duration: 0.2 }}
                             className="
                                 group flex flex-col justify-between gap-2 sm:gap-2.5
-                                rounded-xl p-3.5 sm:p-4.5
-                                bg-[#f9dbe1]/95 hover:bg-[#f5cad4]
-                                backdrop-blur-md
-                                border border-vino-accent/80 hover:border-vino-accent
-                                shadow-[0_8px_24px_rgba(139,30,63,0.12)]
+                                rounded-xl p-4 sm:p-5
+                                bg-white/95 hover:bg-white
+                                border border-stone-200/90 hover:border-vino-accent/50
+                                shadow-[0_4px_16px_rgba(44,24,16,0.06)]
                                 transition-all duration-300
                             "
                         >
@@ -107,11 +106,11 @@ export const VinoExperience: React.FC = () => {
                                 </div>
 
                                 <h3 className="font-serif font-bold text-[#1e1610] text-sm sm:text-base leading-snug">
-                                    Food Pairing Recommendations
+                                    Indian Food &amp; Wine Pairings
                                 </h3>
 
-                                <p className="text-stone-700 text-xs sm:text-xs leading-relaxed font-normal">
-                                    Discover intelligent culinary pairings expertly matched to elevate every bottle in your cellar.
+                                <p className="text-stone-600 text-xs sm:text-xs leading-relaxed font-normal">
+                                    Discover sommelier-guided culinary pairings expertly matched to elevate spice, richness, and acidity.
                                 </p>
                             </div>
 
@@ -127,15 +126,14 @@ export const VinoExperience: React.FC = () => {
                         {/* Box 2: Explore Wines Catalog */}
                         <motion.div
                             variants={fadeUp}
-                            whileHover={{ y: -3, boxShadow: '0 16px 36px rgba(139,30,63,0.2)' }}
+                            whileHover={{ y: -3, boxShadow: '0 12px 28px rgba(139,30,63,0.12)' }}
                             transition={{ duration: 0.2 }}
                             className="
                                 group flex flex-col justify-between gap-2 sm:gap-2.5
-                                rounded-xl p-3.5 sm:p-4.5
-                                bg-[#f9dbe1]/95 hover:bg-[#f5cad4]
-                                backdrop-blur-md
-                                border border-vino-accent/80 hover:border-vino-accent
-                                shadow-[0_8px_24px_rgba(139,30,63,0.12)]
+                                rounded-xl p-4 sm:p-5
+                                bg-white/95 hover:bg-white
+                                border border-stone-200/90 hover:border-vino-accent/50
+                                shadow-[0_4px_16px_rgba(44,24,16,0.06)]
                                 transition-all duration-300
                             "
                         >
@@ -145,16 +143,16 @@ export const VinoExperience: React.FC = () => {
                                 </div>
 
                                 <h3 className="font-serif font-bold text-[#1e1610] text-sm sm:text-base leading-snug">
-                                    Explore Wines Catalog
+                                    Curated Estate Catalog
                                 </h3>
 
-                                <p className="text-stone-700 text-xs sm:text-xs leading-relaxed font-normal">
-                                    Hand-selected bottles, estate reserves, and rare vintages curated from the world&apos;s finest estates.
+                                <p className="text-stone-600 text-xs sm:text-xs leading-relaxed font-normal">
+                                    Hand-selected reserve vintages, single-vineyard bottlings, and barrel selections from premier Indian estates.
                                 </p>
                             </div>
 
                             <Link
-                                href="/discover"
+                                href="/discover/wines"
                                 className="inline-flex items-center gap-1.5 text-vino-accent hover:text-vino-accent-light text-xs font-bold tracking-wide transition-colors pt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent rounded-sm"
                             >
                                 Browse Catalog
@@ -166,21 +164,21 @@ export const VinoExperience: React.FC = () => {
                     {/* CTA button */}
                     <motion.div variants={fadeRight} className="pt-1 sm:pt-2">
                         <Link
-                            href="/discover"
+                            href="/discover/wines"
                             className="
                                 group inline-flex items-center gap-2
                                 bg-vino-accent hover:bg-vino-accent-light
                                 text-white font-semibold text-xs sm:text-sm tracking-wide
-                                px-6 sm:px-7 py-2.5 sm:py-3 rounded-full
-                                shadow-[0_5px_18px_rgba(139,30,63,0.3)]
-                                hover:shadow-[0_8px_24px_rgba(139,30,63,0.4)]
-                                hover:scale-[1.03] active:scale-[0.98]
+                                px-6 sm:px-7 py-2.5 sm:py-3 rounded-xl
+                                shadow-[0_5px_18px_rgba(139,30,63,0.25)]
+                                hover:shadow-[0_8px_24px_rgba(139,30,63,0.35)]
+                                active:scale-[0.98]
                                 transition-all duration-300
                                 focus-visible:outline-none focus-visible:ring-2
                                 focus-visible:ring-vino-accent
                             "
                         >
-                            Begin Your Wine Journey
+                            Explore Collection
                             <ArrowRight
                                 size={15}
                                 className="transition-transform duration-300 group-hover:translate-x-1"

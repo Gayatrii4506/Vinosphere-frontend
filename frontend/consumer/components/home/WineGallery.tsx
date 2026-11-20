@@ -16,14 +16,14 @@ interface GalleryItem {
 }
 
 const GALLERY_ITEMS: GalleryItem[] = [
-    { id: 1, name: 'Kim Crawford Sauvignon Blanc', region: 'Marlborough, NZ', src: images.gallery.left1, alt: 'Kim Crawford Sauvignon Blanc' },
-    { id: 2, name: 'Josh Cellars Reserve', region: 'California, USA', src: images.gallery.left2, alt: 'Josh Cellars Reserve' },
-    { id: 3, name: 'Sula Vineyards Late Harvest', region: 'Nashik Valley, India', src: images.gallery.center, alt: 'Sula Vineyards Late Harvest' },
-    { id: 4, name: 'Aurora Varietal Merlot', region: 'Tuscany, Italy', src: images.gallery.right1, alt: 'Aurora Varietal Merlot' },
-    { id: 5, name: 'La Bellevue des Bois', region: 'Bordeaux, France', src: images.gallery.right2, alt: 'La Bellevue des Bois' },
-    { id: 6, name: 'Estate Sauvignon Blanc', region: 'Marlborough, NZ', src: images.gallery.left1, alt: 'Estate Sauvignon Blanc' },
-    { id: 7, name: 'Josh Estate Cabernet', region: 'California, USA', src: images.gallery.left2, alt: 'Josh Estate Cabernet' },
-    { id: 8, name: 'Sula Reserve Harvest', region: 'Nashik Valley, India', src: images.gallery.center, alt: 'Sula Reserve Harvest' },
+    { id: 1, name: 'Sula Rasa Cabernet Sauvignon', region: 'Dindori, Nashik', src: images.gallery.left1, alt: 'Sula Rasa Cabernet Sauvignon' },
+    { id: 2, name: 'Grover Zampa La Réserve', region: 'Sahyadri Hills, Maharashtra', src: images.gallery.left2, alt: 'Grover Zampa La Réserve' },
+    { id: 3, name: 'York Sparkling Rosé Brut', region: 'Gangapur, Nashik', src: images.gallery.center, alt: 'York Sparkling Rosé Brut' },
+    { id: 4, name: 'Vallonné Malbec Réserve', region: 'Igatpuri, Maharashtra', src: images.gallery.right1, alt: 'Vallonné Malbec Réserve' },
+    { id: 5, name: 'Chandon Brut Méthode Traditionnelle', region: 'Dindori, Nashik', src: images.gallery.right2, alt: 'Chandon Brut Méthode Traditionnelle' },
+    { id: 6, name: 'Fratelli J\'NOON Red Reserve', region: 'Akluj, Maharashtra', src: images.gallery.left1, alt: 'Fratelli J\'NOON Red Reserve' },
+    { id: 7, name: 'Soma Reserve Chenin Blanc', region: 'Gangapur Dam, Nashik', src: images.gallery.left2, alt: 'Soma Reserve Chenin Blanc' },
+    { id: 8, name: 'The Source Grenache Rosé', region: 'Nashik Valley, India', src: images.gallery.center, alt: 'The Source Grenache Rosé' },
 ]
 
 // Duplicate array for seamless infinite scroll loop

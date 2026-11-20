@@ -29,7 +29,6 @@ Or manually create `.env.local` with your Supabase project credentials:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key # optional: needed for admin user actions
 ```
 
 ### 5. Run the Development Server

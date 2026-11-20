@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Wine } from "@/lib/mock-data/wines";
 import { Star, Heart, Award } from "lucide-react";
 import { useState } from "react";
+import { resolveWineBottleImage } from "@/lib/api";
 
 interface WineCardProps {
   wine: Wine;
@@ -30,13 +31,19 @@ export default function WineCard({ wine, index = 0 }: WineCardProps) {
       style={{ background: "var(--card)" }}
     >
       {/* Image */}
-      <div className="relative h-52 overflow-hidden">
+      <div className="relative h-56 bg-gradient-to-b from-[#FDF2F4] to-[#FCE7EB] flex items-center justify-center p-4 overflow-hidden border-b border-[var(--border)]">
+        <div className="absolute w-24 h-24 rounded-full bg-[#6D071A]/10 blur-xl" />
+        <div className="absolute bottom-2 w-20 h-2 bg-black/10 blur-xs rounded-full pointer-events-none" />
         <img
-          src={wine.image}
+          src={wine.image || resolveWineBottleImage(wine)}
           alt={wine.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = resolveWineBottleImage(wine);
+          }}
+          className="h-full w-auto max-w-[120px] object-contain drop-shadow-xl relative z-10 transition-transform duration-500 group-hover:scale-108"
         />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent 60%)" }} />
 
         {/* Type badge */}
         <div className="absolute top-3 left-3">

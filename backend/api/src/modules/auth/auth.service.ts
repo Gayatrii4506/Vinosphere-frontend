@@ -6,7 +6,10 @@ import { wineryRepository } from '../wineries/winery.repository';
 import { emailService } from '../notifications/email.service';
 import { AppError } from '../../shared/errors/AppError';
 
-const JWT_SECRET = env.JWT_SECRET || 'vinosphere-secure-jwt-secret-2026';
+if (!env.JWT_SECRET || env.JWT_SECRET.trim() === '') {
+  throw new Error('FATAL: JWT_SECRET environment variable is missing. Winery authentication operations require a valid JWT_SECRET.');
+}
+const JWT_SECRET = env.JWT_SECRET;
 
 export interface WineryRegistrationDto {
   ownerName: string;
@@ -234,7 +237,7 @@ export class AuthService {
         role: 'winery_owner'
       },
       JWT_SECRET,
-      { expiresIn: '30d' }
+      { algorithm: 'HS256', expiresIn: '30d' }
     );
 
     return {

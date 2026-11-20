@@ -32,20 +32,20 @@ const experienceQuestion: QuestionType = {
     options: [
         {
             id: 'beginner',
-            label: "🌱 I'm completely new",
-            desc: "I've tried wine only a few times.",
+            label: "Exploring First Vintages",
+            desc: "New to wine tasting and cellar discovery.",
             icon: Sparkles
         },
         {
             id: 'intermediate',
-            label: "🍷 I've tried a few wines",
-            desc: "I know some of what I like.",
+            label: "Familiar with Essentials",
+            desc: "Familiar with popular styles and developing personal taste.",
             icon: Wine
         },
         {
             id: 'experienced',
-            label: "🍇 I know what I like",
-            desc: "I understand the styles and characteristics I prefer.",
+            label: "Seasoned Enthusiast",
+            desc: "Comfortable with varietals, regions, and balance.",
             icon: Compass
         }
     ]
@@ -59,20 +59,20 @@ const beginnerChoiceQuestion: QuestionType = {
     options: [
         {
             id: 'popular',
-            label: '⭐ Show me popular wines',
-            desc: 'Browse highly rated/popular beginner-friendly wines.',
+            label: 'Browse Approachable Vintages',
+            desc: 'View highly rated bottles recommended for newcomers.',
             icon: Flame
         },
         {
             id: 'discover',
-            label: '🎯 Help me discover my taste',
-            desc: 'Take the short beginner questionnaire.',
+            label: 'Personalize Tasting Palate',
+            desc: 'Answer a few guided questions on flavors and sweetness.',
             icon: Sparkles
         },
         {
             id: 'explore',
-            label: "🔎 I'll explore myself",
-            desc: 'Go directly to the wine catalogue.',
+            label: "Browse Complete Catalog",
+            desc: 'Go directly to the comprehensive wine catalogue.',
             icon: CompassIcon
         }
     ]

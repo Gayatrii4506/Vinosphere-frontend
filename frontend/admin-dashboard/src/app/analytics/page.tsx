@@ -20,8 +20,9 @@ export default function AdminAnalyticsPage() {
     const fetchAnalytics = async () => {
       try {
         const token = localStorage.getItem('token')
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1'
         
-        const res = await fetch(`http://localhost:5000/api/v1/analytics/admin`, {
+        const res = await fetch(`${backendUrl}/analytics/admin`, {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         

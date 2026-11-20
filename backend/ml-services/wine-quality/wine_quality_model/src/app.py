@@ -386,6 +386,17 @@ def home():
     return render_template_string(HTML_TEMPLATE)
 
 
+@app.route('/health', methods=['GET'])
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """Health check endpoint for container / production monitoring."""
+    return jsonify({
+        "status": "healthy",
+        "service": "vinosphere-wine-quality-ml",
+        "version": "1.0.0"
+    }), 200
+
+
 @app.route('/api/benchmarks', methods=['GET'])
 def api_benchmarks():
     """Endpoint to return high-quality wine benchmark ranges."""
@@ -424,5 +435,6 @@ def api_predict():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
-    print(f"Starting Wine Quality Prediction Flask Web Server on http://127.0.0.1:{port}")
-    app.run(host='0.0.0.0', port=port, debug=True)
+    debug_mode = os.environ.get('FLASK_DEBUG', 'false').lower() in ('true', '1', 't')
+    print(f"Starting Wine Quality Prediction Flask Web Server on http://127.0.0.1:{port} (debug={debug_mode})")
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)

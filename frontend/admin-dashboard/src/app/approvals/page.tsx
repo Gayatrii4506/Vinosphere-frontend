@@ -5,6 +5,7 @@ import {
   Mail, MapPin, Calendar, ShieldCheck
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { createClient } from '@/lib/supabase/client'
 import { updateWineryStatus } from '@/lib/actions/adminActions'
 
@@ -14,8 +15,45 @@ export default function ApprovalsPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [selectedWinery, setSelectedWinery] = useState<any | null>(null)
   const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   const supabase = createClient()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Lock background scrolling and attach Escape key listener when modal is open
+  useEffect(() => {
+    if (selectedWinery) {
+      const originalBodyOverflow = document.body.style.overflow
+      const originalHtmlOverflow = document.documentElement.style.overflow
+      const mainEl = document.querySelector('main')
+      const originalMainOverflow = mainEl ? mainEl.style.overflow : ''
+
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+      if (mainEl) {
+        mainEl.style.overflow = 'hidden'
+      }
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setSelectedWinery(null)
+        }
+      }
+      window.addEventListener('keydown', handleKeyDown)
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow
+        document.documentElement.style.overflow = originalHtmlOverflow
+        if (mainEl) {
+          mainEl.style.overflow = originalMainOverflow
+        }
+        window.removeEventListener('keydown', handleKeyDown)
+      }
+    }
+  }, [selectedWinery])
 
   async function fetchPending() {
     try {
@@ -30,7 +68,12 @@ export default function ApprovalsPage() {
         setPendingWineries(data)
       } else {
         try {
-          const res = await fetch('http://localhost:5000/api/v1/auth/admin/pending')
+          const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1'
+          const sessionRes = await supabase.auth.getSession()
+          const token = sessionRes.data?.session?.access_token
+          const headers: Record<string, string> = {}
+          if (token) headers['Authorization'] = `Bearer ${token}`
+          const res = await fetch(`${backendUrl}/auth/admin/pending`, { headers })
           if (res.ok) {
             const body = await res.json()
             if (body.data) setPendingWineries(body.data)
@@ -255,29 +298,44 @@ export default function ApprovalsPage() {
         )}
       </div>
 
-      {/* Estate Application Modal / Dossier */}
-      {selectedWinery && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-2xl rounded-3xl border border-[#ECECEC] shadow-2xl overflow-hidden animate-fade-in-up">
-            {/* Modal Header */}
-            <div className="bg-[#6D071A] p-6 text-white flex justify-between items-start">
-              <div>
+      {/* Estate Application Modal / Dossier — Portal Mounted & Viewport Fixed */}
+      {mounted && selectedWinery && createPortal(
+        <div 
+          className="fixed inset-0 z-[9999] bg-black/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 md:p-6 overscroll-contain"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedWinery(null)
+          }}
+        >
+          <div 
+            className="bg-white w-full max-w-2xl max-h-[90vh] sm:max-h-[85vh] rounded-2xl sm:rounded-3xl border border-[#ECECEC] shadow-2xl flex flex-col overflow-hidden animate-fade-in-up relative"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-winery-title"
+          >
+            {/* Modal Header — Fixed / Pinned */}
+            <div className="bg-[#6D071A] p-5 sm:p-6 text-white flex justify-between items-start shrink-0 border-b border-[#841126]">
+              <div className="pr-4">
                 <span className="text-[10px] uppercase font-bold tracking-widest text-[#FAF5D3] font-mono">
                   Estate Dossier & Verification
                 </span>
-                <h2 className="text-2xl font-bold font-serif text-white mt-1">{selectedWinery.name}</h2>
+                <h2 id="modal-winery-title" className="text-xl sm:text-2xl font-bold font-serif text-white mt-0.5 line-clamp-1">
+                  {selectedWinery.name}
+                </h2>
               </div>
               <button 
+                type="button"
                 onClick={() => setSelectedWinery(null)} 
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition cursor-pointer"
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition cursor-pointer shrink-0"
+                aria-label="Close dossier modal"
               >
                 ✕
               </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-6 sm:p-7 space-y-6 max-h-[70vh] overflow-y-auto text-sm">
-              <div className="grid grid-cols-2 gap-4">
+            {/* Modal Body — Internal Scroll Only */}
+            <div className="p-5 sm:p-7 space-y-5 overflow-y-auto overscroll-contain flex-1 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="p-4 bg-[#F8F9FB] rounded-xl border border-[#ECECEC]">
                   <span className="block text-[10px] font-bold uppercase tracking-wider text-[#888888] mb-1">
                     Contact Email
@@ -333,30 +391,40 @@ export default function ApprovalsPage() {
               </div>
             </div>
 
-            {/* Modal Footer */}
-            <div className="p-5 bg-[#F8F9FB] border-t border-[#ECECEC] flex justify-end gap-3">
+            {/* Modal Footer — Fixed Action Buttons */}
+            <div className="p-4 sm:p-5 bg-[#F8F9FB] border-t border-[#ECECEC] flex flex-col-reverse sm:flex-row justify-end gap-2.5 sm:gap-3 shrink-0">
               <button 
+                type="button"
                 onClick={() => setSelectedWinery(null)} 
-                className="px-4 py-2.5 bg-white border border-[#ECECEC] text-[#222222] hover:bg-[#ECECEC] font-semibold rounded-xl text-xs cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 bg-white border border-[#ECECEC] text-[#222222] hover:bg-[#ECECEC] font-semibold rounded-xl text-xs cursor-pointer transition text-center"
               >
                 Close
               </button>
               <button 
+                type="button"
                 onClick={() => handleReject(selectedWinery)} 
-                className="px-4 py-2.5 bg-red-50 text-[#EF4444] hover:bg-red-100 font-semibold rounded-xl text-xs border border-[#EF4444]/30 cursor-pointer"
+                disabled={actionLoading === selectedWinery.id}
+                className="w-full sm:w-auto px-4 py-2.5 bg-red-50 text-[#EF4444] hover:bg-red-100 font-semibold rounded-xl text-xs border border-[#EF4444]/30 cursor-pointer transition text-center disabled:opacity-50"
               >
                 Decline Application
               </button>
               <button 
+                type="button"
                 onClick={() => handleApprove(selectedWinery)} 
                 disabled={actionLoading === selectedWinery.id}
-                className="px-5 py-2.5 bg-[#6D071A] hover:bg-[#841126] text-white font-bold rounded-xl text-xs shadow-sm flex items-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-5 py-2.5 bg-[#6D071A] hover:bg-[#841126] text-white font-bold rounded-xl text-xs shadow-sm flex items-center justify-center gap-2 cursor-pointer transition disabled:opacity-50"
               >
-                <Check size={14} /> Authorize & Dispatch Credentials
+                {actionLoading === selectedWinery.id ? (
+                  <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Check size={14} />
+                )}
+                Authorize & Dispatch Credentials
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

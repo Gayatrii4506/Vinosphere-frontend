@@ -67,7 +67,7 @@ export default function ReviewsPage() {
         <div className="flex items-center gap-3">
           <span className="px-3.5 py-1.5 bg-[#FAF5D3] text-[#936F18] font-semibold text-xs rounded-xl border border-[#D4AF37]/30 flex items-center gap-2">
             <Star size={14} className="text-[#936F18] fill-[#936F18]" />
-            <span>{reviews.length} Testimonials Moderated</span>
+            <span>{reviews.length} Reviews Moderated</span>
           </span>
         </div>
       </div>

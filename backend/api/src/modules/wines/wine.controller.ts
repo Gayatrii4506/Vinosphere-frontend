@@ -366,6 +366,17 @@ export class WineController {
 
   async createWine(req: Request, res: Response) {
     try {
+      const user = (req as any).user;
+      const role = (user?.role || user?.app_metadata?.role || '').toLowerCase();
+      const userWineryId = user?.wineryId || user?.app_metadata?.winery_id || user?.user_metadata?.winery_id || user?.user_metadata?.wineryId;
+
+      if (role !== 'admin' && role !== 'superadmin') {
+        if (!userWineryId) {
+          return res.status(403).json({ status: 'error', message: 'No estate associated with this winery account' });
+        }
+        req.body.winery_id = userWineryId;
+      }
+
       const wine = await wineService.createWine(req.body);
       cacheService.invalidateWines();
       res.status(201).json({ status: 'success', data: wine });
@@ -377,6 +388,22 @@ export class WineController {
   async updateWine(req: Request, res: Response) {
     try {
       const id = req.params.id as string;
+      const existing = await wineService.getWineById(id);
+      if (!existing) {
+        return res.status(404).json({ status: 'error', message: `Wine with ID ${id} not found` });
+      }
+
+      const user = (req as any).user;
+      const role = (user?.role || user?.app_metadata?.role || '').toLowerCase();
+      const userWineryId = user?.wineryId || user?.app_metadata?.winery_id || user?.user_metadata?.winery_id || user?.user_metadata?.wineryId;
+
+      if (role !== 'admin' && role !== 'superadmin') {
+        if (existing.winery_id !== userWineryId) {
+          return res.status(403).json({ status: 'error', message: 'Access denied: You are not authorized to update another winery estate\'s wines.' });
+        }
+        delete req.body.winery_id;
+      }
+
       const wine = await wineService.updateWine(id, req.body);
       cacheService.invalidateWines();
       res.status(200).json({ status: 'success', data: wine });
@@ -388,6 +415,21 @@ export class WineController {
   async deleteWine(req: Request, res: Response) {
     try {
       const id = req.params.id as string;
+      const existing = await wineService.getWineById(id);
+      if (!existing) {
+        return res.status(404).json({ status: 'error', message: `Wine with ID ${id} not found` });
+      }
+
+      const user = (req as any).user;
+      const role = (user?.role || user?.app_metadata?.role || '').toLowerCase();
+      const userWineryId = user?.wineryId || user?.app_metadata?.winery_id || user?.user_metadata?.winery_id || user?.user_metadata?.wineryId;
+
+      if (role !== 'admin' && role !== 'superadmin') {
+        if (existing.winery_id !== userWineryId) {
+          return res.status(403).json({ status: 'error', message: 'Access denied: You are not authorized to delete another winery estate\'s wines.' });
+        }
+      }
+
       await wineService.deleteWine(id);
       cacheService.invalidateWines();
       res.status(204).send();

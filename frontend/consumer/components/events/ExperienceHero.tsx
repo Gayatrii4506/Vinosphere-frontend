@@ -49,11 +49,11 @@ export const ExperienceHero: React.FC<ExperienceHeroProps> = ({
                     className="text-center max-w-3xl mx-auto mb-10"
                 >
                     <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-vino-darker leading-[1.15] mb-4">
-                        Discover & Book <br className="hidden sm:block" />
-                        <span className="italic font-normal text-vino-accent">Extraordinary</span> Wine Journeys
+                        Discover &amp; Book <br className="hidden sm:block" />
+                        <span className="italic font-normal text-vino-accent">Authentic</span> Vineyard Experiences
                     </h1>
                     <p className="text-vino-dark/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                        From sunset harvest galas in Nashik to masterclasses in Nandi Hills. Hosted by certified sommeliers & Michelin chefs.
+                        From sunset harvest galas in Nashik to barrel tastings in Dindori. Hosted by estate winemakers, resident sommeliers, and culinary partners.
                     </p>
                 </motion.div>
 

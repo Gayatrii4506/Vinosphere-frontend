@@ -5,7 +5,7 @@ import { WineriesClient } from './WineriesClient'
 export const metadata: Metadata = {
     title: 'Wineries | VinoSphere',
     description:
-        'Explore handpicked wineries from around the world, learn their stories, discover their signature wines, and plan unforgettable tasting experiences.',
+        'Explore premier estates and boutique vineyards across Nashik and Maharashtra, discover signature vintages, and book authentic tasting experiences.',
 }
 
 export default async function WineriesPage() {

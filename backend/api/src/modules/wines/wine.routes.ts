@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { wineController } from './wine.controller';
-import { optionalAuth } from '../../middleware/authMiddleware';
+import { protect, optionalAuth } from '../../middleware/authMiddleware';
+import { restrictTo, requireWineryIsolation } from '../../middleware/roleMiddleware';
 
 const router = Router();
 
@@ -13,16 +14,16 @@ router.post('/recommendations/engine', optionalAuth, wineController.recommendUse
 router.get('/recommendations/user/:userId', wineController.recommendUserWines);
 router.get('/:id/similar', wineController.getSimilarWines);
 
-// Wine Interaction Endpoint (Phase 17 Requirement 5)
+// Wine Interaction Endpoint
 router.post('/:wineId/interactions', optionalAuth, wineController.recordWineInteraction);
 
 router.route('/')
   .get(optionalAuth, wineController.getAllWines)
-  .post(wineController.createWine);
+  .post(protect, restrictTo('admin', 'winery'), requireWineryIsolation, wineController.createWine);
 
 router.route('/:id')
   .get(wineController.getWineById)
-  .put(wineController.updateWine)
-  .delete(wineController.deleteWine);
+  .put(protect, restrictTo('admin', 'winery'), requireWineryIsolation, wineController.updateWine)
+  .delete(protect, restrictTo('admin', 'winery'), requireWineryIsolation, wineController.deleteWine);
 
 export default router;

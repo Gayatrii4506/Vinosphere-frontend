@@ -4,8 +4,8 @@ import { sendEmail } from '../../shared/utils/email';
 import { supabaseAdmin } from '../../config/supabase';
 
 export class BookingService {
-  async getAllBookings() {
-    return await bookingRepository.findAll();
+  async getAllBookings(filters?: Record<string, any>) {
+    return await bookingRepository.findAll(filters);
   }
 
   async getBookingById(id: string) {

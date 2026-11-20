@@ -1,14 +1,19 @@
 import { Router } from 'express';
 import { dashboardController } from './dashboard.controller';
 import { catchAsync } from '../../shared/utils/catchAsync';
+import { protect } from '../../middleware/authMiddleware';
+import { restrictTo, requireWineryIsolation } from '../../middleware/roleMiddleware';
 
 const router = Router();
+
+// Enforce authentication, role authorization, and tenant isolation for all :wineryId endpoints
+router.use('/:wineryId', protect, restrictTo('admin', 'winery'), requireWineryIsolation);
 
 // e.g. GET /api/v1/dashboard/:wineryId/inventory
 router.get('/:wineryId/inventory', catchAsync(dashboardController.getInventory));
 
 // e.g. PUT /api/v1/dashboard/inventory/:inventoryId
-router.put('/inventory/:inventoryId', catchAsync(dashboardController.updateStock));
+router.put('/inventory/:inventoryId', protect, restrictTo('admin', 'winery'), catchAsync(dashboardController.updateStock));
 
 // e.g. GET /api/v1/dashboard/:wineryId/analytics
 router.get('/:wineryId/analytics', catchAsync(dashboardController.getAnalytics));

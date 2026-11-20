@@ -214,23 +214,18 @@ export default function DashboardOverview() {
 
   return (
     <div className="space-y-8 text-left">
-      {/* Welcome Banner — Modeled after Winery Management Suite */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-8 rounded-3xl border border-[#ECECEC] shadow-sm relative overflow-hidden">
-        {/* Subtle radial glows */}
-        <div className="absolute top-0 right-0 w-56 h-56 bg-[#6D071A]/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-16 w-36 h-36 bg-[#D4AF37]/10 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="space-y-2 text-left z-10">
+      {/* Executive Console Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-7 rounded-2xl border border-[#ECECEC] shadow-sm relative overflow-hidden">
+        <div className="space-y-1.5 text-left z-10">
           <div className="flex items-center gap-2">
             <span className="text-xs uppercase font-bold text-[#6D071A] tracking-wider">Superadmin Console</span>
-            <span className="px-2 py-0.5 bg-[#6D071A] text-white text-[9px] font-bold rounded-full">VinoSphere v2.4</span>
+            <span className="px-2 py-0.5 bg-[#FAF5D3] text-[#936F18] border border-[#D4AF37]/30 text-[10px] font-bold rounded-md">Live Platform Environment</span>
           </div>
-          <h2 className="text-3xl font-bold font-serif text-[#222222]">
-            Welcome back, <br className="sm:hidden" />
-            <span className="text-gradient-burgundy">{adminName}</span>
+          <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#222222]">
+            Platform Overview &bull; <span className="text-[#6D071A]">{adminName}</span>
           </h2>
           <p className="text-xs text-[#6D6D6D] max-w-xl">
-            Here is your executive ecosystem overview. Review pending estate applications, monitor vintage listings, track reservation volume, and inspect real-time platform telemetry.
+            Operational oversight for verified estates, pending onboarding applications, vintage listings, reservations, and member reviews.
           </p>
         </div>
 

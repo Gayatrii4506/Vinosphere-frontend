@@ -20,10 +20,10 @@ export default function WelcomePage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent to-vino-dark" />
                 <div className="absolute bottom-12 left-12 max-w-md">
                     <h2 className="text-4xl font-serif text-white mb-4">
-                        Discover the Extraordinary
+                        Discover Nashik&apos;s Finest Terroir
                     </h2>
                     <p className="text-vino-gray/80 text-lg font-light leading-relaxed">
-                        Join our exclusive community of wine enthusiasts. Curated selections, private events, and intelligent pairings await.
+                        Explore estate-bottled vintages, guided vineyard tastings, and sommelier-curated culinary pairings.
                     </p>
                 </div>
             </div>
@@ -52,7 +52,7 @@ export default function WelcomePage() {
                             Welcome to VinoSphere
                         </h1>
                         <p className="text-vino-gray/70">
-                            Enter your details to continue your journey.
+                            Sign in to access your saved cellar bottles, tasting reservations, and personalized palate.
                         </p>
                     </div>
 

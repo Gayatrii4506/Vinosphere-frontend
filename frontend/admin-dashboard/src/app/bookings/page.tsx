@@ -1,12 +1,13 @@
 'use client'
 
-import { Ticket, Users, CheckCircle2, Clock } from 'lucide-react'
+import { Ticket, Users, CheckCircle2, Clock, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedBooking, setSelectedBooking] = useState<any | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -166,7 +167,7 @@ export default function BookingsPage() {
 
                     <td className="px-6 py-4 whitespace-nowrap text-right text-xs font-medium">
                       <button 
-                        onClick={() => alert(`Booking Details:\n\nRef: ${booking.id}\nGuest: ${booking.users?.full_name || 'N/A'}\nGuests: ${booking.guests || 1}\nEstate: ${booking.wineries?.name || 'N/A'}`)}
+                        onClick={() => setSelectedBooking(booking)}
                         className="text-[#6D071A] hover:text-[#841126] font-semibold px-3 py-1.5 hover:bg-[#FDF2F4] rounded-lg transition-colors border border-transparent hover:border-[#6D071A]/20 cursor-pointer"
                       >
                         Inspect
@@ -179,6 +180,71 @@ export default function BookingsPage() {
           </table>
         </div>
       </div>
+
+      {/* RESERVATION INSPECTION MODAL */}
+      {selectedBooking && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-6 border border-[#ECECEC] shadow-2xl space-y-5 text-left">
+            <div className="flex justify-between items-center border-b border-[#ECECEC] pb-3">
+              <div className="flex items-center gap-2">
+                <Ticket className="w-5 h-5 text-[#6D071A]" />
+                <h3 className="text-base font-bold font-serif text-[#222222]">Reservation Details</h3>
+              </div>
+              <button
+                onClick={() => setSelectedBooking(null)}
+                className="p-1.5 hover:bg-[#F8F9FB] rounded-lg transition"
+              >
+                <X className="w-4 h-4 text-charcoal-600" />
+              </button>
+            </div>
+
+            <div className="p-4 bg-[#FAF7F2] rounded-xl border border-[#EDE5D8] space-y-2.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Reservation Reference:</span>
+                <code className="font-mono font-bold text-[#6D071A]">{selectedBooking.id}</code>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Patron / Guest:</span>
+                <span className="font-bold text-[#222222]">{selectedBooking.users?.full_name || 'Guest'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Guest Email:</span>
+                <span className="font-mono text-stone-700">{selectedBooking.users?.email || 'N/A'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Estate / Venue:</span>
+                <span className="font-semibold text-[#6D071A]">{selectedBooking.wineries?.name || 'Partner Estate'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Event / Experience:</span>
+                <span className="font-bold text-[#222222]">{selectedBooking.events?.title || selectedBooking.experiences?.title || 'Tasting & Tour'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Party Size:</span>
+                <span className="font-bold text-[#222222]">{selectedBooking.guests || 1} Guests</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Reservation Status:</span>
+                <span className="font-bold text-emerald-700 capitalize">{selectedBooking.booking_status || 'Confirmed'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Booked At:</span>
+                <span className="text-stone-600">{new Date(selectedBooking.created_at).toLocaleString()}</span>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => setSelectedBooking(null)}
+                className="px-4 py-2 border border-[#ECECEC] hover:bg-[#F8F9FB] text-stone-700 text-xs font-bold rounded-xl transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

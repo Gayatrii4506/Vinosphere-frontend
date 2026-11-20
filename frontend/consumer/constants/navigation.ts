@@ -35,11 +35,11 @@ export const NAVIGATION_ITEMS: NavItem[] = [
         href: '/food-pairing',
     },
     {
-        label: 'Estate Journeys',
+        label: 'Events & Tastings',
         href: '/events',
     },
     {
-        label: 'About Us',
+        label: 'About',
         href: '/about',
     },
 ]

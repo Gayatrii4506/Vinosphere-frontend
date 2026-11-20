@@ -1,41 +1,30 @@
 'use server'
 
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
-
-async function getAdminClient() {
-  const cookieStore = await cookies()
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-  
-  return createServerClient(
-    supabaseUrl,
-    serviceKey, 
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll() {}
-      }
-    }
-  )
-}
+import { createClient } from '@/lib/supabase/server'
 
 export async function updateWineryStatus(wineryId: string, status: 'approved' | 'rejected' | 'suspended') {
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1';
   let backendResult: any = null;
 
-  // 1. Dispatch through Backend API to activate user and send official credentials email
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  const accessToken = session?.access_token;
+
+  // 1. Dispatch through Backend API using the authenticated user's access token
   try {
     const action = status === 'approved' ? 'approve' : 'reject';
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (accessToken) {
+      headers['Authorization'] = `Bearer ${accessToken}`;
+    }
     let res = await fetch(`${backendUrl}/admin/${action}/${wineryId}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers
     });
     if (!res.ok) {
-      // fallback to auth/admin
       res = await fetch(`${backendUrl}/auth/admin/${action}/${wineryId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers
       });
     }
     if (res.ok) {
@@ -45,11 +34,10 @@ export async function updateWineryStatus(wineryId: string, status: 'approved' | 
     console.warn('Backend approval API call notice:', backendErr.message);
   }
 
-  // 2. Also ensure Supabase state is updated directly
+  // 2. Also ensure Supabase state is updated directly via authenticated client
   try {
-    const supabaseAdmin = await getAdminClient();
     const dbStatus = status === 'approved' ? 'published' : (status === 'rejected' ? 'archived' : 'draft');
-    const { error } = await supabaseAdmin
+    const { error } = await supabase
       .from('wineries')
       .update({ status: dbStatus, verified: status === 'approved' })
       .eq('id', wineryId);

@@ -9,6 +9,17 @@ from services.wine_image_matcher import WineImageMatcher
 
 router = APIRouter()
 
+# ---------------------------------------------------------------------------
+# GET /health
+# ---------------------------------------------------------------------------
+@router.get("/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "vinosphere-food-recommendation-ml",
+        "version": "1.0.0"
+    }
+
 # Instantiated once at startup
 food_catalog = FoodCatalogService()
 wine_catalog = WineCatalogService()

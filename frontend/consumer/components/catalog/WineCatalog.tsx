@@ -534,18 +534,18 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [], hid
                         // Accurate, selective recommendation badges
                         let badge: string | undefined = undefined
                         if (dislikedSet.has(wineIdStr)) {
-                            badge = '👎 Marked Not for You'
+                            badge = 'Outside Preference Profile'
                         } else if ((explicitMatchesCount >= 2 && score >= 75) || (hasInteractionMatch && score >= 70)) {
-                            badge = '✨ Matches Your Taste'
+                            badge = 'Matches Your Palate'
                         } else if (isTrySomethingNew) {
-                            badge = '🌱 Try Something New'
+                            badge = 'Curated Exploration'
                             reasons.unshift('Explore outside your usual style with matching flavor notes')
                         } else if (isPartialMatch || (hasExplicitPreferences && explicitMatchesCount >= 1 && score >= 55)) {
-                            badge = '✨ Partial Taste Match'
+                            badge = 'Harmonious Style'
                         } else if (reviews >= 25 || rating >= 92) {
-                            badge = '⭐ Popular Choice'
+                            badge = 'Cellar Favorite'
                         } else if (wine.isBeginnerFriendly && isBeginner) {
-                            badge = '🌱 Beginner Friendly'
+                            badge = 'Approachable Vintage'
                         } else {
                             badge = undefined // Clean standard inventory
                         }
@@ -629,13 +629,13 @@ export const WineCatalog: React.FC<WineCatalogProps> = ({ initialWines = [], hid
 
                     let badge: string | undefined = undefined
                     if (likedSet.has(wineIdStr) || wishlistedSet.has(wineIdStr) || purchasedSet.has(wineIdStr)) {
-                        badge = '✨ Matches Your Taste'
+                        badge = 'Matches Your Palate'
                     } else if (dislikedSet.has(wineIdStr)) {
-                        badge = '👎 Marked Not for You'
+                        badge = 'Outside Preference Profile'
                     } else if (wine.isBeginnerFriendly) {
-                        badge = '🌱 Beginner Friendly'
+                        badge = 'Approachable Vintage'
                     } else if (reviews >= 25 || rating >= 92) {
-                        badge = '⭐ Popular Choice'
+                        badge = 'Cellar Favorite'
                     } else {
                         badge = undefined
                     }

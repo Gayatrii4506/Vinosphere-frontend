@@ -1,86 +1,80 @@
 'use client'
 
 import React from 'react'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Star, Quote } from 'lucide-react'
+import { Wine, Calendar, Clock, Compass, ShieldCheck } from 'lucide-react'
 
-const TESTIMONIALS = [
+const GUIDELINES = [
     {
-        id: 't1',
-        name: 'Dr. Siddharth Kapoor',
-        role: 'Wine Collector & Enthusiast',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
-        content: 'Booking the Grover Zampa Sommelier Masterclass through VinoSphere was seamless. The blind tasting session inside the cellar vault was world-class!',
-        rating: 5,
-        experience: 'Grand Sommelier Masterclass',
+        id: 'g1',
+        title: 'Tasting Progression',
+        icon: Wine,
+        content: 'Begin with crisp Méthode Traditionnelle sparklings, progress through aromatic whites like Chenin Blanc, and conclude with full-bodied oaked reds such as Dindori Reserve Shiraz.',
+        tip: 'Rinse with room-temperature water between varietals to keep your palate fresh.',
     },
     {
-        id: 't2',
-        name: 'Rhea Sen',
-        role: 'Food & Lifestyle Journalist',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-        content: 'The Nashik Harvest Gala experience exceeded all expectations. Live jazz under the sunset with Sula Dindori Shiraz was unforgettable.',
-        rating: 5,
-        experience: 'Nashik Grape Harvest & Stomp Gala',
+        id: 'g2',
+        title: 'Harvest Season & Timing',
+        icon: Calendar,
+        content: 'The prime Nashik harvest and grape-stomping season spans January through March. Late afternoon tastings (3:30 PM to 6:00 PM) offer panoramic sunsets over the Gangapur hills.',
+        tip: 'Book 3–5 days ahead for weekend barrel-room tastings and vineyard picnics.',
     },
     {
-        id: 't3',
-        name: 'Arjun & Meera Singhania',
-        role: 'VinoSphere Club Members',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
-        content: 'The 5-course chef pairing at York Winery was a highlight of our year. Exquisite wines, panoramic lake views, and impeccable service.',
-        rating: 5,
-        experience: 'Lakefront Sunset & 5-Course Chef Pairing',
+        id: 'g3',
+        title: 'Cellar Door Etiquette',
+        icon: Compass,
+        content: 'Estate tours involve active crush pads, barrel halls, and cellar cellars. Wear closed-toe footwear and avoid heavy colognes or perfumes that mask delicate vintage bouquets.',
+        tip: 'Cellar temperature is maintained around 14°C–16°C; bring a light layer.',
     },
 ]
 
 export const CustomerReviewsSection: React.FC = () => {
     return (
-        <section className="py-20 bg-vino-cream/60 overflow-hidden">
+        <section className="py-20 bg-vino-cream/60 overflow-hidden border-t border-[#EDE5D8]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-2xl mx-auto mb-14">
-                    <span className="text-xs font-bold uppercase tracking-widest text-vino-accent">Verified Guest Stories</span>
-                    <h2 className="font-serif text-3xl sm:text-4xl font-bold text-vino-darker mt-2">
-                        Loved by Wine Connoisseurs
+                <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
+                    <span className="text-xs font-bold uppercase tracking-widest text-vino-accent">Visitor Guidelines</span>
+                    <h2 className="font-serif text-3xl sm:text-4xl font-bold text-vino-darker">
+                        Cellar Door &amp; Tasting Etiquette
                     </h2>
+                    <p className="text-xs sm:text-sm text-stone-600">
+                        Essential advice for planning authentic estate visits across Nashik and Maharashtra wine country.
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {TESTIMONIALS.map((item, idx) => (
-                        <motion.div
-                            key={item.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: idx * 0.15 }}
-                            className="bg-white p-8 rounded-3xl border border-[#E8D4A8]/70 shadow-[0_4px_24px_rgba(44,24,16,0.04)] flex flex-col justify-between relative"
-                        >
-                            <Quote size={32} className="text-vino-accent/15 absolute top-6 right-6" />
+                    {GUIDELINES.map((item, idx) => {
+                        const Icon = item.icon
+                        return (
+                            <motion.div
+                                key={item.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: idx * 0.15 }}
+                                className="bg-white p-7 rounded-2xl border border-[#E8D4A8]/70 shadow-[0_4px_24px_rgba(44,24,16,0.04)] flex flex-col justify-between space-y-5"
+                            >
+                                <div className="space-y-4">
+                                    <div className="w-10 h-10 rounded-xl bg-vino-cream text-vino-accent border border-[#E8D4A8]/80 flex items-center justify-center">
+                                        <Icon size={18} />
+                                    </div>
 
-                            <div className="space-y-4 relative z-10">
-                                <div className="flex items-center gap-1 text-amber-400">
-                                    {Array.from({ length: item.rating }).map((_, i) => (
-                                        <Star key={i} size={14} className="fill-amber-400" />
-                                    ))}
+                                    <h3 className="font-serif text-lg font-bold text-vino-darker">
+                                        {item.title}
+                                    </h3>
+
+                                    <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
+                                        {item.content}
+                                    </p>
                                 </div>
 
-                                <p className="text-xs sm:text-sm text-vino-dark/80 italic leading-relaxed">
-                                    &ldquo;{item.content}&rdquo;
-                                </p>
-                            </div>
-
-                            <div className="pt-6 border-t border-vino-dark/10 flex items-center gap-3.5 mt-6">
-                                <div className="relative w-11 h-11 rounded-full overflow-hidden shrink-0 border border-vino-accent/30">
-                                    <Image src={item.avatar} alt={item.name} fill className="object-cover" />
+                                <div className="pt-4 border-t border-stone-200/80 text-[11px] text-stone-500 bg-[#FAF7F2] p-3 rounded-xl border border-stone-100">
+                                    <span className="font-bold text-vino-accent">Sommelier Tip: </span>
+                                    {item.tip}
                                 </div>
-                                <div>
-                                    <h4 className="font-bold text-sm text-vino-darker">{item.name}</h4>
-                                    <p className="text-[11px] text-vino-dark/50 font-medium">{item.role}</p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
+                            </motion.div>
+                        )
+                    })}
                 </div>
             </div>
         </section>

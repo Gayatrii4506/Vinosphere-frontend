@@ -112,14 +112,14 @@ export default function CellarView() {
                 </div>
                 <h2 className="font-serif text-3xl font-bold text-vino-darker mb-2 text-center">Your Cellar is Empty</h2>
                 <p className="text-stone-500 max-w-md text-center text-sm mb-6">
-                    You haven&apos;t added any wines to your wishlist yet. Click the heart icon on any bottle in the catalog to save it here!
+                    Save bottles from the wine catalog to build your personal tasting cellar, track vintages, and curate culinary pairings.
                 </p>
                 <Link
                     href="/discover/wines"
-                    className="px-6 py-3 rounded-full bg-vino-accent hover:bg-vino-accent-light text-white font-semibold text-sm transition-all shadow-md flex items-center gap-2"
+                    className="px-6 py-3 rounded-xl bg-vino-accent hover:bg-vino-accent-light text-white font-semibold text-sm transition-all shadow-md flex items-center gap-2"
                 >
                     <Sparkles size={16} />
-                    Explore Wine Catalog &rarr;
+                    Browse Wine Catalog &rarr;
                 </Link>
             </div>
         )

@@ -63,13 +63,13 @@ export const Hero: React.FC = () => {
                             className="font-serif font-bold text-white leading-[1.06]"
                         >
                             <span className="block text-[2rem] sm:text-[2.6rem] md:text-[3.2rem] lg:text-[3.5rem] xl:text-[4rem]">
-                                Discover the
+                                Discover Nashik&apos;s
                             </span>
                             <span className="block text-[2rem] sm:text-[2.6rem] md:text-[3.2rem] lg:text-[3.5rem] xl:text-[4rem] bg-gradient-to-r from-vino-gold via-vino-gold-light to-vino-gold bg-clip-text text-transparent">
-                                World&apos;s Finest
+                                Premier Estates &amp;
                             </span>
                             <span className="block text-[2rem] sm:text-[2.6rem] md:text-[3.2rem] lg:text-[3.5rem] xl:text-[4rem]">
-                                Wines
+                                Vintages
                             </span>
                         </motion.h1>
 
@@ -78,11 +78,8 @@ export const Hero: React.FC = () => {
                             variants={itemVariants}
                             className="text-vino-gray-dark text-sm sm:text-base leading-relaxed max-w-sm sm:max-w-md"
                         >
-                            Explore curated collections from the world&apos;s most prestigious
-                            vineyards. Discover your perfect wine, attend exclusive tastings,
-                            and elevate every occasion.
+                            Explore estate-bottled collections, reserve tasting rooms, and discover intelligent food pairings directly from India&apos;s celebrated wine country.
                         </motion.p>
-
 
                         {/* CTAs */}
                         <motion.div
@@ -103,7 +100,7 @@ export const Hero: React.FC = () => {
                                 className="tracking-wide text-sm sm:text-base w-full sm:w-auto active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-gold transition-all duration-200"
                                 onClick={() => router.push('/discover/wines')}
                             >
-                                Explore Wines
+                                Browse Wine Catalog
                             </Button>
                         </motion.div>
 

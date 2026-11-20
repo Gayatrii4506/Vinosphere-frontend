@@ -13,20 +13,46 @@ const app: Application = express();
 app.use(helmet()); // Sets secure HTTP headers
 app.use(cors({
   origin: (origin, callback) => {
-    // allow requests with no origin (like mobile apps, curl, server-to-server)
+    // Allow requests with no origin (like mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
 
-    // In development or when CORS_ORIGIN is *, reflect caller's origin so credentials: true is valid
-    if (process.env.NODE_ENV !== 'production' || process.env.CORS_ORIGIN === '*' || !process.env.CORS_ORIGIN) {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const normalizedOrigin = origin.replace(/\/+$/, '');
+
+    // In local development, permit localhost and 127.0.0.1
+    if (!isProduction) {
+      if (
+        normalizedOrigin.startsWith('http://localhost:') ||
+        normalizedOrigin.startsWith('http://127.0.0.1:') ||
+        !process.env.CORS_ORIGIN ||
+        process.env.CORS_ORIGIN === '*'
+      ) {
+        return callback(null, true);
+      }
+    }
+
+    // Explicit production allowlist:
+    // Only allows our designated three production Vercel frontend domains.
+    // Disallows localhost, wildcard '*', and untrusted *.vercel.app subdomains.
+    const defaultProductionOrigins = [
+      'https://vinosphere-consumer.vercel.app',
+      'https://vinosphere-winery.vercel.app',
+      'https://vinosphere-admin.vercel.app',
+    ];
+
+    const configuredOrigins = (process.env.CORS_ORIGIN || '')
+      .split(',')
+      .map((o) => o.trim().replace(/\/+$/, ''))
+      .filter((o) => o && o !== '*');
+
+    const allowedOrigins = configuredOrigins.length > 0 ? configuredOrigins : defaultProductionOrigins;
+
+    if (allowedOrigins.includes(normalizedOrigin)) {
       return callback(null, true);
     }
 
-    const allowedOrigins = process.env.CORS_ORIGIN.split(',').map((o) => o.trim());
-    if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
-      return callback(null, true);
-    }
-
-    return callback(null, true);
+    console.warn(`[CORS] Request from origin '${origin}' blocked by production policy`);
+    return callback(new Error(`Origin ${origin} not allowed by CORS policy`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -47,9 +73,16 @@ app.use(cookieParser()); // Parse cookies
 // Mount API Routes
 app.use('/api/v1', apiRoutes);
 
-// Health Check Route
-app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'success', message: 'VinoSphere API is running' });
+// Health Check Routes
+app.get(['/health', '/api/v1/health'], (req: Request, res: Response) => {
+  res.status(200).json({
+    status: 'healthy',
+    service: 'vinosphere-backend-api',
+    version: '1.0.0',
+    uptime: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // Global Error Handler

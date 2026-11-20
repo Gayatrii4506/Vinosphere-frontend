@@ -44,12 +44,12 @@ const EVENTS: EventItem[] = [
         fromPrice: '\u20b92,500',
     },
     {
-        id: 'harvest',
+        id: 'amphitheatre-acoustic',
         badge: 'Concert',
         image: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784629602/amphitheater_n1oqwo.avif',
-        title: 'Amphitheatre',
-        venue: 'Sula Vineyards',
-        date: '14 Feb 2026',
+        title: 'Sunset Amphitheatre Sessions',
+        venue: 'Sula Amphitheatre',
+        date: '28 Nov 2026',
         location: 'Nashik, Maharashtra',
         spotsLeft: 44,
         totalSpots: 200,
@@ -59,13 +59,13 @@ const EVENTS: EventItem[] = [
         id: 'wine-dine-2026',
         badge: 'Dinner',
         image: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1784631705/wine_dine_exnqpf.png',
-        title: 'Nashik Wine & Dine Experience',
+        title: 'Nashik Lakeview Wine & Dine',
         venue: 'York Winery',
         date: '20 Dec 2026',
-        location: 'Gangapur, Nashik',
+        location: 'Gangapur Dam, Nashik',
         spotsLeft: 8,
         totalSpots: 40,
-        fromPrice: '\u20b91500',
+        fromPrice: '\u20b91,500',
     },
 ]
 
@@ -106,8 +106,8 @@ const EventCard: React.FC<{ event: EventItem }> = ({ event }) => {
         transition={{ duration: 0.25 }}
         className="
             group relative flex flex-col overflow-hidden rounded-2xl
-            bg-[#1A0810]/90 backdrop-blur-md
-            border border-[rgba(255,233,91,0.35)]
+            bg-[#1A0810]/95 backdrop-blur-md
+            border border-white/10 hover:border-vino-gold/40
             shadow-[0_8px_32px_rgba(0,0,0,0.35)]
         "
     >
@@ -230,7 +230,7 @@ export const UpcomingEvents: React.FC = () => {
                         {/* Eyebrow */}
                         <motion.div variants={headerVariant} className="flex items-center gap-2">
                             <span className="text-[10px] tracking-[0.26em] uppercase font-semibold text-vino-gold">
-                                Don&apos;t Miss Out
+                                Estate Calendar
                             </span>
                         </motion.div>
 

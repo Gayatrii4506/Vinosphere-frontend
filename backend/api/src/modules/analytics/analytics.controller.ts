@@ -24,7 +24,16 @@ export class AnalyticsController {
   async getWineryAnalytics(req: Request, res: Response) {
     try {
       const wineryId = String(req.params.wineryId || '');
-      // Ideally, ensure (req as any).user owns this wineryId
+      const user = (req as any).user;
+      const role = (user?.role || user?.app_metadata?.role || '').toLowerCase();
+      const userWineryId = user?.wineryId || user?.app_metadata?.winery_id || user?.user_metadata?.winery_id || user?.user_metadata?.wineryId;
+
+      if (role !== 'admin' && role !== 'superadmin') {
+        if (!userWineryId || String(wineryId).toLowerCase() !== String(userWineryId).toLowerCase()) {
+          return res.status(403).json({ status: 'error', message: 'Access denied: You are not authorized to view another winery estate\'s analytics.' });
+        }
+      }
+
       const analytics = await analyticsService.getWineryAnalytics(wineryId);
       res.status(200).json({ status: 'success', data: analytics });
     } catch (error: any) {
@@ -109,7 +118,21 @@ export class AnalyticsController {
   // Phase 10: API - Generate recommendations manually
   async generateRecommendations(req: Request, res: Response) {
     try {
-        const { wineryId } = req.body;
+        let wineryId = req.body?.wineryId || req.body?.winery_id;
+        const user = (req as any).user;
+        const role = (user?.role || user?.app_metadata?.role || '').toLowerCase();
+        const userWineryId = user?.wineryId || user?.app_metadata?.winery_id || user?.user_metadata?.winery_id || user?.user_metadata?.wineryId;
+
+        if (role !== 'admin' && role !== 'superadmin') {
+          if (!userWineryId) {
+            return res.status(403).json({ error: 'No winery estate linked to this account' });
+          }
+          if (wineryId && String(wineryId).trim().toLowerCase() !== String(userWineryId).trim().toLowerCase()) {
+            return res.status(403).json({ error: 'Access denied: You cannot generate recommendations for another winery estate' });
+          }
+          wineryId = userWineryId;
+        }
+
         if (!wineryId) {
             return res.status(400).json({ error: 'wineryId is required' });
         }

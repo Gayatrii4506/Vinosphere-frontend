@@ -7,7 +7,6 @@ import {
   Wine, 
   FileCheck, 
   Users, 
-  LogOut, 
   Calendar, 
   Compass, 
   Ticket, 
@@ -15,23 +14,9 @@ import {
   BarChart3,
   CheckCircle2
 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const router = useRouter()
-  const supabase = createClient()
-
-  const handleSignOut = async () => {
-    try {
-      await supabase.auth.signOut()
-    } catch (e) {
-      console.error(e)
-    }
-    localStorage.removeItem('token')
-    router.refresh()
-  }
 
   const navSections = [
     {
@@ -137,14 +122,6 @@ export default function Sidebar() {
             </div>
           </div>
         </div>
-
-        <button
-          onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-[#EF4444] bg-[#F8F9FB] rounded-xl hover:bg-red-50 transition cursor-pointer"
-        >
-          <LogOut className="w-3.5 h-3.5" />
-          <span>Exit Console</span>
-        </button>
       </div>
     </aside>
   )

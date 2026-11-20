@@ -116,7 +116,7 @@ export const FeaturedCategories: React.FC = () => {
                             Discover India&apos;s wine ecosystem through Nashik&apos;s vineyards, wineries, wine tourism, and personalized experiences — all connected through one intelligent digital platform.
                         </motion.p>
 
-                        {/* Bottom Actions Row: BUY NOW + EXPLORE WINERIES */}
+                        {/* Bottom Actions Row: BROWSE CATALOG + EXPLORE WINERIES */}
                         <motion.div
                             initial={{ opacity: 1, y: 15 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -126,15 +126,15 @@ export const FeaturedCategories: React.FC = () => {
                         >
                             <Link
                                 href="/discover/wines"
-                                className="px-6 py-2.5 rounded-full bg-vino-accent hover:bg-vino-accent-light text-white text-xs font-bold tracking-[0.2em] uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent focus-visible:ring-offset-2 inline-block"
+                                className="px-6 py-2.5 rounded-xl bg-vino-accent hover:bg-vino-accent-light text-white text-xs font-bold tracking-wider uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent focus-visible:ring-offset-2 inline-block"
                             >
-                                BUY NOW
+                                Browse Catalog
                             </Link>
 
-                            {/* Red / Burgundy Explore Wineries Pill Button */}
+                            {/* Red / Burgundy Explore Wineries Button */}
                             <Link
                                 href="/wineries"
-                                className="px-5 py-2.5 rounded-full border border-vino-accent text-vino-accent hover:bg-vino-accent hover:text-white text-xs font-bold tracking-widest uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent focus-visible:ring-offset-2 flex items-center gap-2 group inline-flex"
+                                className="px-5 py-2.5 rounded-xl border border-vino-accent text-vino-accent hover:bg-vino-accent hover:text-white text-xs font-bold tracking-wider uppercase transition-all shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vino-accent focus-visible:ring-offset-2 flex items-center gap-2 group inline-flex"
                             >
                                 Explore Wineries
                                 <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />

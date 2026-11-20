@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { dashboardService } from './dashboard.service';
+import { db } from '../../adapters/database';
 import { AppError } from '../../shared/errors/AppError';
 
 export class DashboardController {
@@ -16,6 +17,20 @@ export class DashboardController {
     const { quantity } = req.body;
 
     if (quantity === undefined) throw new AppError('quantity is required', 400);
+
+    const user = (req as any).user;
+    const role = (user?.role || user?.app_metadata?.role || '').toLowerCase();
+    const userWineryId = user?.wineryId || user?.app_metadata?.winery_id || user?.user_metadata?.winery_id || user?.user_metadata?.wineryId;
+
+    if (role !== 'admin' && role !== 'superadmin') {
+      const inventory = await db.findOne('wine_inventory', { id: inventoryId });
+      if (!inventory) {
+        throw new AppError(`Inventory item with ID ${inventoryId} not found`, 404);
+      }
+      if (inventory.winery_id && inventory.winery_id !== userWineryId) {
+        throw new AppError('Access denied: You are not authorized to update inventory for another winery estate.', 403);
+      }
+    }
 
     const updated = await dashboardService.updateStock(inventoryId, quantity);
     res.status(200).json({ status: 'success', data: updated });

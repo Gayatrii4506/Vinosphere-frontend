@@ -22,8 +22,8 @@ const envSchema = z.object({
   CLOUDINARY_API_KEY: z.string().min(1, "CLOUDINARY_API_KEY is required"),
   CLOUDINARY_API_SECRET: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
 
-  // JWT configuration (if we implement custom JWT parsing alongside Supabase)
-  JWT_SECRET: z.string().optional(),
+  // JWT configuration (strictly required for winery management authentication)
+  JWT_SECRET: z.string().min(16, "JWT_SECRET is required and must be at least 16 characters"),
 });
 
 // Parse the environment variables

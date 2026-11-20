@@ -3,8 +3,8 @@ import { db } from '../../adapters/database';
 export class BookingRepository {
   private readonly tableName = 'bookings';
 
-  async findAll() {
-    return await db.find(this.tableName);
+  async findAll(filters?: Record<string, any>) {
+    return await db.find(this.tableName, filters);
   }
 
   async findById(id: string) {

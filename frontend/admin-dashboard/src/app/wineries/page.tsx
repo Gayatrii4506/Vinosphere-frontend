@@ -1,6 +1,6 @@
 'use client'
 
-import { Wine, Plus, MapPin, CheckCircle2, Clock, Search } from 'lucide-react'
+import { Wine, Plus, MapPin, CheckCircle2, Clock, Search, X, Building2, Copy, Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
@@ -8,6 +8,9 @@ export default function WineriesPage() {
   const [wineries, setWineries] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedWinery, setSelectedWinery] = useState<any | null>(null)
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
+  const [copiedInvite, setCopiedInvite] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -57,7 +60,7 @@ export default function WineriesPage() {
         </div>
 
         <button 
-          onClick={() => alert('New winery registration can be initiated via the public Winery Onboarding Portal.')}
+          onClick={() => setInviteModalOpen(true)}
           className="bg-[#6D071A] hover:bg-[#841126] text-white px-5 py-2.5 rounded-xl font-bold transition-all duration-200 flex items-center gap-2 shadow-sm cursor-pointer self-start sm:self-auto text-xs"
         >
           <Plus size={16} className="text-[#FAF5D3]" />
@@ -175,7 +178,7 @@ export default function WineriesPage() {
 
                     <td className="px-6 py-4 whitespace-nowrap text-right text-xs font-medium">
                       <button 
-                        onClick={() => alert(`Estate Details:\n\nName: ${winery.name}\nCity: ${winery.city || 'N/A'}\nStatus: ${winery.status || 'N/A'}\nCreated: ${new Date(winery.created_at).toLocaleString()}`)}
+                        onClick={() => setSelectedWinery(winery)}
                         className="text-[#6D071A] hover:text-[#841126] font-semibold px-3 py-1.5 hover:bg-[#FDF2F4] rounded-lg transition-colors border border-transparent hover:border-[#6D071A]/20 cursor-pointer"
                       >
                         Inspect
@@ -188,6 +191,118 @@ export default function WineriesPage() {
           </table>
         </div>
       </div>
+
+      {/* ESTATE INSPECT MODAL */}
+      {selectedWinery && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-6 border border-[#ECECEC] shadow-2xl space-y-5 text-left">
+            <div className="flex justify-between items-center border-b border-[#ECECEC] pb-3">
+              <div className="flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-[#6D071A]" />
+                <h3 className="text-base font-bold font-serif text-[#222222]">Estate Partner Record</h3>
+              </div>
+              <button
+                onClick={() => setSelectedWinery(null)}
+                className="p-1.5 hover:bg-[#F8F9FB] rounded-lg transition"
+              >
+                <X className="w-4 h-4 text-charcoal-600" />
+              </button>
+            </div>
+
+            <div className="p-4 bg-[#FAF7F2] rounded-xl border border-[#EDE5D8] space-y-2.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Estate Name:</span>
+                <span className="font-bold text-[#222222]">{selectedWinery.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Region / Terroir:</span>
+                <span className="font-semibold text-[#6D071A]">{selectedWinery.city || 'Nashik'}, {selectedWinery.state || 'Maharashtra'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Verification Status:</span>
+                <span className="font-bold text-emerald-700 capitalize">{selectedWinery.status || 'Active'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Contact Email:</span>
+                <span className="font-mono text-[#222222]">{selectedWinery.email || 'estate@vinosphere.in'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#888888]">Registered On:</span>
+                <span className="text-stone-600">{new Date(selectedWinery.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+              </div>
+            </div>
+
+            {selectedWinery.description && (
+              <div className="p-3 bg-white rounded-xl border border-[#ECECEC] text-xs">
+                <span className="font-bold text-[#222222] block mb-1">Estate Biography</span>
+                <p className="text-stone-600 leading-relaxed">{selectedWinery.description}</p>
+              </div>
+            )}
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => setSelectedWinery(null)}
+                className="px-4 py-2 border border-[#ECECEC] hover:bg-[#F8F9FB] text-stone-700 text-xs font-bold rounded-xl transition"
+              >
+                Close Record
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* REGISTER ESTATE INVITE MODAL */}
+      {inviteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-md p-6 border border-[#ECECEC] shadow-2xl space-y-5 text-left">
+            <div className="flex justify-between items-center border-b border-[#ECECEC] pb-3">
+              <div className="flex items-center gap-2">
+                <Plus className="w-5 h-5 text-[#6D071A]" />
+                <h3 className="text-base font-bold font-serif text-[#222222]">Register New Estate</h3>
+              </div>
+              <button
+                onClick={() => setInviteModalOpen(false)}
+                className="p-1.5 hover:bg-[#F8F9FB] rounded-lg transition"
+              >
+                <X className="w-4 h-4 text-charcoal-600" />
+              </button>
+            </div>
+
+            <p className="text-xs text-stone-600 leading-relaxed">
+              New wineries initiate their verified onboarding through the secure Winery Registration Portal. Send this direct enrollment link to estate proprietors:
+            </p>
+
+            <div className="p-3 bg-[#FAF7F2] border border-[#EDE5D8] rounded-xl flex items-center justify-between gap-2">
+              <code className="text-xs font-mono text-[#6D071A] truncate select-all">
+                https://winery.vinosphere.in/register
+              </code>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText("https://winery.vinosphere.in/register");
+                  setCopiedInvite(true);
+                  setTimeout(() => setCopiedInvite(false), 2000);
+                }}
+                className="px-3 py-1.5 bg-[#6D071A] text-white text-xs font-bold rounded-lg hover:bg-[#841126] transition flex items-center gap-1 shrink-0"
+              >
+                {copiedInvite ? <Check size={13} /> : <Copy size={13} />}
+                <span>{copiedInvite ? "Copied!" : "Copy Link"}</span>
+              </button>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => setInviteModalOpen(false)}
+                className="px-4 py-2 border border-[#ECECEC] hover:bg-[#F8F9FB] text-stone-700 text-xs font-bold rounded-xl transition"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

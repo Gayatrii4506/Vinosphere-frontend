@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { analyticsController } from './analytics.controller';
 import { protect } from '../../middleware/authMiddleware';
+import { restrictTo, requireWineryIsolation } from '../../middleware/roleMiddleware';
 import edaRoutes from './eda.routes';
 
 const router = Router();
@@ -10,31 +11,32 @@ router.use('/eda', edaRoutes);
 
 // Track an event (public or authenticated)
 router.post('/track', analyticsController.trackEvent);
-router.post('/seed-sula', analyticsController.seedSulaAnalytics);
-// Get winery analytics (existing full stats, can be deprecated later)
-router.get('/winery/:wineryId', protect, analyticsController.getWineryAnalytics);
 
-// Phase 10: New Explicit Dashboards Endpoints
-router.get('/dashboard/:wineryId/summary', analyticsController.getDashboardSummary);
-router.get('/dashboard/:wineryId/timeseries', analyticsController.getTimeSeries);
+// Admin-only operations
+router.post('/seed-sula', protect, restrictTo('admin'), analyticsController.seedSulaAnalytics);
+router.get('/admin', protect, restrictTo('admin'), analyticsController.getAdminAnalytics);
 
-// Phase 12A: Business Analytics Endpoint
-router.get('/dashboard/:wineryId/business', analyticsController.getBusinessAnalytics);
+// Winery-isolated analytics endpoints (admin or isolated winery manager)
+router.get('/winery/:wineryId', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getWineryAnalytics);
 
-// Phase 13: Report Generation Endpoints
-router.get('/dashboard/:wineryId/report', analyticsController.getAnalyticsReport);
-router.get('/dashboard/:wineryId/report/pdf', analyticsController.getAnalyticsReportPDF);
-router.get('/dashboard/:wineryId/report/csv', analyticsController.getAnalyticsReportCSV);
+// Dashboards Endpoints
+router.get('/dashboard/:wineryId/summary', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getDashboardSummary);
+router.get('/dashboard/:wineryId/timeseries', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getTimeSeries);
 
-// Phase 10: Insight Engine Endpoints
-router.get('/dashboard/:wineryId/insights', analyticsController.getInsights);
-router.post('/recommendations/generate', analyticsController.generateRecommendations);
-router.put('/recommendations/:id/status', analyticsController.updateRecommendationStatus);
+// Business Analytics Endpoint
+router.get('/dashboard/:wineryId/business', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getBusinessAnalytics);
 
-// Get admin analytics
-router.get('/admin', protect, analyticsController.getAdminAnalytics);
+// Report Generation Endpoints
+router.get('/dashboard/:wineryId/report', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getAnalyticsReport);
+router.get('/dashboard/:wineryId/report/pdf', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getAnalyticsReportPDF);
+router.get('/dashboard/:wineryId/report/csv', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getAnalyticsReportCSV);
 
-// Get user preferences
+// Insight Engine Endpoints
+router.get('/dashboard/:wineryId/insights', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.getInsights);
+router.post('/recommendations/generate', protect, restrictTo('admin', 'winery'), requireWineryIsolation, analyticsController.generateRecommendations);
+router.put('/recommendations/:id/status', protect, restrictTo('admin', 'winery'), analyticsController.updateRecommendationStatus);
+
+// User preferences
 router.get('/user/:userId/preferences', protect, analyticsController.getUserPreferences);
 router.get('/user/preferences', protect, analyticsController.getUserPreferences);
 

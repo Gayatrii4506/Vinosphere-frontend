@@ -1,6 +1,6 @@
 'use client'
 
-import { Wine, Search, Award } from 'lucide-react'
+import { Wine, Search, Award, X, Info } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
@@ -8,6 +8,7 @@ export default function WinesPage() {
   const [wines, setWines] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedWine, setSelectedWine] = useState<any | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -164,7 +165,7 @@ export default function WinesPage() {
 
                   <td className="px-6 py-4 whitespace-nowrap text-right text-xs font-medium">
                     <button 
-                      onClick={() => alert(`Vintage Dossier:\n\nWine: ${wine.name}\nEstate: ${wine.wineries?.name || 'N/A'}\nType: ${wine.wine_type || 'N/A'}\nVintage: ${wine.vintage || 'N/A'}\nPrice: ${wine.price ? '₹' + wine.price : 'Inquire'}`)}
+                      onClick={() => setSelectedWine(wine)}
                       className="text-[#6D071A] hover:text-[#841126] font-semibold px-3 py-1.5 hover:bg-[#FDF2F4] rounded-lg transition-colors border border-transparent hover:border-[#6D071A]/20 cursor-pointer"
                     >
                       Dossier
@@ -176,6 +177,74 @@ export default function WinesPage() {
           </table>
         </div>
       </div>
+
+      {/* VINTAGE DOSSIER MODAL */}
+      {selectedWine && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-6 border border-[#ECECEC] shadow-2xl space-y-5 text-left">
+            <div className="flex justify-between items-center border-b border-[#ECECEC] pb-3">
+              <div className="flex items-center gap-2">
+                <Wine className="w-5 h-5 text-[#6D071A]" />
+                <h3 className="text-base font-bold font-serif text-[#222222]">Vintage Technical Dossier</h3>
+              </div>
+              <button
+                onClick={() => setSelectedWine(null)}
+                className="p-1.5 hover:bg-[#F8F9FB] rounded-lg transition"
+              >
+                <X className="w-4 h-4 text-charcoal-600" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div className="p-4 bg-[#FAF7F2] rounded-xl border border-[#EDE5D8] space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-[#888888]">Wine Name:</span>
+                  <span className="font-bold text-[#222222]">{selectedWine.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#888888]">Estate / Producer:</span>
+                  <span className="font-semibold text-[#6D071A]">{selectedWine.wineries?.name || 'Independent Producer'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#888888]">Classification:</span>
+                  <span className="font-bold text-[#222222]">{selectedWine.wine_type || 'Reserve'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#888888]">Vintage Year:</span>
+                  <span className="font-mono font-bold text-[#222222]">{selectedWine.vintage || 'NV'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#888888]">Bottle Price:</span>
+                  <span className="font-bold text-[#6D071A]">{selectedWine.price ? `₹${Number(selectedWine.price).toLocaleString()}` : 'Inquire / Cellar Door'}</span>
+                </div>
+                {selectedWine.region && (
+                  <div className="flex justify-between">
+                    <span className="text-[#888888]">Terroir / Region:</span>
+                    <span className="font-medium text-[#222222]">{selectedWine.region}</span>
+                  </div>
+                )}
+              </div>
+
+              {selectedWine.description && (
+                <div className="p-3 bg-white rounded-xl border border-[#ECECEC]">
+                  <span className="font-bold text-[#222222] block mb-1">Tasting Notes &amp; Profile</span>
+                  <p className="text-stone-600 leading-relaxed">{selectedWine.description}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => setSelectedWine(null)}
+                className="px-4 py-2 border border-[#ECECEC] hover:bg-[#F8F9FB] text-stone-700 text-xs font-bold rounded-xl transition"
+              >
+                Close Dossier
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

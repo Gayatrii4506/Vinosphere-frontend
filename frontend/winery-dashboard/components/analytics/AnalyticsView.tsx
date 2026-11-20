@@ -167,8 +167,8 @@ export default function AnalyticsView() {
                                         contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                                         cursor={{ fill: '#f3f4f6' }}
                                     />
-                                    <Bar dataKey="views" fill="#e11d48" radius={[4, 4, 0, 0]} name="Views" maxBarSize={40} />
-                                    <Bar dataKey="saves" fill="#fb7185" radius={[4, 4, 0, 0]} name="Saves" maxBarSize={40} />
+                                    <Bar dataKey="views" fill="#6D071A" radius={[4, 4, 0, 0]} name="Views" maxBarSize={40} />
+                                    <Bar dataKey="saves" fill="#D4AF37" radius={[4, 4, 0, 0]} name="Saves" maxBarSize={40} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
