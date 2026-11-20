@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { getSiteUrl } from '@/lib/supabase/config'
 import { headers } from 'next/headers'
 
 export async function login(formData: FormData) {
@@ -48,6 +49,8 @@ export async function login(formData: FormData) {
 
 export async function signup(formData: FormData) {
   const supabase = await createClient()
+  const headerList = await headers()
+  const siteUrl = getSiteUrl(headerList)
 
   const data = {
     email: formData.get('email') as string,
@@ -58,6 +61,7 @@ export async function signup(formData: FormData) {
     email: data.email,
     password: data.password,
     options: {
+        emailRedirectTo: `${siteUrl}/auth/confirm`,
         data: {
             onboarding_complete: false
         }
@@ -65,7 +69,7 @@ export async function signup(formData: FormData) {
   })
 
   if (error) {
-    return redirect(`/welcome?error=${error.message}`)
+    return redirect(`/welcome?error=${encodeURIComponent(error.message)}`)
   }
 
   // After signup, they might be logged in immediately (if email confirmations are disabled)
@@ -75,7 +79,7 @@ export async function signup(formData: FormData) {
       redirect('/onboarding')
   } else {
       // If email confirmation is required
-      redirect(`/welcome?message=Check your email to verify your account`)
+      redirect(`/welcome?message=${encodeURIComponent('Check your email to verify your account')}`)
   }
 }
 
@@ -88,19 +92,17 @@ export async function signOutAction() {
 export async function signInWithGoogle() {
     const supabase = await createClient()
     const headerList = await headers()
-    // Find the host so we know where to redirect back to
-    const host = headerList.get('host') || 'localhost:3000'
-    const protocol = host.includes('localhost') ? 'http' : 'https'
+    const siteUrl = getSiteUrl(headerList)
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${protocol}://${host}/auth/callback`,
+        redirectTo: `${siteUrl}/auth/callback`,
       },
     })
   
     if (error) {
-        return redirect(`/welcome?error=${error.message}`)
+        return redirect(`/welcome?error=${encodeURIComponent(error.message)}`)
     }
 
     if (data.url) {
