@@ -1,0 +1,7 @@
+Model_A,Model_B,Top1_Agreement_Pct,Mean_Top5_Overlap_Count,Mean_Top5_Jaccard_Sim,Mean_Kendall_Tau,Distinct_Recommendations_Pct
+Attribute_Only,Semantic_Only,0.0,0.07,0.0074,-0.6889,99.26
+Attribute_Only,Production_Hybrid,43.33,1.97,0.2817,-0.1473,71.83
+Attribute_Only,FullCatalog_Hybrid,43.33,1.73,0.2521,-0.2014,74.79
+Semantic_Only,Production_Hybrid,3.33,0.2,0.0231,-0.6557,97.69
+Semantic_Only,FullCatalog_Hybrid,6.67,0.6,0.0782,-0.5682,92.18
+Production_Hybrid,FullCatalog_Hybrid,83.33,3.57,0.6433,0.4955,35.67

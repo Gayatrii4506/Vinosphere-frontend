@@ -1,0 +1,6 @@
+model_name,mean_raw_attr_score,std_raw_attr_score,type_match_pct,body_match_pct,sweetness_match_pct,acidity_match_pct,tannin_match_pct,clash_spice_tannin_pct,clash_sweet_dry_pct,unique_wines_recommended,catalog_coverage_pct,shannon_entropy,mean_latency_ms,p95_latency_ms
+Random Baseline (Monte Carlo Mean),5.5543,0.3114,24.7533,34.2,37.0067,56.62,58.5267,5.0133,0.0,118.92,39.64,6.7892,0.05,
+Attribute-Only Baseline,12.8533,0.0,96.6667,66.6667,63.3333,95.3333,94.0,4.0,0.0,67.0,22.3333,5.7257,5.5681,8.428825146984307
+Semantic-Only Baseline (SentenceTransformers),6.4267,0.0,38.0,38.6667,30.0,58.6667,60.6667,4.6667,0.0,89.0,29.6667,6.2335,25.7917,4.780985030811279
+VinoSphere Production Hybrid (Top-20 Filtered),12.8533,0.0,96.6667,66.6667,63.3333,95.3333,94.0,4.0,0.0,90.0,30.0,6.2707,5.6612,9.817859984468663
+Full-Catalog Hybrid Variant (Ablation),12.8533,0.0,96.6667,66.6667,63.3333,95.3333,94.0,4.0,0.0,103.0,34.3333,6.5112,4.8213,6.887565017677843
