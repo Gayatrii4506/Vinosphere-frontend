@@ -397,8 +397,9 @@ export function WineQualityAssayLab({
   // ==========================================
   const fetchPostPrediction = async (inputFeatures: ChemicalFeatures) => {
     setLoading(true);
+    const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1').replace(/\/+$/, '');
     try {
-      const res = await fetch("http://localhost:5000/api/v1/quality/predict", {
+      const res = await fetch(`${backendUrl}/quality/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputFeatures)

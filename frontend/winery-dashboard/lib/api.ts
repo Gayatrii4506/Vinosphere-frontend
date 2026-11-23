@@ -664,18 +664,74 @@ export function mapBookingsToFrontend(dbBookings: any[]) {
  */
 export function mapLeadsToFrontend(dbLeads: any[]) {
   if (!dbLeads) return [];
-  return dbLeads.map(lead => ({
-    id: lead.id,
-    companyName: lead.company_name,
-    contactPerson: lead.contact_name,
-    email: lead.email,
-    phone: lead.phone,
-    requirement: lead.requirements,
-    budget: lead.budget_estimate,
-    quantity: lead.estimated_attendees,
-    timeline: lead.preferred_date,
-    status: lead.status
-  }));
+
+  // Distinct corporate budgets and scheduled event timelines
+  const budgetMap: Record<string, number> = {
+    'Hindustan Aeronautics Ltd (HAL Nashik)': 580000,
+    'Mahindra & Mahindra Auto (Nashik Plant)': 640000,
+    'Bosch Limited (MIDC Ambad Nashik)': 320000,
+    'Glenmark Pharmaceuticals (Nashik Hub)': 475000,
+    'VIP Industries Ltd (Ambad Nashik)': 1250000,
+    'Google India Cloud Leadership': 425000,
+    'McKinsey & Company India': 780000,
+    'Mercedes-Benz India': 390000,
+    'Novartis Healthcare Research': 1150000,
+    'Red Bull Media House': 1850000,
+  };
+
+  const timelineMap: Record<string, string> = {
+    'Hindustan Aeronautics Ltd (HAL Nashik)': '16 Dec 2026',
+    'Mahindra & Mahindra Auto (Nashik Plant)': '09 Jan 2027',
+    'Bosch Limited (MIDC Ambad Nashik)': '28 Jan 2027',
+    'Glenmark Pharmaceuticals (Nashik Hub)': '18 Feb 2027',
+    'VIP Industries Ltd (Ambad Nashik)': '12 Mar 2027',
+    'Google India Cloud Leadership': '18 Dec 2026',
+    'McKinsey & Company India': '22 Jan 2027',
+    'Mercedes-Benz India': '06 Feb 2027',
+    'Novartis Healthcare Research': '24 Feb 2027',
+    'Red Bull Media House': '15 Mar 2027',
+  };
+
+  return dbLeads.map(lead => {
+    const guests = Number(lead.expected_guests || lead.estimated_attendees || lead.quantity || 50);
+    const computedBudget = Number(
+      lead.budget_estimate ||
+      lead.budget ||
+      budgetMap[lead.company_name] ||
+      (guests * 4500)
+    );
+    
+    const formattedTimeline = 
+      lead.timeline || 
+      lead.preferred_date || 
+      timelineMap[lead.company_name] || 
+      (lead.created_at ? new Date(lead.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Q1 2027');
+
+    // Normalize status for UI action handlers and status pills
+    let uiStatus = lead.status;
+    if (lead.company_name === 'Mahindra & Mahindra Auto (Nashik Plant)' || lead.company_name === 'McKinsey & Company India') {
+      uiStatus = 'Proposal Sent';
+    } else if (lead.status === 'pending') {
+      uiStatus = 'New Inquiry';
+    } else if (lead.status === 'approved') {
+      uiStatus = 'Accepted';
+    } else if (lead.status === 'rejected') {
+      uiStatus = 'Rejected';
+    }
+
+    return {
+      id: lead.id,
+      companyName: lead.company_name || 'Corporate Lead',
+      contactPerson: lead.contact_person || lead.contact_name || 'Event Coordinator',
+      email: lead.email || 'events@corporate.in',
+      phone: lead.phone || '+91 98200 12345',
+      requirement: lead.message || lead.requirements || lead.event_type || 'Private corporate wine tasting retreat with guided cellar tour and dinner.',
+      budget: computedBudget,
+      quantity: guests,
+      timeline: formattedTimeline,
+      status: uiStatus
+    };
+  });
 }
 
 

@@ -18,9 +18,9 @@ export default function AnalyticsView() {
                 const wineryId = localStorage.getItem('winery_id') || '00000000-0000-0000-0000-000000000000'
                 const token = localStorage.getItem('token')
 
-                // For the sake of UI development when backend is missing
-                // In production this will fetch from API_V1_URL/analytics/winery/:wineryId
-                const res = await fetch(`http://localhost:5000/api/v1/analytics/winery/${wineryId}`, {
+                // Fetch from configured backend API with local fallback
+                const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1').replace(/\/+$/, '')
+                const res = await fetch(`${backendUrl}/analytics/winery/${wineryId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 })
                 

@@ -453,6 +453,17 @@ export default function WineryDashboardPage() {
   const [analyticsError, setAnalyticsError] = useState(false);
   const [insightActionStates, setInsightActionStates] = useState<Record<string, { status: 'loading' | 'error'; action: 'completed' | 'dismissed'; message?: string }>>({});
 
+  const allWinesRef = React.useRef(allWines);
+  allWinesRef.current = allWines;
+  const allBookingsRef = React.useRef(allBookings);
+  allBookingsRef.current = allBookings;
+  const allLeadsRef = React.useRef(allLeads);
+  allLeadsRef.current = allLeads;
+  const currentWineryRef = React.useRef(currentWinery);
+  currentWineryRef.current = currentWinery;
+  const dashboardSummaryRef = React.useRef(dashboardSummary);
+  dashboardSummaryRef.current = dashboardSummary;
+
   const handleUpdateInsightStatus = async (insightId: string, newStatus: 'completed' | 'dismissed') => {
     setInsightActionStates(prev => ({
       ...prev,
@@ -460,7 +471,8 @@ export default function WineryDashboardPage() {
     }));
 
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/analytics/recommendations/${insightId}/status`, {
+      const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1').replace(/\/+$/, '');
+      const res = await fetch(`${backendUrl}/analytics/recommendations/${insightId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
@@ -487,13 +499,15 @@ export default function WineryDashboardPage() {
   const handleDownloadPDF = () => {
     const activeDemo = isDemoMode;
     const wineryId = activeDemo ? DEMO_WINERY_ID : (currentWinery?.id || '11111111-1111-1111-1111-111111111111');
-    window.open(`http://localhost:5000/api/v1/analytics/dashboard/${wineryId}/report/pdf?period=${selectedPeriod}`, '_blank');
+    const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1').replace(/\/+$/, '');
+    window.open(`${backendUrl}/analytics/dashboard/${wineryId}/report/pdf?period=${selectedPeriod}`, '_blank');
   };
 
   const handleDownloadCSV = () => {
     const activeDemo = isDemoMode;
     const wineryId = activeDemo ? DEMO_WINERY_ID : (currentWinery?.id || '11111111-1111-1111-1111-111111111111');
-    window.open(`http://localhost:5000/api/v1/analytics/dashboard/${wineryId}/report/csv?period=${selectedPeriod}`, '_blank');
+    const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1').replace(/\/+$/, '');
+    window.open(`${backendUrl}/analytics/dashboard/${wineryId}/report/csv?period=${selectedPeriod}`, '_blank');
   };
 
   const coverInputRef = React.useRef<HTMLInputElement>(null);
@@ -1050,6 +1064,11 @@ export default function WineryDashboardPage() {
   };
 
   const generateFallbackAnalytics = React.useCallback((period: string) => {
+    const wines = allWinesRef.current || [];
+    const bookings = allBookingsRef.current || [];
+    const leads = allLeadsRef.current || [];
+    const winery = currentWineryRef.current;
+
     // 1. Time Series (30 days of traffic and engagement)
     const days = period === '90d' ? 90 : (period === '30d' ? 30 : 7);
     const tsData: any[] = [];
@@ -1075,7 +1094,7 @@ export default function WineryDashboardPage() {
     const totalSaves = tsData.reduce((acc, curr) => acc + curr.wine_saves, 0);
     const totalGuests = tsData.reduce((acc, curr) => acc + curr.guests_booked, 0);
 
-    const mostViewed = (allWines.length > 0 ? allWines : [
+    const mostViewed = (wines.length > 0 ? wines : [
       { id: 'w-1', name: 'Rasa Cabernet Sauvignon 2021', type: 'Red', image: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1787505421/7a34cefe-0fde-47ee-b4fa-0351d0565493.png' },
       { id: 'w-2', name: 'Dindori Reserve Shiraz 2022', type: 'Red', image: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1787466141/0cd29da9-8a93-42aa-9479-74238d0277e2.png' },
       { id: 'w-3', name: 'Tropical Sec Sparkling Wine', type: 'Sparkling', image: 'https://res.cloudinary.com/xfklkvdc/image/upload/v1787559573/806ea689-6b3a-4a26-9a0a-a56fd357de34.png' },
@@ -1099,9 +1118,8 @@ export default function WineryDashboardPage() {
     });
 
     // 3. Business Analytics
-    const numBookings = allBookings.length || 65;
-    const numLeads = allLeads.length || 36;
-    const grossRevenue = allBookings.reduce((sum, b) => sum + (Number(b.total) || 0), 0) || 245000;
+    const numBookings = bookings.length || 65;
+    const grossRevenue = bookings.reduce((sum: number, b: any) => sum + (Number(b.total) || 0), 0) || 245000;
     const prevGross = Math.round(grossRevenue * 0.78);
 
     const eventBookingsCount = Math.round(numBookings * 0.43);
@@ -1112,6 +1130,11 @@ export default function WineryDashboardPage() {
 
     const eventGross = Math.round(grossRevenue * 0.52);
     const expGross = grossRevenue - eventGross;
+
+    const pendingLeads = leads.filter((l: any) => l.status?.toLowerCase() === 'pending' || l.status?.toLowerCase() === 'new inquiry').length || 2;
+    const approvedLeads = leads.filter((l: any) => l.status?.toLowerCase() === 'approved' || l.status?.toLowerCase() === 'accepted').length || 2;
+    const rejectedLeads = leads.filter((l: any) => l.status?.toLowerCase() === 'rejected').length || 1;
+    const totalLeadsCount = leads.length || (pendingLeads + approvedLeads + rejectedLeads);
 
     setBusinessAnalytics({
       eventBookings: {
@@ -1156,15 +1179,15 @@ export default function WineryDashboardPage() {
         percentageChange: 31.5
       },
       corporateInquiries: {
-        current: numLeads,
-        previous: Math.max(1, Math.round(numLeads * 0.70)),
-        absoluteChange: numLeads - Math.max(1, Math.round(numLeads * 0.70)),
+        current: totalLeadsCount,
+        previous: Math.max(1, Math.round(totalLeadsCount * 0.70)),
+        absoluteChange: totalLeadsCount - Math.max(1, Math.round(totalLeadsCount * 0.70)),
         percentageChange: 42.8
       },
       corporateStatusBreakdown: {
-        pending: allLeads.filter(l => l.status?.toLowerCase() === 'pending').length || 12,
-        approved: allLeads.filter(l => l.status?.toLowerCase() === 'approved').length || 20,
-        rejected: allLeads.filter(l => l.status?.toLowerCase() === 'rejected').length || 4
+        pending: pendingLeads,
+        approved: approvedLeads,
+        rejected: rejectedLeads
       },
       corporateAvgExpectedGuests: 58,
       totalGrossBookingValue: {
@@ -1173,6 +1196,69 @@ export default function WineryDashboardPage() {
         absoluteChange: grossRevenue - prevGross,
         percentageChange: 28.2
       }
+    });
+
+    // Populate Report Data for Executive Reports (Sections 1-6)
+    setReportData({
+      winery: winery?.name || "Sula Vineyards",
+      periodLabel: period === '90d' ? 'Last 90 Days' : (period === '30d' ? 'Last 30 Days' : 'Last 7 Days'),
+      generatedAt: new Date().toISOString(),
+      executiveSummary: {
+        eventBookings: { current: eventBookingsCount, previous: Math.round(eventBookingsCount * 0.75), percentageChangeFormatted: "+33.3%" },
+        experienceBookings: { current: expBookingsCount, previous: Math.round(expBookingsCount * 0.82), percentageChangeFormatted: "+21.9%" },
+        corporateInquiries: { current: totalLeadsCount, previous: Math.max(1, Math.round(totalLeadsCount * 0.70)), percentageChangeFormatted: "+42.8%" },
+        grossBookingValue: { current: grossRevenue, previous: prevGross, percentageChangeFormatted: "+28.2%" },
+        eventCapacityUtilization: { current: 82, previous: 68, percentageChangeFormatted: "+20.6%" },
+        eventGuests: { current: eventGuestsCount, previous: Math.round(eventGuestsCount * 0.78), percentageChangeFormatted: "+28.2%" },
+        experienceGuests: { current: expGuestsCount, previous: Math.round(expGuestsCount * 0.8), percentageChangeFormatted: "+25.0%" },
+      },
+      wineEngagement: {
+        wineViews: totalViews,
+        wineSaves: totalSaves,
+        saveRateFormatted: "14%"
+      },
+      events: {
+        bookings: { current: eventBookingsCount },
+        guests: { current: eventGuestsCount },
+        capacityUtilization: { current: 82 },
+        grossBookingValue: { current: eventGross }
+      },
+      experiences: {
+        bookings: { current: expBookingsCount },
+        guests: { current: expGuestsCount },
+        grossBookingValue: { current: expGross }
+      },
+      corporate: {
+        totalInquiries: { current: totalLeadsCount },
+        statusBreakdown: {
+          pending: pendingLeads,
+          approved: approvedLeads,
+          rejected: rejectedLeads
+        }
+      },
+      grossBookingValue: {
+        current: grossRevenue,
+        breakdown: {
+          events: eventGross,
+          experiences: expGross
+        }
+      },
+      comparison: [
+        { metric: "Event Bookings", current: eventBookingsCount, previous: Math.round(eventBookingsCount * 0.75), change: "+33.3%" },
+        { metric: "Experience Bookings", current: expBookingsCount, previous: Math.round(expBookingsCount * 0.82), change: "+21.9%" },
+        { metric: "Corporate Inquiries", current: totalLeadsCount, previous: Math.max(1, Math.round(totalLeadsCount * 0.70)), change: "+42.8%" },
+        { metric: "Total GBV", current: formatCurrency(grossRevenue), previous: formatCurrency(prevGross), change: "+28.2%" }
+      ],
+      insights: [
+        {
+          title: "Strong Cellar Door Traction",
+          description: "Wine tasting experiences account for high margin direct consumer engagement with strong weekend retention."
+        },
+        {
+          title: "Expanding Corporate Partnerships",
+          description: "B2B offsites and executive retreats in Nashik present significant growth potential."
+        }
+      ]
     });
 
     // 4. Insights
@@ -1194,12 +1280,12 @@ export default function WineryDashboardPage() {
         confidence: 0.91
       }
     ]);
-  }, [allWines, allBookings, allLeads]);
+  }, []);
 
   const loadAnalytics = React.useCallback(async (period: string = selectedPeriod, demoOverride?: boolean) => {
     const activeDemo = demoOverride !== undefined ? demoOverride : isDemoMode;
-    const wineryId = activeDemo ? DEMO_WINERY_ID : (currentWinery?.id || 'b40a83dd-ee61-43df-bf79-caf3b2a190de');
-    if (!dashboardSummary) {
+    const wineryId = activeDemo ? DEMO_WINERY_ID : (currentWineryRef.current?.id || 'b40a83dd-ee61-43df-bf79-caf3b2a190de');
+    if (!dashboardSummaryRef.current) {
       setAnalyticsLoading(true);
     }
     setAnalyticsError(false);
@@ -1246,7 +1332,7 @@ export default function WineryDashboardPage() {
     } finally {
       setAnalyticsLoading(false);
     }
-  }, [currentWinery?.id, selectedPeriod, isDemoMode, dashboardSummary, generateFallbackAnalytics]);
+  }, [isDemoMode, generateFallbackAnalytics]);
 
   // Load state from Postgres Backend instead of localStorage
   useEffect(() => {
@@ -1310,7 +1396,7 @@ export default function WineryDashboardPage() {
     if (typeof window !== "undefined") {
       loadAnalytics(selectedPeriod);
     }
-  }, [allBookings.length, allWines.length, allLeads.length, selectedPeriod, loadAnalytics]);
+  }, [allBookings.length, allWines.length, allLeads.length, selectedPeriod, isDemoMode, currentWinery?.id]);
 
   const renderMetricChange = (metric: any) => {
     if (!metric) return <span className="text-charcoal-400 text-[11px]">No data</span>;
@@ -2220,7 +2306,6 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
               { label: "Corporate Leads", icon: Briefcase },
               { label: "Reviews & Ratings", icon: MessageSquare },
               { label: "Analytics", icon: BarChart3 },
-              { label: "EDA Layer", tab: "EDA Layer", icon: Activity },
               { label: "Documents", icon: FileText },
               { label: "Notifications", icon: Bell, badge: activeUnreadNotifications },
               { label: "Settings", icon: Settings }
@@ -4312,8 +4397,9 @@ const handleUpdateWineryInfo = async (e: React.FormEvent) => {
                           <p className="text-[10px] text-charcoal-400">Contact: {lead.contactPerson} ({lead.phone})</p>
                         </div>
                         <span className={`px-2 py-0.5 text-[9px] font-bold rounded-full ${
-                          lead.status === "New Inquiry" ? "bg-blue-100 text-blue-800" :
-                          lead.status === "Proposal Sent" ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"
+                          lead.status === "New Inquiry" || lead.status === "pending" ? "bg-blue-100 text-blue-800" :
+                          lead.status === "Proposal Sent" ? "bg-amber-100 text-amber-800" :
+                          lead.status === "Rejected" || lead.status === "rejected" ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
                         }`}>
                           {lead.status}
                         </span>
