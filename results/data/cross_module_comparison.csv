@@ -1,5 +1,0 @@
-Subsystem,Primary_Accuracy_Pct,Precision_Pct,Recall_Pct,F1_Score_Pct,Latency_ms,Throughput_ops_sec
-M1: Wine Quality Assessment,84.87,83.31,84.87,83.16,3.8,14500
-M2: Personalised Wine Recs,87.6,87.6,71.2,78.5,3.2,3200
-M3: Food–Wine Pairing Engine,88.4,92.6,88.4,90.45,42.5,250
-M4: Winery Business Analytics,100.0,98.4,96.8,97.59,12.4,5000

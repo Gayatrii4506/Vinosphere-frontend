@@ -1,7 +1,0 @@
-Suite,File,Total,Passed,Failed,Coverage_Pct
-Security & Tenant Isolation (Jest),security_authorization.test.ts,20,20,0,94.5
-Analytics Insight Engine (Jest),insight.engine.test.ts,9,9,0,92.0
-ML Recommender Benchmark,test-ml-recommender.ts,10,10,0,96.0
-Discovery E2E & Personas,e2e-discovery-system-tests.ts,12,12,0,88.5
-Pre-Fermentation RF Suite,train_prefermentation_rf.py,6,6,0,91.0
-Food Pairing Research Protocol,reproduce_experiments.py,15,15,0,95.0

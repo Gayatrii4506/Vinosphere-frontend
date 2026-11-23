@@ -1,8 +1,0 @@
-Metric,Value,Unit
-Top-1 Accuracy,88.4,%
-Precision,92.6,%
-Expert Acceptance,91.5,%
-Known Dish Response Time (Min),35.0,ms
-Known Dish Response Time (Max),50.0,ms
-Known Dish Response Time (Mean),42.5,ms
-Unknown Dish Response Time,1520.0,ms

@@ -1,9 +1,0 @@
-Metric,Value,Unit
-Accuracy,84.86842105263158,%
-Precision (Weighted),83.30605744213469,%
-Recall (Weighted),84.86842105263158,%
-F1-Score (Weighted),83.1554643331613,%
-Inference Latency,0.069,ms/sample
-Batch Processing Latency,1.25,ms/sample
-Throughput,14500.0,samples/sec
-Model Retraining Time,1.067500352859497,s
